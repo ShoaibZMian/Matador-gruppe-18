@@ -12,13 +12,13 @@ public class Player extends GUI_Player {
     // Predefine colors for the players
     private static Color[] colors = { Color.RED, Color.GREEN, Color.BLUE, Color.ORANGE };
 
-    private int age;
+
     private int position = 0;
     private OutOfJailChance ofJailChance;
 
-    public Player(int age, int balance, int id, String name, GUI_Car.Type guiCarType) {
+    public Player(int balance, int id, String name, GUI_Car.Type guiCarType) {
         super(name, balance, new GUI_Car(colors[id], Color.WHITE, guiCarType, GUI_Car.Pattern.FILL));
-        this.age = age;
+
     }
 
     public OutOfJailChance getOfJailChance() {
@@ -29,9 +29,6 @@ public class Player extends GUI_Player {
         this.ofJailChance = ofJailChance;
     }
 
-    public int getAge() {
-        return age;
-    }
 
     public int getPosition() {
         return position;

@@ -135,8 +135,6 @@ public class Game {
         // Shuffle the chances
         Collections.shuffle(chances);
 
-        // Sort the players by age
-        Arrays.sort(players, Comparator.comparing(Player::getAge));
 
         // Create an array of the player names for the GUI message
         String[] names = new String[4];
@@ -216,7 +214,7 @@ public class Game {
         while (true) {
             try {
                 numberOfPlayers = scanner.nextInt();
-                if (numberOfPlayers >= 2 && numberOfPlayers <= 4) {
+                if (numberOfPlayers >= 3 && numberOfPlayers <= 6) {
                     break;
                 }
             } catch (Exception e) {
@@ -226,7 +224,7 @@ public class Game {
         }
 
         // Calculate starting balance
-        int balance = 20 - ((numberOfPlayers - 2) * 2);
+        int balance = 30000;
 
         ArrayList<GUI_Car.Type> validCarTypes = new ArrayList<GUI_Car.Type>(Arrays.asList(GUI_Car.Type.values()));
         Player[] players = new Player[numberOfPlayers];
@@ -248,19 +246,19 @@ public class Game {
                 System.out.println(languageModel.game.configGetPlayers.invalid);
             }
 
-            System.out.println(languageModel.game.configGetPlayers.age);
-            int age;
-            while (true) {
-                try {
-                    age = scanner.nextInt();
-                    if (age > 0 && age < 150) {
-                        break;
-                    }
-                } catch (Exception e) {
-                    scanner.nextLine();
-                }
-                System.out.println(languageModel.game.configGetPlayers.invalid);
-            }
+           // System.out.println(languageModel.game.configGetPlayers.age);
+            //int age;
+            //while (true) {
+                //try {
+                  //  age = scanner.nextInt();
+                    //if (age > 0 && age < 150) {
+                      //  break;
+                   // }
+                //} catch (Exception e) {
+                  //  scanner.nextLine();
+               // }
+                //System.out.println(languageModel.game.configGetPlayers.invalid);
+            //}
 
             System.out.println(languageModel.game.configGetPlayers.car);
             int carSelect;
@@ -286,9 +284,9 @@ public class Game {
             }
 
             // Create the Player
-            players[playerId] = new Player(age, balance, playerId, name, carSelectType);
+            players[playerId] = new Player(balance, playerId, name, carSelectType);
             System.out
-                    .println(String.format(languageModel.game.configGetPlayers.validPlayer, name, age, carSelectType));
+                    .println(String.format(languageModel.game.configGetPlayers.validPlayer, name, carSelectType));
         }
         return players;
     }
