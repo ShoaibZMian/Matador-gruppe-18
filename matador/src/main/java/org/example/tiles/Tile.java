@@ -1,7 +1,10 @@
-package org.example;
+package org.example.tiles;
 
 import java.awt.Color;
 import java.util.ArrayList;
+
+import org.example.Player;
+import org.example.chances.Chance;
 
 import gui_fields.GUI_Field;
 import gui_main.GUI;

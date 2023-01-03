@@ -9,7 +9,23 @@ import java.util.Scanner;
 import java.awt.Color;
 import java.io.File;
 
+import org.example.chances.AbsoluteMovementChance;
+import org.example.chances.BirthdayChance;
+import org.example.chances.Chance;
+import org.example.chances.ChanceTile;
+import org.example.chances.FreeTileChance;
+import org.example.chances.MovementChance;
+import org.example.chances.MovementOrNewChance;
+import org.example.chances.OutOfJailChance;
+import org.example.chances.PaymentChance;
+import org.example.chances.PlayerChance;
 import org.example.models.LanguageModel;
+import org.example.tiles.FreeParkingTile;
+import org.example.tiles.GoToJailTile;
+import org.example.tiles.PropertyTile;
+import org.example.tiles.StartTile;
+import org.example.tiles.Tile;
+import org.example.tiles.VisitJailTile;
 
 import gui_fields.GUI_Car;
 import gui_fields.GUI_Field;

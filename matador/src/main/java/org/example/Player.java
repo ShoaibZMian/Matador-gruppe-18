@@ -2,6 +2,8 @@ package org.example;
 
 import java.awt.Color;
 
+import org.example.chances.OutOfJailChance;
+
 import gui_fields.GUI_Car;
 import gui_fields.GUI_Player;
 

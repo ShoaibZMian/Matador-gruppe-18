@@ -1,4 +1,6 @@
-package org.example;
+package org.example.chances;
+
+import org.example.Player;
 
 import gui_main.GUI;
 

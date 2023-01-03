@@ -1,4 +1,4 @@
-package org.example;
+package org.example.chances;
 
 public class ChanceModel {
     public final String message;

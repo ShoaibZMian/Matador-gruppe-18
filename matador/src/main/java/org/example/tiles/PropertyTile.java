@@ -1,5 +1,7 @@
-package org.example;
+package org.example.tiles;
 
+import org.example.Player;
+import org.example.chances.Chance;
 import org.example.models.LanguageModel;
 
 import gui_fields.GUI_Ownable;
@@ -15,7 +17,7 @@ public class PropertyTile extends Tile {
     private int price;
     private LanguageModel.Tile tileModel;
 
-    PropertyTile(int id, int price, Color color, LanguageModel.Tile tileModel) {
+    public PropertyTile(int id, int price, Color color, LanguageModel.Tile tileModel) {
         this.id = id;
         this.price = price;
         this.color = color;

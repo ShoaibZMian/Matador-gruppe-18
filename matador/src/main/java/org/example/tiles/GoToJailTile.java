@@ -1,20 +1,22 @@
-package org.example;
+package org.example.tiles;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
+import org.example.Player;
+import org.example.chances.Chance;
 import org.example.models.LanguageModel;
 
 import gui_fields.GUI_Jail;
 import gui_main.GUI;
 
-public class VisitJailTile extends Tile {
+import java.awt.Color;
+import java.util.ArrayList;
 
-    public VisitJailTile(int id, LanguageModel.Tile tileModel) {
+public class GoToJailTile extends Tile {
+
+    public GoToJailTile(int id, LanguageModel.Tile tileModel) {
         this.id = id;
         this.color = Color.white;
         this.guiField = new GUI_Jail("", tileModel.tileList[id].title, tileModel.tileList[id].subtext,
-                String.format("%s : %s ", tileModel.tileList[id].title, tileModel.tileList[id].subtext), this.color,
+                String.format("%s : %s ", tileModel.tileList[id].title, tileModel.tileList[id].subtext), color,
                 Color.BLACK);
     }
 
@@ -23,4 +25,5 @@ public class VisitJailTile extends Tile {
         // TODO Auto-generated method stub
         return true;
     }
+
 }
