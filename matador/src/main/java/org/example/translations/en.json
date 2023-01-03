@@ -1,0 +1,125 @@
+{
+	"game": {
+		"cantAfford": {
+			"message": "%s has run out of money.",
+			"button": "Find winner"
+		},
+		"sortPlayers": {
+			"message": "The youngest player starts first. The order is: %s %s %s %s",
+			"button": "Start game"
+		},
+		"gameLoop": {
+			"playerTurn": "%s's turn.",
+			"rollDie": {
+				"message": "Press the button to roll the die.",
+				"button": "Roll die."
+			}
+		},
+		"checkWin": {
+			"balance": "%s has won the game by balance!",
+			"property": "%s has won the game from property value!",
+			"tie": "%s and %s are tied on points, no one wins."
+		},
+		"configGetPlayers": {
+			"numberOfPlayers": "Enter number of players, from 2-4:",
+			"initial": "Enter information for player:",
+			"age": "Enter age:",
+			"name": "Enter name:",
+			"car": "Choose car type:",
+			"invalid": "Invalid input, try again.",
+			"validPlayer": "Created player, name: %s, age: %d, car type %s."
+		}
+	},
+	"chance": [
+		{
+			"description": "Give this card to the CAR and take another chance card. CAR: On your next turn, move to any free tile. If there are no free tiles, buy one from another player."
+		},
+		{ "description": "Move to START and receive 2M$." },
+		{ "description": "Move UP TO 5 tiles." },
+		{
+			"description": "Free tile. Move to an ORANGE tile, if it is not owned, then it is free, if the tile is owned by another player, then pay them rent."
+		},
+		{ "description": "Move 1 tile OR take another chance card." },
+		{
+			"description": "Give this card to the TRACTOR and take another chance card. TRACTOR: On your next turn, move to any free tile. If there are no free tiles, buy one from another player."
+		},
+		{ "description": "You've eaten too much candy. PAY 2M$ to the bank." },
+		{
+			"description": "Free tile. Move to an ORANGE or GREEN tile, if it is not owned, then it is free, if the tile is owned by another player, then pay them rent."
+		},
+		{
+			"description": "Free tile. Move to a LIGHT BLUE tile, if it is not owned, then it is free, if the tile is owned by another player, then pay them rent."
+		},
+		{
+			"description": "Get out of jail for free! Keep this card until you need it."
+		},
+		{ "description": "Move to the Boardwalk." },
+		{
+			"description": "Give this card to the UFO and take another chance card. UFO: On your next turn, move to any free tile. If there are no free tiles, buy one from another player."
+		},
+		{
+			"description": "Give this card to the RACECAR and take another chance card. RACECAR: On your next turn, move to any free tile. If there are no free tiles, buy one from another player."
+		},
+		{ "description": "It is your birthday!!! Receive 1M$ from everyone." },
+		{
+			"description": "Free tile. Move to a PINK or BLUE tile, if it is not owned, then it is free, if the tile is owned by another player, then pay them rent."
+		},
+		{ "description": "You've done your homework! Receive 2M$ from the bank." },
+		{
+			"description": "Free tile. Move to a RED tile, if it is not owned, then it is free, if the tile is owned by another player, then pay them rent."
+		},
+		{
+			"description": "Move to the Skater Park, if it is not owned, then it is free, if the tile is owned by another player, then pay them rent."
+		},
+		{
+			"description": "Free tile. Move to a LIGHT BLUE or RED tile, if it is not owned, then it is free, if the tile is owned by another player, then pay them rent."
+		},
+		{
+			"description": "Free tile. Move to a BROWN or YELLOW tile, if it is not owned, then it is free, if the tile is owned by another player, then pay them rent."
+		}
+	],
+	"tile": {
+		"start": "%s passed or landed on start and gets 2M$.",
+		"property": {
+			"buy": {
+				"message": "%s landed on the tile %s",
+				"button": "Buy tile for %d"
+			},
+			"rent": {
+				"message": "%s owns the tile %s.",
+				"button": "Pay rent of %d"
+			},
+			"ownTile": {
+				"message": "Landed on your own tile.",
+				"button": "Do nothing"
+			}
+		},
+		"freeParking": "%s landed on free Parking! You don't have to pay for anything.",
+		"tileList": [
+			{ "title": "Start", "subtext": "Receive 2M$ when you pass" },
+			{ "title": "Burger Bar", "subtext": "1M$" },
+			{ "title": "Pizzaria", "subtext": "1M$" },
+			{ "title": "Chance", "subtext": "Chance" },
+			{ "title": "Candy Store", "subtext": "1M$" },
+			{ "title": "Ice Cream Shop", "subtext": "1M$" },
+			{ "title": "Jail", "subtext": "Only visiting" },
+			{ "title": "Museum", "subtext": "2M$" },
+			{ "title": "Library", "subtext": "2M$" },
+			{ "title": "Chance", "subtext": "Chance" },
+			{ "title": "Skate Park", "subtext": "2M$" },
+			{ "title": "Swimming Pool", "subtext": "2M$" },
+			{ "title": "Free Parking", "subtext": "" },
+			{ "title": "The Arcade", "subtext": "3M$" },
+			{ "title": "The Cinema", "subtext": "3M$" },
+			{ "title": "Chance", "subtext": "Chance" },
+			{ "title": "Toy Store", "subtext": "3M$" },
+			{ "title": "Pet Store", "subtext": "3M$" },
+			{ "title": "Jail", "subtext": "Go To Jail" },
+			{ "title": "Bowling Alley", "subtext": "4M$" },
+			{ "title": "The Zoo", "subtext": "4M$" },
+			{ "title": "Chance", "subtext": "Chance" },
+			{ "title": "Water Park", "subtext": "5M$" },
+			{ "title": "Boardwalk", "subtext": "5M$" }
+		]
+	}
+}

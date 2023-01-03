@@ -1,0 +1,47 @@
+{
+	"game": {
+		"start_game": "Spillet er startet. Tryk enter for at spille din tur",
+		"player_roll": "Tur: %i Spiller: %i rullede: %i og landede på %s hvilket giver %i point",
+		"extra_turn": " og en extra tur",
+		"win_game": "Spiller %i har vundet spillet!!!",
+		"configGetPlayers": {
+			"players": "Indtast antal spillere, fra 2-4:",
+			"initial": "Indtast information for spilleren:",
+			"age": "Indtast alder:",
+			"name": "Indtast navn:",
+			"car": "Vælg biltype:",
+			"invalid": "Ikke gyldigt input, prøv igen.",
+			"valid": "Created player, navn: %s, alder: %d, biltype %s."
+		}
+	},
+	"tile": [
+		{ "title": "Start", "subtext": "Modtag 2M$ Når Du Passerer" },
+		{ "title": "Brugerbaren", "subtext": "1M$" },
+		{ "title": "Pizzeriaet", "subtext": "1M$" },
+		{ "title": "Chance", "subtext": "" },
+		{ "title": "Slikbutikken", "subtext": "1M$" },
+		{ "title": "Iskiosken", "subtext": "1M$" },
+		{ "title": "I Fængsel", "subtext": "På Besøg" },
+		{ "title": "Museet", "subtext": "2M$" },
+		{ "title": "Biblioteket", "subtext": "2M$" },
+		{ "title": "Chance", "subtext": "" },
+		{ "title": "Skaterparken", "subtext": "2M$" },
+		{ "title": "Swimmingpoolen", "subtext": "2M$" },
+		{ "title": "Gratis Parkering", "subtext": "" },
+		{ "title": "Spillehallen", "subtext": "3M$" },
+		{ "title": "Biografen", "subtext": "3M$" },
+		{ "title": "Chance", "subtext": "" },
+		{ "title": "Legetøjsbutikken", "subtext": "3M$" },
+		{ "title": "Dyrehandlen", "subtext": "3M$" },
+		{ "title": "Fængsel", "subtext": "Gå I Fængsel" },
+		{ "title": "Bowlinghallen", "subtext": "4M$" },
+		{ "title": "Zoo", "subtext": "4M$" },
+		{ "title": "Chance", "subtext": "" },
+		{ "title": "Vandlandet", "subtext": "5M$" },
+		{ "title": "Strandpromenaden", "subtext": "5M$" }
+	],
+	"account": {
+		"to_string": "Din konto indeholder: %s"
+	},
+	"error": "Fejl ved hentning af oversættelses-streng"
+}
