@@ -12,9 +12,7 @@ import java.io.File;
 import org.example.chances.AbsoluteMovementChance;
 import org.example.chances.BirthdayChance;
 import org.example.chances.Chance;
-import org.example.chances.FreeTileChance;
 import org.example.chances.MovementChance;
-import org.example.chances.MovementOrNewChance;
 import org.example.chances.OutOfJailChance;
 import org.example.chances.PaymentChance;
 import org.example.chances.PlayerChance;
@@ -23,6 +21,7 @@ import org.example.tiles.ChanceTile;
 import org.example.tiles.FreeParkingTile;
 import org.example.tiles.GoToJailTile;
 import org.example.tiles.PropertyTile;
+import org.example.tiles.ShipTile;
 import org.example.tiles.StartTile;
 import org.example.tiles.Tile;
 import org.example.tiles.VisitJailTile;
@@ -51,17 +50,22 @@ public class Game {
         // Create the tiles with chosen language
         this.tiles = new Tile[] {
                 new StartTile(languageModel.tile),
-                new PropertyTile(1, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
-                new PropertyTile(2, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
-                new PropertyTile(3, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
-                new PropertyTile(4, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
-                new PropertyTile(5, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
-                new PropertyTile(6, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
-                new PropertyTile(7, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
-                new PropertyTile(8, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
-                new PropertyTile(9, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
-                new PropertyTile(10, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
-                new PropertyTile(11, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
+                new ShipTile(0, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(1, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(2, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(3, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(4, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(5, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(6, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(7, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(8, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(9, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(10, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(11, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(12, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(13, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(14, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 })
+
                 // new PropertyTile(1, 1, BROWN, languageModel.tile),
                 // // new PropertyTile(2, 1, BROWN, languageModel.tile),
                 // new ChanceTile(3, languageModel.tile),
@@ -94,19 +98,12 @@ public class Game {
                 languageModel.chance[0].description));
         this.chances.add(new AbsoluteMovementChance(0, languageModel.chance[1].description));
         this.chances.add(new MovementChance(5, languageModel.chance[2].description));
-        // Orange tiles
-        this.chances.add(new FreeTileChance(new int[] { 10, 11 },
-                languageModel.chance[3].description));
-        this.chances.add(new MovementOrNewChance(1,
-                languageModel.chance[4].description));
+
         this.chances.add(new PlayerChance(GUI_Car.Type.TRACTOR,
                 languageModel.chance[5].description));
-        // Orange or green tiles
-        this.chances.add(new FreeTileChance(new int[] { 10, 11, 19, 20 },
-                languageModel.chance[7].description));
+
         // Light blue tiles
-        this.chances.add(new FreeTileChance(new int[] { 4, 5 },
-                languageModel.chance[8].description));
+
         this.chances.add(new OutOfJailChance(languageModel.chance[9].description));
         // The boardwalk
         this.chances.add(new AbsoluteMovementChance(23,
@@ -117,21 +114,8 @@ public class Game {
                 languageModel.chance[12].description));
         this.chances.add(new BirthdayChance(languageModel.chance[13].description));
         // Pink and blue tiles
-        this.chances.add(new FreeTileChance(new int[] { 7, 8, 22, 23 },
-                languageModel.chance[14].description));
+
         this.chances.add(new PaymentChance(2, languageModel.chance[15].description));
-        // Red tiles
-        this.chances.add(new FreeTileChance(new int[] { 13, 14 },
-                languageModel.chance[16].description));
-        // The skate park
-        this.chances.add(new FreeTileChance(new int[] { 10 },
-                languageModel.chance[17].description));
-        // Light blue and red tiles
-        this.chances.add(new FreeTileChance(new int[] { 4, 5, 13, 14 },
-                languageModel.chance[18].description));
-        // Brown and yellow tiles
-        this.chances.add(new FreeTileChance(new int[] { 1, 2, 16, 17 },
-                languageModel.chance[19].description));
 
         gui = new GUI(getFields(), LIGHT_BLUE);
 
@@ -145,7 +129,6 @@ public class Game {
     private void prepareGame() {
         // Shuffle the chances
         Collections.shuffle(chances);
-
 
         // Create an array of the player names for the GUI message
         String[] names = new String[4];
@@ -256,20 +239,6 @@ public class Game {
                 }
                 System.out.println(languageModel.game.configGetPlayers.invalid);
             }
-
-           // System.out.println(languageModel.game.configGetPlayers.age);
-            //int age;
-            //while (true) {
-                //try {
-                  //  age = scanner.nextInt();
-                    //if (age > 0 && age < 150) {
-                      //  break;
-                   // }
-                //} catch (Exception e) {
-                  //  scanner.nextLine();
-               // }
-                //System.out.println(languageModel.game.configGetPlayers.invalid);
-            //}
 
             System.out.println(languageModel.game.configGetPlayers.car);
             int carSelect;

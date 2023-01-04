@@ -1,10 +1,9 @@
 package org.example.tiles;
 
-import org.apache.commons.digester.plugins.PluginCreateRule;
 import org.example.Player;
 import org.example.chances.Chance;
-import org.example.models.LanguageModel;
 
+import gui_fields.GUI_Ownable;
 import gui_fields.GUI_Street;
 import gui_main.GUI;
 
@@ -16,14 +15,14 @@ public class PropertyTile extends Tile {
     private static final String AUCTION = "Sæt grund på auktion";
     private static final String BUY = "Køb grund";
 
-    private Player owner;
-    private String title;
-    private int price;
-    private int housePrice;
-    private int hotelPrice;
-    private int pawnValue;
-    private int rent;
-    private int[] rentPrices = new int[6];
+    protected Player owner;
+    protected String title;
+    protected int price;
+    protected int housePrice;
+    protected int hotelPrice;
+    protected int pawnValue;
+    protected int rent;
+    protected int[] rentPrices = new int[6];
 
     public PropertyTile(
             int id, String title, String subtext, Color color,
@@ -75,11 +74,21 @@ public class PropertyTile extends Tile {
         this.owner = owner;
     }
 
+    // Calculate and pay rent
+    public void PayRent(GUI gui, Player player, Player owner) {
+        // Pay rent if not the owner
+        // TODO Check if the player has enough money or property value to pay rent
+        gui.showMessage(
+                player.getName() + " landede på " + owner.getName() + "'s ejendom og skal betale en leje på "
+                        + this.rent);
+        player.setBalance(player.getBalance() - this.rent);
+        owner.setBalance(owner.getBalance() + this.rent);
+    }
+
     @Override
     public boolean tileAction(Player player, Player[] players, ArrayList<Chance> chances, GUI gui) {
 
-        // GUI_Ownable ownable = (GUI_Ownable) guiField;
-        GUI_Street street = (GUI_Street) guiField;
+        GUI_Ownable street = (GUI_Ownable) guiField;
 
         // If the street is unowned
         if (this.owner == null) {
@@ -117,12 +126,7 @@ public class PropertyTile extends Tile {
                 gui.showMessage(player.getName() + " landede på sin egen ejendom");
             } else {
                 // Pay rent if not the owner
-                // TODO Check if the player has enough money or property value to pay rent
-                gui.showMessage(
-                        player.getName() + " landede på " + owner.getName() + "'s ejendom og skal betale en leje på "
-                                + this.rent);
-                player.setBalance(player.getBalance() - this.rent);
-                owner.setBalance(owner.getBalance() + this.rent);
+                PayRent(gui, player, owner);
             }
         }
         return true;

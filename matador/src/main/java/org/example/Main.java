@@ -23,10 +23,10 @@ public class Main {
                 LanguageModel languageModel = language.getLanguageData();
 
                 Player[] players = {
-                                new Player(11, 20, 0, "Markus", GUI_Car.Type.CAR),
-                                new Player(10, 20, 1, "Safi", GUI_Car.Type.RACECAR),
-                                new Player(14, 20, 2, "Marc", GUI_Car.Type.TRACTOR),
-                                new Player(9, 20, 3, "Josef", GUI_Car.Type.UFO)
+                                new Player(20, 0, "Markus", GUI_Car.Type.CAR),
+                                new Player(20, 1, "Safi", GUI_Car.Type.RACECAR),
+                                new Player(20, 2, "Marc", GUI_Car.Type.TRACTOR),
+                                new Player(20, 3, "Josef", GUI_Car.Type.UFO)
                 };
 
                 new Game(players, languageModel);
