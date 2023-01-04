@@ -12,7 +12,6 @@ import java.io.File;
 import org.example.chances.AbsoluteMovementChance;
 import org.example.chances.BirthdayChance;
 import org.example.chances.Chance;
-import org.example.chances.ChanceTile;
 import org.example.chances.FreeTileChance;
 import org.example.chances.MovementChance;
 import org.example.chances.MovementOrNewChance;
@@ -20,6 +19,7 @@ import org.example.chances.OutOfJailChance;
 import org.example.chances.PaymentChance;
 import org.example.chances.PlayerChance;
 import org.example.models.LanguageModel;
+import org.example.tiles.ChanceTile;
 import org.example.tiles.FreeParkingTile;
 import org.example.tiles.GoToJailTile;
 import org.example.tiles.PropertyTile;
@@ -51,29 +51,40 @@ public class Game {
         // Create the tiles with chosen language
         this.tiles = new Tile[] {
                 new StartTile(languageModel.tile),
-                new PropertyTile(1, 1, BROWN, languageModel.tile),
-                new PropertyTile(2, 1, BROWN, languageModel.tile),
-                new ChanceTile(3, languageModel.tile),
-                new PropertyTile(4, 1, LIGHT_BLUE, languageModel.tile),
-                new PropertyTile(5, 1, LIGHT_BLUE, languageModel.tile),
-                new VisitJailTile(6, languageModel.tile),
-                new PropertyTile(7, 2, Color.PINK, languageModel.tile),
-                new PropertyTile(8, 2, Color.PINK, languageModel.tile),
-                new ChanceTile(9, languageModel.tile),
-                new PropertyTile(10, 2, Color.ORANGE, languageModel.tile),
-                new PropertyTile(11, 2, Color.ORANGE, languageModel.tile),
-                new FreeParkingTile(12, languageModel.tile),
-                new PropertyTile(13, 3, Color.RED, languageModel.tile),
-                new PropertyTile(14, 3, Color.RED, languageModel.tile),
-                new ChanceTile(15, languageModel.tile),
-                new PropertyTile(16, 3, Color.YELLOW, languageModel.tile),
-                new PropertyTile(17, 3, Color.YELLOW, languageModel.tile),
-                new GoToJailTile(18, languageModel.tile),
-                new PropertyTile(19, 4, Color.GREEN, languageModel.tile),
-                new PropertyTile(20, 4, Color.GREEN, languageModel.tile),
-                new ChanceTile(21, languageModel.tile),
-                new PropertyTile(22, 4, Color.BLUE, languageModel.tile),
-                new PropertyTile(23, 4, Color.BLUE, languageModel.tile)
+                new PropertyTile(1, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
+                new PropertyTile(2, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
+                new PropertyTile(3, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
+                new PropertyTile(4, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
+                new PropertyTile(5, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
+                new PropertyTile(6, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
+                new PropertyTile(7, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
+                new PropertyTile(8, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
+                new PropertyTile(9, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
+                new PropertyTile(10, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
+                new PropertyTile(11, "Test", "Substring", BROWN, 1, 2, 3, 4, new int[] { 5, 6, 7, 8, 9, 10 }),
+                // new PropertyTile(1, 1, BROWN, languageModel.tile),
+                // // new PropertyTile(2, 1, BROWN, languageModel.tile),
+                // new ChanceTile(3, languageModel.tile),
+                // // new PropertyTile(4, 1, LIGHT_BLUE, languageModel.tile),
+                // // new PropertyTile(5, 1, LIGHT_BLUE, languageModel.tile),
+                // new VisitJailTile(6, languageModel.tile),
+                // // new PropertyTile(7, 2, Color.PINK, languageModel.tile),
+                // // new PropertyTile(8, 2, Color.PINK, languageModel.tile),
+                // new ChanceTile(9, languageModel.tile),
+                // // new PropertyTile(10, 2, Color.ORANGE, languageModel.tile),
+                // // new PropertyTile(11, 2, Color.ORANGE, languageModel.tile),
+                // new FreeParkingTile(12, languageModel.tile),
+                // // new PropertyTile(13, 3, Color.RED, languageModel.tile),
+                // // new PropertyTile(14, 3, Color.RED, languageModel.tile),
+                // new ChanceTile(15, languageModel.tile),
+                // // new PropertyTile(16, 3, Color.YELLOW, languageModel.tile),
+                // // new PropertyTile(17, 3, Color.YELLOW, languageModel.tile),
+                // new GoToJailTile(18, languageModel.tile),
+                // // new PropertyTile(19, 4, Color.GREEN, languageModel.tile),
+                // // new PropertyTile(20, 4, Color.GREEN, languageModel.tile),
+                // new ChanceTile(21, languageModel.tile),
+                // new PropertyTile(22, 4, Color.BLUE, languageModel.tile),
+                // new PropertyTile(23, 4, Color.BLUE, languageModel.tile)
         };
 
         // Create the chance arraylist
@@ -122,7 +133,7 @@ public class Game {
         this.chances.add(new FreeTileChance(new int[] { 1, 2, 16, 17 },
                 languageModel.chance[19].description));
 
-        gui = new GUI(getFields());
+        gui = new GUI(getFields(), LIGHT_BLUE);
 
         prepareGame();
 
