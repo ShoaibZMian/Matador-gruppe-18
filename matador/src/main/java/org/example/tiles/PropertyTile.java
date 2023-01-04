@@ -1,10 +1,10 @@
 package org.example.tiles;
 
+import org.apache.commons.digester.plugins.PluginCreateRule;
 import org.example.Player;
 import org.example.chances.Chance;
 import org.example.models.LanguageModel;
 
-import gui_fields.GUI_Ownable;
 import gui_fields.GUI_Street;
 import gui_main.GUI;
 
@@ -13,18 +13,35 @@ import java.util.ArrayList;
 
 public class PropertyTile extends Tile {
 
+    private static final String AUCTION = "Sæt grund på auktion";
+    private static final String BUY = "Køb grund";
+
     private Player owner;
+    private String title;
     private int price;
-    private LanguageModel.Tile tileModel;
+    private int housePrice;
+    private int hotelPrice;
+    private int pawnValue;
+    private int rent;
+    private int[] rentPrices = new int[6];
 
-    public PropertyTile(int id, int price, Color color, LanguageModel.Tile tileModel) {
+    public PropertyTile(
+            int id, String title, String subtext, Color color,
+            int price, int housePrice, int hotelPrice, int pawnValue,
+            int[] rentPrices) {
         this.id = id;
-        this.price = price;
+        this.title = title;
         this.color = color;
-        this.tileModel = tileModel;
 
-        this.guiField = new GUI_Street(tileModel.tileList[id].title, tileModel.tileList[id].subtext,
-                tileModel.tileList[id].title, Integer.toString(price), color, Color.BLACK);
+        this.price = price;
+        this.housePrice = housePrice;
+        this.hotelPrice = hotelPrice;
+        this.pawnValue = pawnValue;
+        this.rentPrices = rentPrices;
+        this.rent = rentPrices[0];
+
+        this.guiField = new GUI_Street(title, Integer.toString(price), title, Integer.toString(this.rent), color,
+                Color.BLACK);
     }
 
     public int getPrice() {
@@ -35,6 +52,25 @@ public class PropertyTile extends Tile {
         return owner;
     }
 
+    // Handle houses and hotels, where a hotel is simply 5 houses in the logic
+    public void setHouses(int houses) {
+
+        GUI_Street street = (GUI_Street) guiField;
+
+        // Set rent based on houses
+        this.rent = rentPrices[houses];
+
+        // Update GUI
+        street.setRent(Integer.toString(this.rent));
+
+        if (houses >= 0 && houses <= 4) {
+            street.setHouses(houses);
+        } else if (houses == 5) {
+            street.setHotel(true);
+        }
+
+    }
+
     public void setOwner(Player owner) {
         this.owner = owner;
     }
@@ -42,39 +78,53 @@ public class PropertyTile extends Tile {
     @Override
     public boolean tileAction(Player player, Player[] players, ArrayList<Chance> chances, GUI gui) {
 
-        GUI_Ownable ownable = (GUI_Ownable) guiField;
+        // GUI_Ownable ownable = (GUI_Ownable) guiField;
+        GUI_Street street = (GUI_Street) guiField;
 
-        // End the game if the player can't pay, either rent or just buying the tile
-        if (player.getBalance() < price) {
-            return false;
-        }
+        // If the street is unowned
+        if (this.owner == null) {
 
-        // If the tile is unowned
-        if (owner == null) {
-            // Buy the tile
-            player.setBalance(player.getBalance() - price);
-            ownable.setOwnerName(player.getName());
-            setOwner(player);
-            gui.getUserButtonPressed(
-                    String.format(tileModel.property.buy.message, player.getName(), ownable.getTitle(), price),
-                    String.format(tileModel.property.buy.button, price));
+            // Generate a list of options
+            ArrayList<String> options = new ArrayList<String>();
 
-        } else {
+            // Always add auction
+            options.add(AUCTION);
 
-            // Pay rent if not the owner
-            if (player == owner) {
-                gui.getUserButtonPressed(tileModel.property.ownTile.message, tileModel.property.ownTile.button);
-            } else {
-                gui.getUserButtonPressed(
-                        String.format(tileModel.property.rent.message, owner.getName(), ownable.getTitle(), price),
-                        String.format(tileModel.property.rent.button, price));
-                player.setBalance(player.getBalance() - price);
-                owner.setBalance(owner.getBalance() + price);
+            // Check if balance is high enough to buy the tile
+            if (player.getBalance() >= this.price) {
+                options.add(BUY);
             }
 
+            // Display and get chosen option
+            String option = gui.getUserButtonPressed(
+                    player.getName() + " landede på " + this.title + " og har følgende muligheder:",
+                    options.toArray(new String[options.size()]));
+
+            switch (option) {
+                case AUCTION:
+                    // TODO Add auction
+                    break;
+
+                case BUY:
+                    player.setBalance(player.getBalance() - this.price);
+                    street.setOwnerName(player.getName());
+                    setOwner(player);
+                    break;
+            }
+        } else {
+            // Do nothing if the player is the owner of the tile
+            if (player == this.owner) {
+                gui.showMessage(player.getName() + " landede på sin egen ejendom");
+            } else {
+                // Pay rent if not the owner
+                // TODO Check if the player has enough money or property value to pay rent
+                gui.showMessage(
+                        player.getName() + " landede på " + owner.getName() + "'s ejendom og skal betale en leje på "
+                                + this.rent);
+                player.setBalance(player.getBalance() - this.rent);
+                owner.setBalance(owner.getBalance() + this.rent);
+            }
         }
         return true;
-
     }
-
 }
