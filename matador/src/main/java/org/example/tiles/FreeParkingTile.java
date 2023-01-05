@@ -5,25 +5,26 @@ import java.util.ArrayList;
 
 import org.example.Player;
 import org.example.chances.Chance;
-import org.example.models.LanguageModel;
 
-import gui_fields.GUI_Street;
+import gui_fields.GUI_Refuge;
 import gui_main.GUI;
 
 public class FreeParkingTile extends Tile {
-    LanguageModel.Tile tileModel;
 
-    public FreeParkingTile(int id, LanguageModel.Tile tileModel) {
+    private String title;
+    private String description;
+
+    public FreeParkingTile(int id) {
         this.id = id;
-        this.tileModel = tileModel;
-        this.color = Color.white;
-        this.guiField = new GUI_Street(tileModel.tileList[id].title, tileModel.tileList[id].subtext,
-                tileModel.tileList[id].title, "", color, Color.BLACK);
+        this.title = "Parkering";
+        this.description = "AcceptCard. Gør noget ved dine drømme.";
+
+        this.guiField = new GUI_Refuge("", this.title, this.title, this.description, Color.WHITE, Color.BLACK);
     }
 
     @Override
     public boolean tileAction(Player player, Player[] players, ArrayList<Chance> chances, GUI gui) {
-        gui.showMessage(String.format(tileModel.freeParking, player.getName()));
+        gui.showMessage(player.getName() + " landede på " + this.title + ": " + this.description);
         return true;
     }
 }

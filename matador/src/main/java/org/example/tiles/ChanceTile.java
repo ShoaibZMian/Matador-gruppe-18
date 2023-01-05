@@ -6,17 +6,16 @@ import java.util.ArrayList;
 import org.example.Player;
 import org.example.chances.Chance;
 import org.example.chances.OutOfJailChance;
-import org.example.models.LanguageModel;
 
 import gui_fields.GUI_Chance;
 import gui_main.GUI;
 
 public class ChanceTile extends Tile {
 
-    public ChanceTile(int id, LanguageModel.Tile tileModel) {
+    public ChanceTile(int id) {
         this.id = id;
-        this.color = Color.white;
-        this.guiField = new GUI_Chance("", tileModel.tileList[id].subtext, "", color,
+        this.guiField = new GUI_Chance("?",
+                "Prøv Lykken", "Prøv lykken", Color.WHITE,
                 Color.BLACK);
     }
 
@@ -27,12 +26,15 @@ public class ChanceTile extends Tile {
 
         // Use the chance or save the get out of jail card
         boolean result = chance.chanceAction(player, players, gui);
+
+        // Don't add the get out of jail chance back to the pile immediately
         if (chance.getClass() == OutOfJailChance.class) {
-            player.setOfJailChance((OutOfJailChance) chance);
+            player.addGetOutOfJailChance((OutOfJailChance) chance);
         } else {
-            chances.remove(chances.size() - 1);
             chances.add(0, chance);
         }
+        // Remove the card from the pile
+        chances.remove(chances.size() - 1);
 
         return result;
     }

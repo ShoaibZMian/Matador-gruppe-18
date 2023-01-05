@@ -10,4 +10,7 @@ abstract public class Chance {
 
     abstract public boolean chanceAction(Player player, Player[] players, GUI gui);
 
+    public String getDescription() {
+        return description;
+    }
 }

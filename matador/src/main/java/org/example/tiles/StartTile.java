@@ -2,7 +2,6 @@ package org.example.tiles;
 
 import org.example.Player;
 import org.example.chances.Chance;
-import org.example.models.LanguageModel;
 
 import gui_fields.GUI_Start;
 import gui_main.GUI;
@@ -12,13 +11,10 @@ import java.util.ArrayList;
 
 public class StartTile extends Tile {
 
-    public StartTile(LanguageModel.Tile tileModel) {
-        this.color = Color.white;
-        int id = 0;
-        this.guiField = new GUI_Start(tileModel.tileList[id].title, tileModel.tileList[id].subtext,
-                String.format("%s : %s ", tileModel.tileList[id].title, tileModel.tileList[id].subtext), color,
+    public StartTile() {
+        this.id = 0;
+        this.guiField = new GUI_Start("START", "START", "Hver gang de passerer START, modtag kr. 4000", Color.WHITE,
                 Color.BLACK);
-
     }
 
     @Override

@@ -67,7 +67,6 @@ public class PropertyTile extends Tile {
         } else if (houses == 5) {
             street.setHotel(true);
         }
-
     }
 
     public void setOwner(Player owner) {
