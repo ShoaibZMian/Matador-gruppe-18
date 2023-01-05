@@ -9,7 +9,22 @@ import java.util.Scanner;
 import java.awt.Color;
 import java.io.File;
 
+import org.example.chances.AbsoluteMovementChance;
+import org.example.chances.BirthdayChance;
+import org.example.chances.Chance;
+import org.example.chances.MovementChance;
+import org.example.chances.OutOfJailChance;
+import org.example.chances.PaymentChance;
+import org.example.chances.PlayerChance;
 import org.example.models.LanguageModel;
+import org.example.tiles.ChanceTile;
+import org.example.tiles.FreeParkingTile;
+import org.example.tiles.GoToJailTile;
+import org.example.tiles.PropertyTile;
+import org.example.tiles.ShipTile;
+import org.example.tiles.StartTile;
+import org.example.tiles.Tile;
+import org.example.tiles.VisitJailTile;
 
 import gui_fields.GUI_Car;
 import gui_fields.GUI_Field;
@@ -35,29 +50,45 @@ public class Game {
         // Create the tiles with chosen language
         this.tiles = new Tile[] {
                 new StartTile(languageModel.tile),
-                new PropertyTile(1, 1, BROWN, languageModel.tile),
-                new PropertyTile(2, 1, BROWN, languageModel.tile),
-                new ChanceTile(3, languageModel.tile),
-                new PropertyTile(4, 1, LIGHT_BLUE, languageModel.tile),
-                new PropertyTile(5, 1, LIGHT_BLUE, languageModel.tile),
-                new VisitJailTile(6, languageModel.tile),
-                new PropertyTile(7, 2, Color.PINK, languageModel.tile),
-                new PropertyTile(8, 2, Color.PINK, languageModel.tile),
-                new ChanceTile(9, languageModel.tile),
-                new PropertyTile(10, 2, Color.ORANGE, languageModel.tile),
-                new PropertyTile(11, 2, Color.ORANGE, languageModel.tile),
-                new FreeParkingTile(12, languageModel.tile),
-                new PropertyTile(13, 3, Color.RED, languageModel.tile),
-                new PropertyTile(14, 3, Color.RED, languageModel.tile),
-                new ChanceTile(15, languageModel.tile),
-                new PropertyTile(16, 3, Color.YELLOW, languageModel.tile),
-                new PropertyTile(17, 3, Color.YELLOW, languageModel.tile),
-                new GoToJailTile(18, languageModel.tile),
-                new PropertyTile(19, 4, Color.GREEN, languageModel.tile),
-                new PropertyTile(20, 4, Color.GREEN, languageModel.tile),
-                new ChanceTile(21, languageModel.tile),
-                new PropertyTile(22, 4, Color.BLUE, languageModel.tile),
-                new PropertyTile(23, 4, Color.BLUE, languageModel.tile)
+                new ShipTile(0, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(1, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(2, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(3, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(4, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(5, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(6, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(7, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(8, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(9, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(10, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(11, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(12, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(13, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
+                new ShipTile(14, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 })
+
+                // new PropertyTile(1, 1, BROWN, languageModel.tile),
+                // // new PropertyTile(2, 1, BROWN, languageModel.tile),
+                // new ChanceTile(3, languageModel.tile),
+                // // new PropertyTile(4, 1, LIGHT_BLUE, languageModel.tile),
+                // // new PropertyTile(5, 1, LIGHT_BLUE, languageModel.tile),
+                // new VisitJailTile(6, languageModel.tile),
+                // // new PropertyTile(7, 2, Color.PINK, languageModel.tile),
+                // // new PropertyTile(8, 2, Color.PINK, languageModel.tile),
+                // new ChanceTile(9, languageModel.tile),
+                // // new PropertyTile(10, 2, Color.ORANGE, languageModel.tile),
+                // // new PropertyTile(11, 2, Color.ORANGE, languageModel.tile),
+                // new FreeParkingTile(12, languageModel.tile),
+                // // new PropertyTile(13, 3, Color.RED, languageModel.tile),
+                // // new PropertyTile(14, 3, Color.RED, languageModel.tile),
+                // new ChanceTile(15, languageModel.tile),
+                // // new PropertyTile(16, 3, Color.YELLOW, languageModel.tile),
+                // // new PropertyTile(17, 3, Color.YELLOW, languageModel.tile),
+                // new GoToJailTile(18, languageModel.tile),
+                // // new PropertyTile(19, 4, Color.GREEN, languageModel.tile),
+                // // new PropertyTile(20, 4, Color.GREEN, languageModel.tile),
+                // new ChanceTile(21, languageModel.tile),
+                // new PropertyTile(22, 4, Color.BLUE, languageModel.tile),
+                // new PropertyTile(23, 4, Color.BLUE, languageModel.tile)
         };
 
         // Create the chance arraylist
@@ -67,19 +98,12 @@ public class Game {
                 languageModel.chance[0].description));
         this.chances.add(new AbsoluteMovementChance(0, languageModel.chance[1].description));
         this.chances.add(new MovementChance(5, languageModel.chance[2].description));
-        // Orange tiles
-        this.chances.add(new FreeTileChance(new int[] { 10, 11 },
-                languageModel.chance[3].description));
-        this.chances.add(new MovementOrNewChance(1,
-                languageModel.chance[4].description));
+
         this.chances.add(new PlayerChance(GUI_Car.Type.TRACTOR,
                 languageModel.chance[5].description));
-        // Orange or green tiles
-        this.chances.add(new FreeTileChance(new int[] { 10, 11, 19, 20 },
-                languageModel.chance[7].description));
+
         // Light blue tiles
-        this.chances.add(new FreeTileChance(new int[] { 4, 5 },
-                languageModel.chance[8].description));
+
         this.chances.add(new OutOfJailChance(languageModel.chance[9].description));
         // The boardwalk
         this.chances.add(new AbsoluteMovementChance(23,
@@ -90,23 +114,10 @@ public class Game {
                 languageModel.chance[12].description));
         this.chances.add(new BirthdayChance(languageModel.chance[13].description));
         // Pink and blue tiles
-        this.chances.add(new FreeTileChance(new int[] { 7, 8, 22, 23 },
-                languageModel.chance[14].description));
-        this.chances.add(new PaymentChance(2, languageModel.chance[15].description));
-        // Red tiles
-        this.chances.add(new FreeTileChance(new int[] { 13, 14 },
-                languageModel.chance[16].description));
-        // The skate park
-        this.chances.add(new FreeTileChance(new int[] { 10 },
-                languageModel.chance[17].description));
-        // Light blue and red tiles
-        this.chances.add(new FreeTileChance(new int[] { 4, 5, 13, 14 },
-                languageModel.chance[18].description));
-        // Brown and yellow tiles
-        this.chances.add(new FreeTileChance(new int[] { 1, 2, 16, 17 },
-                languageModel.chance[19].description));
 
-        gui = new GUI(getFields());
+        this.chances.add(new PaymentChance(2, languageModel.chance[15].description));
+
+        gui = new GUI(getFields(), LIGHT_BLUE);
 
         prepareGame();
 
@@ -118,9 +129,6 @@ public class Game {
     private void prepareGame() {
         // Shuffle the chances
         Collections.shuffle(chances);
-
-        // Sort the players by age
-        Arrays.sort(players, Comparator.comparing(Player::getAge));
 
         // Create an array of the player names for the GUI message
         String[] names = new String[4];
@@ -200,7 +208,7 @@ public class Game {
         while (true) {
             try {
                 numberOfPlayers = scanner.nextInt();
-                if (numberOfPlayers >= 2 && numberOfPlayers <= 4) {
+                if (numberOfPlayers >= 3 && numberOfPlayers <= 6) {
                     break;
                 }
             } catch (Exception e) {
@@ -210,7 +218,7 @@ public class Game {
         }
 
         // Calculate starting balance
-        int balance = 20 - ((numberOfPlayers - 2) * 2);
+        int balance = 30000;
 
         ArrayList<GUI_Car.Type> validCarTypes = new ArrayList<GUI_Car.Type>(Arrays.asList(GUI_Car.Type.values()));
         Player[] players = new Player[numberOfPlayers];
@@ -224,20 +232,6 @@ public class Game {
                 try {
                     name = scanner.next();
                     if (name.length() > 0 || name.contains("\n")) {
-                        break;
-                    }
-                } catch (Exception e) {
-                    scanner.nextLine();
-                }
-                System.out.println(languageModel.game.configGetPlayers.invalid);
-            }
-
-            System.out.println(languageModel.game.configGetPlayers.age);
-            int age;
-            while (true) {
-                try {
-                    age = scanner.nextInt();
-                    if (age > 0 && age < 150) {
                         break;
                     }
                 } catch (Exception e) {
@@ -270,9 +264,9 @@ public class Game {
             }
 
             // Create the Player
-            players[playerId] = new Player(age, balance, playerId, name, carSelectType);
+            players[playerId] = new Player(balance, playerId, name, carSelectType);
             System.out
-                    .println(String.format(languageModel.game.configGetPlayers.validPlayer, name, age, carSelectType));
+                    .println(String.format(languageModel.game.configGetPlayers.validPlayer, name, carSelectType));
         }
         return players;
     }

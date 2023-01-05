@@ -1,12 +1,15 @@
-package org.example;
+package org.example.chances;
+
+import org.example.Player;
 
 import gui_main.GUI;
 
-public class MovementOrNewChance extends Chance {
+public class MovementChance extends Chance {
 
+    // up to
     private int movement;
 
-    public MovementOrNewChance(int movement, String description) {
+    public MovementChance(int movement, String description) {
         this.movement = movement;
         this.description = description;
     }
@@ -16,4 +19,5 @@ public class MovementOrNewChance extends Chance {
         gui.displayChanceCard(description);
         return true;
     }
+
 }

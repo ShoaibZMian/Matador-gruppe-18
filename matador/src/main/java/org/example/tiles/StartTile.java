@@ -1,5 +1,7 @@
-package org.example;
+package org.example.tiles;
 
+import org.example.Player;
+import org.example.chances.Chance;
 import org.example.models.LanguageModel;
 
 import gui_fields.GUI_Start;

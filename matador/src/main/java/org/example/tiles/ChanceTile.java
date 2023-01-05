@@ -1,8 +1,11 @@
-package org.example;
+package org.example.tiles;
 
 import java.awt.Color;
 import java.util.ArrayList;
 
+import org.example.Player;
+import org.example.chances.Chance;
+import org.example.chances.OutOfJailChance;
 import org.example.models.LanguageModel;
 
 import gui_fields.GUI_Chance;
