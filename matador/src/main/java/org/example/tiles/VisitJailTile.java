@@ -5,19 +5,17 @@ import java.util.ArrayList;
 
 import org.example.Player;
 import org.example.chances.Chance;
-import org.example.models.LanguageModel;
 
 import gui_fields.GUI_Jail;
 import gui_main.GUI;
 
 public class VisitJailTile extends Tile {
 
-    public VisitJailTile(int id, LanguageModel.Tile tileModel) {
+    public VisitJailTile(int id) {
         this.id = id;
-        this.color = Color.white;
-        this.guiField = new GUI_Jail("", tileModel.tileList[id].title, tileModel.tileList[id].subtext,
-                String.format("%s : %s ", tileModel.tileList[id].title, tileModel.tileList[id].subtext), this.color,
-                Color.BLACK);
+
+        this.guiField = new GUI_Jail("default", "I fængsel", "De fængsles", "I fængsel",
+                Color.WHITE, Color.BLACK);
     }
 
     @Override
