@@ -20,6 +20,7 @@ import org.example.models.LanguageModel;
 import org.example.tiles.ChanceTile;
 import org.example.tiles.FreeParkingTile;
 import org.example.tiles.GoToJailTile;
+import org.example.tiles.PaymentTile;
 import org.example.tiles.PropertyTile;
 import org.example.tiles.ShipTile;
 import org.example.tiles.StartTile;
@@ -32,8 +33,8 @@ import gui_fields.GUI_Field;
 import gui_main.GUI;
 
 public class Game {
-    private static Color LIGHT_BLUE = new Color(135, 206, 235);
-    private static Color BROWN = new Color(139, 69, 19);
+    private static final Color LIGHT_BLUE = new Color(135, 206, 235);
+    private static final Color BROWN = new Color(139, 69, 19);
 
     private Tile[] tiles;
     private GUI gui;
@@ -49,22 +50,72 @@ public class Game {
 
         // Create the tiles with chosen language
         this.tiles = new Tile[] {
-                new StartTile(languageModel.tile),
-                new ShipTile(0, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
-                new ShipTile(1, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
-                new ShipTile(2, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
-                new ShipTile(3, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
-                new ShipTile(4, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
-                new ShipTile(5, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
-                new ShipTile(6, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
-                new ShipTile(7, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
-                new ShipTile(8, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
-                new ShipTile(9, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
-                new ShipTile(10, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
-                new ShipTile(11, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
-                new ShipTile(12, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
-                new ShipTile(13, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 }),
-                new ShipTile(14, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8 })
+                new StartTile(),
+                new GoToJailTile(1),
+                new VisitJailTile(2),
+                new VisitJailTile(3),
+                new VisitJailTile(4),
+                new VisitJailTile(5),
+                new VisitJailTile(6),
+                new VisitJailTile(7),
+                new VisitJailTile(8),
+                new VisitJailTile(9),
+
+                // new ChanceTile(1),
+                // new ChanceTile(2),
+                // new ChanceTile(3),
+                // new ChanceTile(4),
+                // new ChanceTile(5),
+                // new ChanceTile(6),
+                // new ChanceTile(7),
+                // new PaymentTile(0, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
+                // 4000, 10),
+                // new PaymentTile(1, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
+                // 4000, 10),
+                // new PaymentTile(2, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
+                // 4000, 10),
+                // new PaymentTile(3, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
+                // 4000, 10),
+                // new PaymentTile(4, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
+                // 4000, 10),
+                // new PaymentTile(5, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
+                // 4000, 10),
+                // new PaymentTile(6, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
+                // 4000, 10),
+                // new PaymentTile(7, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
+                // 4000, 10),
+                // new PaymentTile(8, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
+                // 4000, 10),
+                // new ShipTile(0, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
+                // }),
+                // new ShipTile(1, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
+                // }),
+                // new ShipTile(2, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
+                // }),
+                // new ShipTile(3, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
+                // }),
+                // new ShipTile(4, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
+                // }),
+                // new ShipTile(5, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
+                // }),
+                // new ShipTile(6, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
+                // }),
+                // new ShipTile(7, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
+                // }),
+                // new ShipTile(8, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
+                // }),
+                // new ShipTile(9, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
+                // }),
+                // new ShipTile(10, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
+                // }),
+                // new ShipTile(11, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
+                // }),
+                // new ShipTile(12, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
+                // }),
+                // new ShipTile(13, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
+                // }),
+                // new ShipTile(14, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
+                // })
 
                 // new PropertyTile(1, 1, BROWN, languageModel.tile),
                 // // new PropertyTile(2, 1, BROWN, languageModel.tile),
