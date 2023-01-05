@@ -23,17 +23,18 @@ public class ChanceTile extends Tile {
     public boolean tileAction(Player player, Player[] players, ArrayList<Chance> chances, GUI gui) {
         // Get the "top" chance card and place it at the bottom of the "pile"
         Chance chance = chances.get(chances.size() - 1);
-        gui.setChanceCard(chance.getDescription());
 
         // Use the chance or save the get out of jail card
         boolean result = chance.chanceAction(player, players, gui);
-        if (chance.getClass() == OutOfJailChance.class) {
 
-            player.setOfJailChance((OutOfJailChance) chance);
+        // Don't add the get out of jail chance back to the pile immediately
+        if (chance.getClass() == OutOfJailChance.class) {
+            player.addGetOutOfJailChance((OutOfJailChance) chance);
         } else {
-            chances.remove(chances.size() - 1);
             chances.add(0, chance);
         }
+        // Remove the card from the pile
+        chances.remove(chances.size() - 1);
 
         return result;
     }
