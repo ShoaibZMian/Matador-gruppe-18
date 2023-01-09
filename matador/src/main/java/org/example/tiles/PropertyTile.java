@@ -19,6 +19,10 @@ public class PropertyTile extends Tile {
     protected String title;
     protected int price;
     protected int housePrice;
+    private int houses = 0;
+
+    protected int hotelPrice;
+
     protected int pawnValue;
     protected int rent;
     protected int[] rentPrices = new int[6];
@@ -28,7 +32,6 @@ public class PropertyTile extends Tile {
         this.id = id;
         this.title = title;
         this.color = color;
-
         this.price = price;
         this.housePrice = housePrice;
         this.pawnValue = price / 2;
@@ -37,6 +40,9 @@ public class PropertyTile extends Tile {
 
         this.guiField = new GUI_Street(title, Integer.toString(price), title, Integer.toString(this.rent), color,
                 Color.BLACK);
+    }
+    public int getHouses(){
+        return houses;
     }
 
     public int getPrice() {
@@ -49,6 +55,7 @@ public class PropertyTile extends Tile {
 
     // Handle houses and hotels, where a hotel is simply 5 houses in the logic
     public void setHouses(int houses) {
+        this.houses = houses;
 
         GUI_Street street = (GUI_Street) guiField;
 
