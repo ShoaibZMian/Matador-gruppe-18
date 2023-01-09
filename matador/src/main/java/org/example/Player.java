@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import org.example.chances.OutOfJailChance;
+import org.example.tiles.CompanyTile;
 import org.example.tiles.PropertyTile;
 import org.example.tiles.ShipTile;
 
@@ -19,8 +20,7 @@ public class Player extends GUI_Player {
     private int position = 0;
     private ArrayList<OutOfJailChance> outOfJailChances = new ArrayList<OutOfJailChance>();
     // For calculating CompanyTile rent
-    // private ArrayList<CompanyTile> companyTiles = new
-    // ArrayList<OutOfJailChance>();
+    private ArrayList<CompanyTile> companyTiles = new ArrayList<CompanyTile>();
 
     // For calculating ShipTile rent
     private ArrayList<ShipTile> shipTiles = new ArrayList<ShipTile>();
@@ -71,6 +71,18 @@ public class Player extends GUI_Player {
 
     public void removePropertyTile(PropertyTile propertyTile) {
         this.propertyTiles.remove(propertyTile);
+    }
+
+    public void addCompanyTile(CompanyTile companyTile) {
+        this.companyTiles.add(companyTile);
+    }
+
+    public ArrayList<CompanyTile> getCompanyTiles() {
+        return this.companyTiles;
+    }
+
+    public void removeCompanyTile(CompanyTile companyTile) {
+        this.companyTiles.remove(companyTile);
     }
 
     public RaffleCup getRaffleCup() {
