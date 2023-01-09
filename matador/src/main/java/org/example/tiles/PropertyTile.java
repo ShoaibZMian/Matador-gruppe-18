@@ -81,9 +81,12 @@ public class PropertyTile extends Tile {
     }
 
     public void buyAction(GUI_Ownable street, Player player) {
+        baseBuyAction(street, player);
+    }
+
+    protected void baseBuyAction(GUI_Ownable street, Player player) {
         player.setBalance(player.getBalance() - this.price);
         street.setOwnerName(player.getName());
-        player.addPropertyTile(this);
         setOwner(player);
     }
 
