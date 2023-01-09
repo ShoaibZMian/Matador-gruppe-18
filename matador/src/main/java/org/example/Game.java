@@ -35,35 +35,46 @@ public class Game {
     private ArrayList<Chance> chances;
     private LanguageModel languageModel;
 
+    public Game() {
+        Language language = new Language("en");
+        this.languageModel = language.getLanguageData();
+
+        this.players = configGetPlayers();
+        startGame();
+    }
+
     public Game(Player[] players, LanguageModel languageModel) {
         this.players = players;
         this.languageModel = languageModel;
 
-        // Create the tiles
+        startGame();
+    }
+
+    private void startGame() {
+        // Create the Tile array
         this.tiles = generateTiles();
 
-        //this.tiles = new Tile[40];
+        // this.tiles = new Tile[40];
 
-        //for (int index = 0; index < 40; index++) {
-        //    this.tiles[index]=new ChanceTile(index);
-        //this.tiles[index] = new CompanyTile(index, "Tuborg Squash", Color.RED, 3000,
-        //new int[] { 100, 200 });
-        //}
+        // for (int index = 0; index < 40; index++) {
+        // this.tiles[index]=new ChanceTile(index);
+        // this.tiles[index] = new CompanyTile(index, "Tuborg Squash", Color.RED, 3000,
+        // new int[] { 100, 200 });
+        // }
 
-        // Create the chance arraylist
+        // Create the chance ArrayList
         this.chances = generateChances();
-        //this.chances = new ArrayList<Chance>();
-        //this.chances.add(new PropertyPaymentChance(100,1000,"test"));
+        // this.chances = new ArrayList<Chance>();
+        // this.chances.add(new PropertyPaymentChance(100,1000,"test"));
 
         // Start the GUI
-        gui = new GUI(getFields(), Constants.LIGHT_BLUE);
+        this.gui = new GUI(getFields(), Constants.LIGHT_BLUE);
 
         prepareGame();
 
         gameLoop();
 
         checkWin();
-
     }
 
     private Tile[] generateTiles() {
@@ -168,27 +179,16 @@ public class Game {
         // Shuffle the chances
         Collections.shuffle(chances);
 
-        // Create an array of the player names for the GUI message
-        String[] names = new String[Constants.MAX_PLAYERS];
-        // Fill the names array with the player names or nothing.
-        for (int i = 0; i < names.length; i++) {
-            try {
-                names[i] = players[i].getName();
+        ArrayList<String> names = new ArrayList<String>();
 
-            } catch (Exception e) {
-                names[i] = "";
-            }
-        }
-
-        // Add the cars to the GUI
+        // Add the cars to the GUI and name for message
         for (Player player : players) {
             gui.addPlayer(player);
             updateGui(player);
+            names.add(player.getName());
         }
 
-        gui.getUserButtonPressed(String.format(languageModel.game.sortPlayers.message, names),
-                languageModel.game.sortPlayers.button);
-
+        gui.showMessage("Spillet går i gang! Rækkefølgen er: " + names);
     }
 
     public static LanguageModel configGetLanguageModel(Scanner scanner) {
@@ -239,70 +239,21 @@ public class Game {
         }
     }
 
-    public static Player[] configGetPlayers(Scanner scanner, LanguageModel languageModel) {
+    private static Player[] configGetPlayers() {
+        // Display blank GUI for player init
+        GUI gui = new GUI(new GUI_Field[] {}, Constants.LIGHT_BLUE);
 
-        System.out.println(languageModel.game.configGetPlayers.numberOfPlayers);
-        int numberOfPlayers;
-        while (true) {
-            try {
-                numberOfPlayers = scanner.nextInt();
-                if (numberOfPlayers >= 3 && numberOfPlayers <= 6) {
-                    break;
-                }
-            } catch (Exception e) {
-                scanner.nextLine();
-            }
-            System.out.println(languageModel.game.configGetPlayers.invalid);
-        }
-
-        ArrayList<GUI_Car.Type> validCarTypes = new ArrayList<GUI_Car.Type>(Arrays.asList(GUI_Car.Type.values()));
+        int numberOfPlayers = gui.getUserInteger("Indtast mængden af spillere (2-6).");
         Player[] players = new Player[numberOfPlayers];
-
-        for (int playerId = 0; playerId < numberOfPlayers; playerId++) {
-            System.out.println(languageModel.game.configGetPlayers.initial);
-
-            System.out.println(languageModel.game.configGetPlayers.name);
-            String name;
-            while (true) {
-                try {
-                    name = scanner.next();
-                    if (name.length() > 0 || name.contains("\n")) {
-                        break;
-                    }
-                } catch (Exception e) {
-                    scanner.nextLine();
-                }
-                System.out.println(languageModel.game.configGetPlayers.invalid);
-            }
-
-            System.out.println(languageModel.game.configGetPlayers.car);
-            int carSelect;
-            GUI_Car.Type carSelectType;
-            while (true) {
-                try {
-                    for (int carId = 0; carId < validCarTypes.size(); carId++) {
-                        System.out.println(String.format("%d : %s", carId, validCarTypes.get(carId)));
-                    }
-                    carSelect = scanner.nextInt();
-
-                    System.out.println(validCarTypes.size());
-                    // Remove from ArrayList if it has been chosen
-                    if (carSelect >= 0 && carSelect < validCarTypes.size() - 1) {
-                        carSelectType = validCarTypes.get(carSelect);
-                        validCarTypes.remove(carSelect);
-                        break;
-                    }
-                } catch (Exception e) {
-                    scanner.nextLine();
-                }
-                System.out.println(languageModel.game.configGetPlayers.invalid);
-            }
-
-            // Create the Player
-            players[playerId] = new Player(playerId, name, carSelectType);
-            System.out
-                    .println(String.format(languageModel.game.configGetPlayers.validPlayer, name, carSelectType));
+        String name;
+        // Get names for each player
+        for (int i = 0; i < numberOfPlayers; i++) {
+            name = gui.getUserString("Indtast spillernavn nummer " + Integer.toString(i + 1) + ":");
+            players[i] = new Player(i, name);
         }
+        // Close GUI and return generated players.
+        gui.close();
+
         return players;
     }
 
