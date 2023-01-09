@@ -19,23 +19,19 @@ public class PropertyTile extends Tile {
     protected String title;
     protected int price;
     protected int housePrice;
-    protected int hotelPrice;
     protected int pawnValue;
     protected int rent;
     protected int[] rentPrices = new int[6];
 
     public PropertyTile(
-            int id, String title, String subtext, Color color,
-            int price, int housePrice, int hotelPrice, int pawnValue,
-            int[] rentPrices) {
+            int id, String title, Color color, int price, int housePrice, int[] rentPrices) {
         this.id = id;
         this.title = title;
         this.color = color;
 
         this.price = price;
         this.housePrice = housePrice;
-        this.hotelPrice = hotelPrice;
-        this.pawnValue = pawnValue;
+        this.pawnValue = price / 2;
         this.rentPrices = rentPrices;
         this.rent = rentPrices[0];
 

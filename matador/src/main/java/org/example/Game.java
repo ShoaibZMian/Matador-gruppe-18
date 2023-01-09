@@ -34,6 +34,7 @@ import gui_main.GUI;
 
 public class Game {
     private static final Color LIGHT_BLUE = new Color(135, 206, 235);
+    private static final Color PURPLE = new Color(138, 43, 226);
     private static final Color BROWN = new Color(139, 69, 19);
     private static final int PASSED_START = 4000;
 
@@ -67,7 +68,53 @@ public class Game {
                 new VisitJailTile(10),
                 new PropertyTile(11, "Frederiksberg Allé", Color.YELLOW, 2800, 2000,
                         new int[] { 200, 1000, 3000, 9000, 12500, 15000 }),
-                new CompanyTile(12, "Helsingør - Helsingborg", Color.RED, 3000),
+                // TODO add CompanyTile 12
+                new PropertyTile(13, "Bülowsvej", Color.YELLOW, 2800, 2000,
+                        new int[] { 200, 1000, 3000, 9000, 12500, 15000 }),
+                new PropertyTile(14, "Gl. Kongevej", Color.YELLOW, 3200, 2000,
+                        new int[] { 250, 1250, 3750, 10000, 14000, 18000 }),
+                new ShipTile(15, "Mols-Linien", Color.RED, 4000, new int[] { 500, 1000, 2000, 4000 }),
+                new PropertyTile(16, "Bernstorffsvej", Color.GRAY, 3600, 2000,
+                        new int[] { 300, 1400, 4000, 11000, 15000, 19000 }),
+                new ChanceTile(17),
+                new PropertyTile(18, "Hellerupvej", Color.GRAY, 3600, 2000,
+                        new int[] { 300, 1400, 4000, 11000, 15000, 19000 }),
+                new PropertyTile(19, "Strandvejen", Color.GRAY, 4000, 2000,
+                        new int[] { 350, 1600, 4400, 12000, 16000, 20000 }),
+                new FreeParkingTile(20),
+                new PropertyTile(21, "Trianglen", Color.RED, 4400, 3000,
+                        new int[] { 350, 1800, 5000, 14000, 17500, 21000 }),
+                new ChanceTile(22),
+                new PropertyTile(23, "Østerbrogade", Color.RED, 4400, 3000,
+                        new int[] { 350, 1800, 5000, 14000, 17500, 21000 }),
+                new PropertyTile(24, "Grønningen", Color.RED, 4800, 3000,
+                        new int[] { 400, 2000, 6000, 15000, 18500, 22000 }),
+                new ShipTile(25, "Gedser - Rostock", Color.BLUE, 4000, new int[] { 500, 1000, 2000, 4000 }),
+                new PropertyTile(26, "Bredgade", Color.WHITE, 5200, 3000,
+                        new int[] { 450, 2200, 6600, 16000, 19500, 23000 }),
+                new PropertyTile(27, "Kgs. Nytorv", Color.WHITE, 5200, 3000,
+                        new int[] { 450, 2200, 6600, 16000, 19500, 23000 }),
+                // TODO add CompanyTile 28
+                new PropertyTile(29, "Østergade", Color.WHITE, 5600, 3000,
+                        new int[] { 500, 2400, 7200, 17000, 20500, 24000 }),
+                new ChanceTile(30),
+                new PropertyTile(31, "Amagertorv", Color.YELLOW, 6000, 4000,
+                        new int[] { 550, 2600, 7800, 18000, 22000, 25000 }),
+                new GoToJailTile(32),
+                new PropertyTile(33, "Vimmelskaftet", Color.YELLOW, 6000, 4000,
+                        new int[] { 550, 2600, 7800, 18000, 22000, 25000 }),
+                new ChanceTile(34),
+                new PropertyTile(35, "Nygade", Color.YELLOW, 6400, 4000,
+                        new int[] { 600, 3000, 9000, 20000, 24000, 28000 }),
+                new ShipTile(36, "Rødby - Puttgarden", Color.BLUE, 4000, new int[] { 500, 1000, 2000, 4000 }),
+                new ChanceTile(37),
+                new PropertyTile(38, "Frederiksberggade", PURPLE, 7000, 4000,
+                        new int[] { 700, 3500, 10000, 22000, 26000, 30000 }),
+                new PaymentTile(39, "Skat", "Ekstraordinær statsskat: Betal kr. 2000", 2000),
+                new PropertyTile(40, "Rådhuspladsen", PURPLE, 8000, 4000,
+                        new int[] { 1000, 4000, 12000, 28000, 34000, 40000 }),
+
+                // new CompanyTile(12, "Helsingør - Helsingborg", Color.RED, 3000),
                 // new GoToJailTile(1),
                 // new VisitJailTile(2),
                 // new VisitJailTile(3),
