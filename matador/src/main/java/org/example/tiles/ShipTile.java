@@ -9,9 +9,9 @@ import java.awt.Color;
 public class ShipTile extends PropertyTile {
 
     public ShipTile(
-            int id, String title, String subtext, Color color,
-            int price, int pawnValue, int[] rentPrices) {
-        super(id, title, subtext, color, price, 0, 0, pawnValue, rentPrices);
+            int id, String title, Color color,
+            int price, int[] rentPrices) {
+        super(id, title, color, price, 0, rentPrices);
 
         this.guiField = new GUI_Shipping("default", title, Integer.toString(price), title, Integer.toString(this.rent),
                 color, Color.BLACK);
