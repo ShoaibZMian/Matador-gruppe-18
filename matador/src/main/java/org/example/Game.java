@@ -159,14 +159,7 @@ public class Game {
         chances.add(new PaymentChance(1000,"De har solg nogle gamle møbler på auktion. Modtag 1000 kr af banken."));
         chances.add(new PaymentChance(200,"Værdien af egen avl fra nyttehaven udgør 200 som de modtager af banken"));
 
-        chances.add(new AbsoluteMovementChance(0, languageModel.chance[1].description));
-        chances.add(new MovementChance(5, languageModel.chance[2].description));
-        chances.add(new OutOfJailChance(languageModel.chance[9].description));
-        chances.add(new AbsoluteMovementChance(23,
-                languageModel.chance[10].description));
-        chances.add(new BirthdayChance(languageModel.chance[13].description));
 
-        chances.add(new PaymentChance(2, languageModel.chance[15].description));
 
         return chances;
     }
