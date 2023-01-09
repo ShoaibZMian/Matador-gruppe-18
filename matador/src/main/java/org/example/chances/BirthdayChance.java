@@ -5,10 +5,13 @@ import org.example.Player;
 import gui_main.GUI;
 
 public class BirthdayChance extends Chance {
-
-    public BirthdayChance(String description) {
+private int value;
+    public BirthdayChance(int value, String description) {
         this.description = description;
+        this.value = value;
     }
+
+
 
     @Override
     public boolean chanceAction(Player player, Player[] players, GUI gui) {
