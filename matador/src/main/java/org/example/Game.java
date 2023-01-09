@@ -135,6 +135,29 @@ public class Game {
 
     private ArrayList<Chance> generateChances() {
         ArrayList<Chance> chances = new ArrayList<Chance>();
+        chances.add(new PropertyPaymentChance(800,2300,"Ejendomsskatten er steget. Ekstraudgifterne er: 800 kr pr hus, 2300 kr pr hotel."));
+        chances.add(new PaymentChance(-1000,"De har kørt frem for “fuldt stop”, Betal 1000 kroner i bøde"));
+        chances.add(new PaymentChance(-300,"Betal for vognvask og smøring kr 300"));
+        chances.add(new PaymentChance(-200,"Betal kr 200 for levering af 2 kasser øl"));
+        chances.add(new PaymentChance(-3000,"Betal 3000 for reparation af deres vogn"));
+        chances.add(new PaymentChance(-3000,"Betal 3000 for reparation af deres vogn"));
+        chances.add(new PaymentChance(-1000,"De har købt 4 nye dæk til Deres vogn, betal kr 1000"));
+        chances.add(new PaymentChance(-200,"De har fået en parkeringsbøde, betal kr 200 i bøde"));
+        chances.add(new PaymentChance(-1000,"Betal deres bilforsikring, kr 1000"));
+        chances.add(new PaymentChance(-200,"De har været udenlands og købt for mange smøger, betal kr 200 i told."));
+        chances.add(new PaymentChance(-2000,"Tandlægeregning, betal kr 2000."));
+        chances.add(new PaymentChance(500,"De har vundet i klasselotteriet. Modtag 500 kr."));
+        chances.add(new PaymentChance(500,"De har vundet i klasselotteriet. Modtag 500 kr."));
+        chances.add(new PaymentChance(1000,"De modtager Deres aktieudbytte. Modtag kr 1000 af banken"));
+        chances.add(new PaymentChance(1000,"De modtager Deres aktieudbytte. Modtag kr 1000 af banken"));
+        chances.add(new PaymentChance(1000,"De modtager Deres aktieudbytte. Modtag kr 1000 af banken"));
+        chances.add(new PaymentChance(3000,"Kommunen har eftergivet et kvartals skat. Hæv i banken 3000 kr."));
+        chances.add(new PaymentChance(1000,"De have en række med elleve rigtige i tipning, modtag kl 1000"));
+        chances.add(new PaymentChance(1000,"Grundet dyrtiden har De fået gageforhøjelse, modtag kr 1000."));
+        chances.add(new PaymentChance(1000,"Deres præmieobligation er udtrykket. De modtager 1000 kr af banken."));
+        chances.add(new PaymentChance(1000,"Deres præmieobligation er udtrykket. De modtager 1000 kr af banken."));
+        chances.add(new PaymentChance(1000,"De har solg nogle gamle møbler på auktion. Modtag 1000 kr af banken."));
+        chances.add(new PaymentChance(200,"Værdien af egen avl fra nyttehaven udgør 200 som de modtager af banken"));
 
         chances.add(new AbsoluteMovementChance(0, languageModel.chance[1].description));
         chances.add(new MovementChance(5, languageModel.chance[2].description));
