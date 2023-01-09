@@ -1,6 +1,8 @@
 package org.example.tiles;
 
 import org.example.Player;
+
+import gui_fields.GUI_Ownable;
 import gui_fields.GUI_Shipping;
 import gui_main.GUI;
 
@@ -17,14 +19,22 @@ public class ShipTile extends PropertyTile {
                 color, Color.BLACK);
     }
 
+    @Override
+    public void buyAction(GUI_Ownable street, Player player) {
+        baseBuyAction(street, player);
+        player.addShipTile(this);
+    }
+
     // Update rent based on owners owned ShipTiles
     @Override
     public void PayRent(GUI gui, Player player, Player owner) {
-        // TODO Find rent
-        // TODO Check if the player has enough money or property value to pay rent
+        int ownedShips = owner.getShipTiles().size();
+        int rent = rentPrices[ownedShips - 1];
+
         gui.showMessage(
-                player.getName() + " landede på " + owner.getName() + "'s ejendom og skal betale en leje på "
-                        + this.rent);
+                player.getName() + " landede på " + owner.getName()
+                        + "'s rederi og skal betale en leje på "
+                        + Integer.toString(rent));
         player.setBalance(player.getBalance() - this.rent);
         owner.setBalance(owner.getBalance() + this.rent);
     }

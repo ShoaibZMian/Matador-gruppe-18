@@ -21,10 +21,8 @@ public class CompanyTile extends PropertyTile {
 
     @Override
     public void buyAction(GUI_Ownable street, Player player) {
-        player.setBalance(player.getBalance() - this.price);
-        street.setOwnerName(player.getName());
+        baseBuyAction(street, player);
         player.addCompanyTile(this);
-        setOwner(player);
     }
 
     // Update rent based on owners owned ShipTiles
