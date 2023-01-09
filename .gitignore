@@ -1,3 +1,4 @@
 matador/target/*
 .vscode
-.idea/*
+.idea
+matador.iml

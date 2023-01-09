@@ -15,13 +15,17 @@ public class PaymentTile extends Tile {
     private int percentage;
     private String description;
 
-    public PaymentTile(int id, String title, String subText, String description, int amount, int percentage) {
+    public PaymentTile(int id, String title, String description, int amount, int percentage) {
         this.id = id;
         this.amount = amount;
         this.percentage = percentage;
         this.description = description;
 
-        this.guiField = new GUI_Refuge("", title, subText, description, Color.WHITE, Color.BLACK);
+        this.guiField = new GUI_Refuge("", title, title, description, Color.WHITE, Color.BLACK);
+    }
+
+    public PaymentTile(int id, String title, String description, int amount) {
+        this(id, title, description, amount, 0);
     }
 
     @Override

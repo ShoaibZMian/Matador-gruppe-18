@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Matador-gruppe-18.iml" filepath="$PROJECT_DIR$/.idea/Matador-gruppe-18.iml" />
+      <module fileurl="file://$PROJECT_DIR$/matador/matador.iml" filepath="$PROJECT_DIR$/matador/matador.iml" />
     </modules>
   </component>
 </project>
