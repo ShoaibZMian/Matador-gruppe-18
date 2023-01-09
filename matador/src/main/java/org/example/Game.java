@@ -17,6 +17,7 @@ import org.example.chances.OutOfJailChance;
 import org.example.chances.PaymentChance;
 import org.example.models.LanguageModel;
 import org.example.tiles.ChanceTile;
+import org.example.tiles.CompanyTile;
 import org.example.tiles.FreeParkingTile;
 import org.example.tiles.GoToJailTile;
 import org.example.tiles.PaymentTile;
@@ -25,7 +26,6 @@ import org.example.tiles.ShipTile;
 import org.example.tiles.StartTile;
 import org.example.tiles.Tile;
 import org.example.tiles.VisitJailTile;
-import org.example.constants;
 
 import gui_fields.GUI_Car;
 import gui_fields.GUI_Field;
@@ -34,7 +34,7 @@ import gui_main.GUI;
 
 public class Game {
 
-    private Tile[] tiles = new Tile[constants.NUMBER_OF_FIELDS];
+    private Tile[] tiles = new Tile[Constants.NUMBER_OF_FIELDS];
     private GUI gui;
     private Player[] players;
     private ArrayList<Chance> chances;
@@ -45,20 +45,21 @@ public class Game {
         this.languageModel = languageModel;
 
         // Create the tiles
-        // this.tiles = generateTiles();
+        this.tiles = generateTiles();
 
-        this.tiles = new Tile[40];
+        // this.tiles = new Tile[40];
 
-        for (int index = 0; index < 40; index++) {
-            this.tiles[index] = new CompanyTile(index, "Tuborg Squash", Color.RED, 3000, new int[] { 100, 200 });
+        // for (int index = 0; index < 40; index++) {
+        // this.tiles[index] = new CompanyTile(index, "Tuborg Squash", Color.RED, 3000,
+        // new int[] { 100, 200 });
 
-        }
+        // }
 
         // Create the chance arraylist
         this.chances = generateChances();
 
         // Start the GUI
-        gui = new GUI(getFields(), constants.LIGHT_BLUE);
+        gui = new GUI(getFields(), Constants.LIGHT_BLUE);
 
         prepareGame();
 
@@ -117,21 +118,20 @@ public class Game {
                 new CompanyTile(28, "Coca Cola", Color.RED, 3000, new int[] { 100, 200 }),
                 new PropertyTile(29, "Østergade", Color.WHITE, 5600, 3000,
                         new int[] { 500, 2400, 7200, 17000, 20500, 24000 }),
-                new ChanceTile(30),
+                new GoToJailTile(30),
                 new PropertyTile(31, "Amagertorv", Color.YELLOW, 6000, 4000,
                         new int[] { 550, 2600, 7800, 18000, 22000, 25000 }),
-                new GoToJailTile(32),
-                new PropertyTile(33, "Vimmelskaftet", Color.YELLOW, 6000, 4000,
+                new PropertyTile(32, "Vimmelskaftet", Color.YELLOW, 6000, 4000,
                         new int[] { 550, 2600, 7800, 18000, 22000, 25000 }),
-                new ChanceTile(34),
-                new PropertyTile(35, "Nygade", Color.YELLOW, 6400, 4000,
+                new ChanceTile(33),
+                new PropertyTile(34, "Nygade", Color.YELLOW, 6400, 4000,
                         new int[] { 600, 3000, 9000, 20000, 24000, 28000 }),
                 new ShipTile(35, "Rødby - Puttgarden", Color.BLUE, 4000, new int[] { 500, 1000, 2000, 4000 }),
                 new ChanceTile(36),
-                new PropertyTile(37, "Frederiksberggade", constants.PURPLE, 7000, 4000,
+                new PropertyTile(37, "Frederiksberggade", Constants.PURPLE, 7000, 4000,
                         new int[] { 700, 3500, 10000, 22000, 26000, 30000 }),
                 new PaymentTile(38, "Skat", "Ekstraordinær statsskat: Betal kr. 2000", 2000),
-                new PropertyTile(39, "Rådhuspladsen", constants.PURPLE, 8000, 4000,
+                new PropertyTile(39, "Rådhuspladsen", Constants.PURPLE, 8000, 4000,
                         new int[] { 1000, 4000, 12000, 28000, 34000, 40000 }),
         };
     }
@@ -156,7 +156,7 @@ public class Game {
         Collections.shuffle(chances);
 
         // Create an array of the player names for the GUI message
-        String[] names = new String[constants.MAX_PLAYERS];
+        String[] names = new String[Constants.MAX_PLAYERS];
         // Fill the names array with the player names or nothing.
         for (int i = 0; i < names.length; i++) {
             try {
@@ -242,9 +242,6 @@ public class Game {
             System.out.println(languageModel.game.configGetPlayers.invalid);
         }
 
-        // Calculate starting balance
-        int balance = 30000;
-
         ArrayList<GUI_Car.Type> validCarTypes = new ArrayList<GUI_Car.Type>(Arrays.asList(GUI_Car.Type.values()));
         Player[] players = new Player[numberOfPlayers];
 
@@ -289,7 +286,7 @@ public class Game {
             }
 
             // Create the Player
-            players[playerId] = new Player(balance, playerId, name, carSelectType);
+            players[playerId] = new Player(playerId, name, carSelectType);
             System.out
                     .println(String.format(languageModel.game.configGetPlayers.validPlayer, name, carSelectType));
         }
@@ -341,7 +338,7 @@ public class Game {
 
                 // Add 2M$ if the player has landed or passed start
                 if (passedStart) {
-                    player.setBalance(player.getBalance() + constants.PASSED_START);
+                    player.setBalance(player.getBalance() + Constants.PASSED_START);
                     gui.showMessage(String.format(languageModel.tile.start, player.getName()));
 
                 }

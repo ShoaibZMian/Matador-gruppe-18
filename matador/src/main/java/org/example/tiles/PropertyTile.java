@@ -80,6 +80,13 @@ public class PropertyTile extends Tile {
         owner.setBalance(owner.getBalance() + this.rent);
     }
 
+    public void buyAction(GUI_Ownable street, Player player) {
+        player.setBalance(player.getBalance() - this.price);
+        street.setOwnerName(player.getName());
+        player.addPropertyTile(this);
+        setOwner(player);
+    }
+
     @Override
     public boolean tileAction(Player player, Player[] players, ArrayList<Chance> chances, GUI gui) {
 
@@ -110,9 +117,7 @@ public class PropertyTile extends Tile {
                     break;
 
                 case BUY:
-                    player.setBalance(player.getBalance() - this.price);
-                    street.setOwnerName(player.getName());
-                    setOwner(player);
+                    buyAction(street, player);
                     break;
             }
         } else {
