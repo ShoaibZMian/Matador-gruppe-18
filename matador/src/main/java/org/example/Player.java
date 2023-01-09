@@ -12,10 +12,7 @@ import gui_fields.GUI_Car;
 import gui_fields.GUI_Player;
 
 public class Player extends GUI_Player {
-
-    // Predefine colors for the players
-    private static Color[] colors = { Color.RED, Color.GREEN, Color.BLUE, Color.ORANGE, Color.PINK, Color.YELLOW };
-    private static final int NUMBER_OF_FIELDS = 40;
+    private static Color[] COLORS = { Color.RED, Color.GREEN, Color.BLUE, Color.ORANGE, Color.PINK, Color.YELLOW };
 
     private int position = 0;
     private ArrayList<OutOfJailChance> outOfJailChances = new ArrayList<OutOfJailChance>();
@@ -30,8 +27,9 @@ public class Player extends GUI_Player {
 
     private RaffleCup raffleCup = new RaffleCup();
 
-    public Player(int id, String name, GUI_Car.Type guiCarType) {
-        super(name, Constants.STARTING_BALANCE, new GUI_Car(colors[id], Color.WHITE, guiCarType, GUI_Car.Pattern.FILL));
+    public Player(int id, String name) {
+        super(name, Constants.STARTING_BALANCE,
+                new GUI_Car(COLORS[id], Color.WHITE, GUI_Car.Type.CAR, GUI_Car.Pattern.FILL));
 
     }
 
@@ -100,7 +98,7 @@ public class Player extends GUI_Player {
     public boolean movePosition(int dieValue) {
         // Advance the position and loop correctly
         int oldPosition = position;
-        position = (position + dieValue) % NUMBER_OF_FIELDS;
+        position = (position + dieValue) % Constants.NUMBER_OF_FIELDS;
 
         // Check if the start field has been passed
         if (position < oldPosition) {
