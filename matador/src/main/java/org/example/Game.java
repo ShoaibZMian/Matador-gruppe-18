@@ -48,8 +48,24 @@ public class Game {
         this.players = players;
         this.languageModel = languageModel;
 
-        // Create the tiles with chosen language
-        this.tiles = new Tile[] {
+        // Create the tiles
+        this.tiles = generateTiles();
+
+        // Create the chance arraylist
+        this.chances = generateChances();
+
+        // Start the GUI
+        gui = new GUI(getFields(), LIGHT_BLUE);
+
+        prepareGame();
+
+        gameLoop();
+
+        checkWin();
+    }
+
+    private Tile[] generateTiles() {
+        return new Tile[] {
                 new StartTile(),
                 new PropertyTile(1, "Rødovrevej", Color.BLUE, 1200, 1000,
                         new int[] { 50, 250, 750, 2250, 4000, 6000 }),
@@ -113,125 +129,30 @@ public class Game {
                 new PaymentTile(39, "Skat", "Ekstraordinær statsskat: Betal kr. 2000", 2000),
                 new PropertyTile(40, "Rådhuspladsen", PURPLE, 8000, 4000,
                         new int[] { 1000, 4000, 12000, 28000, 34000, 40000 }),
-
-                // new CompanyTile(12, "Helsingør - Helsingborg", Color.RED, 3000),
-                // new GoToJailTile(1),
-                // new VisitJailTile(2),
-                // new VisitJailTile(3),
-                // new VisitJailTile(4),
-                // new VisitJailTile(5),
-                // new VisitJailTile(6),
-                // new VisitJailTile(7),
-                // new VisitJailTile(8),
-                // new VisitJailTile(9),
-
-                // new PaymentTile(0, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
-                // 4000, 10),
-                // new PaymentTile(1, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
-                // 4000, 10),
-                // new PaymentTile(2, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
-                // 4000, 10),
-                // new PaymentTile(3, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
-                // 4000, 10),
-                // new PaymentTile(4, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
-                // 4000, 10),
-                // new PaymentTile(5, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
-                // 4000, 10),
-                // new PaymentTile(6, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
-                // 4000, 10),
-                // new PaymentTile(7, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
-                // 4000, 10),
-                // new PaymentTile(8, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
-                // 4000, 10),
-                // new ShipTile(0, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
-                // }),
-                // new ShipTile(1, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
-                // }),
-                // new ShipTile(2, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
-                // }),
-                // new ShipTile(3, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
-                // }),
-                // new ShipTile(4, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
-                // }),
-                // new ShipTile(5, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
-                // }),
-                // new ShipTile(6, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
-                // }),
-                // new ShipTile(7, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
-                // }),
-                // new ShipTile(8, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
-                // }),
-                // new ShipTile(9, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
-                // }),
-                // new ShipTile(10, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
-                // }),
-                // new ShipTile(11, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
-                // }),
-                // new ShipTile(12, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
-                // }),
-                // new ShipTile(13, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
-                // }),
-                // new ShipTile(14, "ShipTest", "SubText", BROWN, 1, 2, new int[] { 5, 6, 7, 8
-                // })
-
-                // new PropertyTile(1, 1, BROWN, languageModel.tile),
-                // // new PropertyTile(2, 1, BROWN, languageModel.tile),
-                // new ChanceTile(3, languageModel.tile),
-                // // new PropertyTile(4, 1, LIGHT_BLUE, languageModel.tile),
-                // // new PropertyTile(5, 1, LIGHT_BLUE, languageModel.tile),
-                // new VisitJailTile(6, languageModel.tile),
-                // // new PropertyTile(7, 2, Color.PINK, languageModel.tile),
-                // // new PropertyTile(8, 2, Color.PINK, languageModel.tile),
-                // new ChanceTile(9, languageModel.tile),
-                // // new PropertyTile(10, 2, Color.ORANGE, languageModel.tile),
-                // // new PropertyTile(11, 2, Color.ORANGE, languageModel.tile),
-                // new FreeParkingTile(12, languageModel.tile),
-                // // new PropertyTile(13, 3, Color.RED, languageModel.tile),
-                // // new PropertyTile(14, 3, Color.RED, languageModel.tile),
-                // new ChanceTile(15, languageModel.tile),
-                // // new PropertyTile(16, 3, Color.YELLOW, languageModel.tile),
-                // // new PropertyTile(17, 3, Color.YELLOW, languageModel.tile),
-                // new GoToJailTile(18, languageModel.tile),
-                // // new PropertyTile(19, 4, Color.GREEN, languageModel.tile),
-                // // new PropertyTile(20, 4, Color.GREEN, languageModel.tile),
-                // new ChanceTile(21, languageModel.tile),
-                // new PropertyTile(22, 4, Color.BLUE, languageModel.tile),
-                // new PropertyTile(23, 4, Color.BLUE, languageModel.tile)
         };
+    }
 
-        // Create the chance arraylist
-        this.chances = new ArrayList<Chance>();
+    private ArrayList<Chance> generateChances() {
+        ArrayList<Chance> chances = new ArrayList<Chance>();
 
-        this.chances.add(new PlayerChance(GUI_Car.Type.CAR,
+        chances.add(new PlayerChance(GUI_Car.Type.CAR,
                 languageModel.chance[0].description));
-        this.chances.add(new AbsoluteMovementChance(0, languageModel.chance[1].description));
-        this.chances.add(new MovementChance(5, languageModel.chance[2].description));
-
-        this.chances.add(new PlayerChance(GUI_Car.Type.TRACTOR,
+        chances.add(new AbsoluteMovementChance(0, languageModel.chance[1].description));
+        chances.add(new MovementChance(5, languageModel.chance[2].description));
+        chances.add(new PlayerChance(GUI_Car.Type.TRACTOR,
                 languageModel.chance[5].description));
-
-        // Light blue tiles
-
-        this.chances.add(new OutOfJailChance(languageModel.chance[9].description));
-        // The boardwalk
-        this.chances.add(new AbsoluteMovementChance(23,
+        chances.add(new OutOfJailChance(languageModel.chance[9].description));
+        chances.add(new AbsoluteMovementChance(23,
                 languageModel.chance[10].description));
-        this.chances.add(new PlayerChance(GUI_Car.Type.UFO,
+        chances.add(new PlayerChance(GUI_Car.Type.UFO,
                 languageModel.chance[11].description));
-        this.chances.add(new PlayerChance(GUI_Car.Type.RACECAR,
+        chances.add(new PlayerChance(GUI_Car.Type.RACECAR,
                 languageModel.chance[12].description));
-        this.chances.add(new BirthdayChance(languageModel.chance[13].description));
-        // Pink and blue tiles
+        chances.add(new BirthdayChance(languageModel.chance[13].description));
 
-        this.chances.add(new PaymentChance(2, languageModel.chance[15].description));
+        chances.add(new PaymentChance(2, languageModel.chance[15].description));
 
-        gui = new GUI(getFields(), LIGHT_BLUE);
-
-        prepareGame();
-
-        gameLoop();
-
-        checkWin();
+        return chances;
     }
 
     private void prepareGame() {
