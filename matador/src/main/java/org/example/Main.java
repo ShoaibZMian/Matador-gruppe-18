@@ -11,7 +11,7 @@ import java.util.List;
 public class Main {
 
         public static void main(String[] args) throws FileNotFoundException {
-
+                // new Game();
                 // Scanner scanner = new Scanner(System.in);
 
                 // LanguageModel languageModel = Game.configGetLanguageModel(scanner);
@@ -23,12 +23,12 @@ public class Main {
                 LanguageModel languageModel = language.getLanguageData();
 
                 Player[] players = {
-                                new Player(0, "Markus", GUI_Car.Type.CAR),
-                                new Player(1, "Safi", GUI_Car.Type.CAR),
-                                new Player(2, "Marc", GUI_Car.Type.CAR),
-                                new Player(3, "Josef", GUI_Car.Type.CAR),
-                                new Player(4, "Shoaib", GUI_Car.Type.CAR),
-                                new Player(5, "Josef3", GUI_Car.Type.CAR)
+                                new Player(0, "Markus"),
+                                new Player(1, "Safi"),
+                                new Player(2, "Marc"),
+                                new Player(3, "Josef"),
+                                new Player(4, "Shoaib"),
+                                new Player(5, "Josef3")
                 };
                 List<Player> playerList = Arrays.asList(players);
                 Collections.shuffle(playerList);
