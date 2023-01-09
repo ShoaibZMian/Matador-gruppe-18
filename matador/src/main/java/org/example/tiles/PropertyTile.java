@@ -23,22 +23,18 @@ public class PropertyTile extends Tile {
 
     protected int hotelPrice;
 
-
     protected int pawnValue;
     protected int rent;
     protected int[] rentPrices = new int[6];
 
     public PropertyTile(
-            int id, String title, String subtext, Color color,
-            int price, int housePrice, int hotelPrice, int pawnValue,
-            int[] rentPrices) {
+            int id, String title, Color color, int price, int housePrice, int[] rentPrices) {
         this.id = id;
         this.title = title;
         this.color = color;
         this.price = price;
         this.housePrice = housePrice;
-        this.hotelPrice = hotelPrice;
-        this.pawnValue = pawnValue;
+        this.pawnValue = price / 2;
         this.rentPrices = rentPrices;
         this.rent = rentPrices[0];
 
@@ -91,6 +87,16 @@ public class PropertyTile extends Tile {
         owner.setBalance(owner.getBalance() + this.rent);
     }
 
+    public void buyAction(GUI_Ownable street, Player player) {
+        baseBuyAction(street, player);
+    }
+
+    protected void baseBuyAction(GUI_Ownable street, Player player) {
+        player.setBalance(player.getBalance() - this.price);
+        street.setOwnerName(player.getName());
+        setOwner(player);
+    }
+
     @Override
     public boolean tileAction(Player player, Player[] players, ArrayList<Chance> chances, GUI gui) {
 
@@ -121,9 +127,7 @@ public class PropertyTile extends Tile {
                     break;
 
                 case BUY:
-                    player.setBalance(player.getBalance() - this.price);
-                    street.setOwnerName(player.getName());
-                    setOwner(player);
+                    buyAction(street, player);
                     break;
             }
         } else {
