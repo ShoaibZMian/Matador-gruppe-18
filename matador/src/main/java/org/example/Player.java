@@ -1,14 +1,13 @@
 package org.example;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
+import gui_fields.GUI_Car;
+import gui_fields.GUI_Player;
 import org.example.chances.OutOfJailChance;
 import org.example.tiles.PropertyTile;
 import org.example.tiles.ShipTile;
 
-import gui_fields.GUI_Car;
-import gui_fields.GUI_Player;
+import java.awt.*;
+import java.util.ArrayList;
 
 public class Player extends GUI_Player {
 

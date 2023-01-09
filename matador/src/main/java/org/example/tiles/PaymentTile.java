@@ -15,7 +15,7 @@ public class PaymentTile extends Tile {
     private int percentage;
     private String description;
 
-    public PaymentTile(int id, String title, String subText, String description, int amount, int percentage) {
+    public PaymentTile(int id, String title, String subText, int amount, int percentage) {
         this.id = id;
         this.amount = amount;
         this.percentage = percentage;

@@ -1,36 +1,15 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Scanner;
-
-import java.awt.Color;
-import java.io.File;
-
-import org.example.chances.AbsoluteMovementChance;
-import org.example.chances.BirthdayChance;
-import org.example.chances.Chance;
-import org.example.chances.MovementChance;
-import org.example.chances.OutOfJailChance;
-import org.example.chances.PaymentChance;
-import org.example.chances.PlayerChance;
-import org.example.models.LanguageModel;
-import org.example.tiles.ChanceTile;
-import org.example.tiles.FreeParkingTile;
-import org.example.tiles.GoToJailTile;
-import org.example.tiles.PaymentTile;
-import org.example.tiles.PropertyTile;
-import org.example.tiles.ShipTile;
-import org.example.tiles.StartTile;
-import org.example.tiles.Tile;
-import org.example.tiles.VisitJailTile;
-
 import gui_fields.GUI_Car;
 import gui_fields.GUI_Field;
-
 import gui_main.GUI;
+import org.example.chances.*;
+import org.example.models.LanguageModel;
+import org.example.tiles.*;
+
+import java.awt.*;
+import java.io.File;
+import java.util.*;
 
 public class Game {
     private static final Color LIGHT_BLUE = new Color(135, 206, 235);
@@ -50,24 +29,19 @@ public class Game {
         // Create the tiles with chosen language
         this.tiles = new Tile[] {
                 new StartTile(),
-                new PropertyTile(1, "Rødovrevej", Color.BLUE, 1200, 1000,
-                        new int[] { 50, 250, 750, 2250, 4000, 6000 }),
+                new PropertyTile(1, "Rødovrevej", Color.BLUE, 1200, 1000, new int[] { 50, 250, 750, 2250, 4000, 6000 }),
                 new ChanceTile(2),
-                new PropertyTile(3, "Hvidovrevej", Color.BLUE, 1200, 1000,
-                        new int[] { 50, 250, 400, 750, 2250, 6000 }),
+                new PropertyTile(3, "Hvidovrevej", Color.BLUE, 1200, 1000, new int[] { 50, 250, 400, 750, 2250, 6000 }),
                 new PaymentTile(4, "Skat", "Betal indkomstskat: 10% eller kr. 4000", 4000, 10),
                 new ShipTile(5, "Helsingør - Helsingborg", Color.BLUE, 4000, new int[] { 500, 1000, 2000, 4000 }),
-                new PropertyTile(6, "Roskildevej", Color.ORANGE, 2000, 1000,
-                        new int[] { 100, 600, 1800, 5400, 8000, 11000 }),
+                new PropertyTile(6, "Roskildevej", Color.ORANGE, 2000, 1000, new int[] { 100, 600, 1800, 5400, 8000, 11000 }),
                 new ChanceTile(7),
-                new PropertyTile(8, "Valby Langgade", Color.ORANGE, 2000, 1000,
-                        new int[] { 100, 600, 1800, 5400, 8000, 11000 }),
-                new PropertyTile(9, "Allégade", Color.ORANGE, 2400, 1000,
-                        new int[] { 150, 800, 2000, 6000, 9000, 12000 }),
+                new PropertyTile(8, "Valby Langgade", Color.ORANGE, 2000, 1000, new int[]{100, 600, 1800, 5400, 8000, 11000}),
+
+                new PropertyTile(9, "Allégade", Color.ORANGE, 2400, 1000, new int[] { 150, 800, 2000, 6000, 9000, 12000 }),
                 new VisitJailTile(10),
-                new PropertyTile(11, "Frederiksberg Allé", Color.YELLOW, 2800, 2000,
-                        new int[] { 200, 1000, 3000, 9000, 12500, 15000 }),
-                new CompanyTile(12, "Helsingør - Helsingborg", Color.RED, 3000),
+                new PropertyTile(11, "Frederiksberg Allé", Color.YELLOW, 2800, 2000, new int[] { 200, 1000, 3000, 9000, 12500, 15000 }),
+                new CompanyTile(12, "Helsingør - Helsingborg", Color.RED, 3000, 1500)
                 // new GoToJailTile(1),
                 // new VisitJailTile(2),
                 // new VisitJailTile(3),

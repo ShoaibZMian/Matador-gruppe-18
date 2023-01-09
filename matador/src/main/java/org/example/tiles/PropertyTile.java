@@ -1,13 +1,13 @@
 package org.example.tiles;
 
-import org.example.Player;
-import org.example.chances.Chance;
-
 import gui_fields.GUI_Ownable;
 import gui_fields.GUI_Street;
 import gui_main.GUI;
+import org.example.Player;
+import org.example.RaffleCup;
+import org.example.chances.Chance;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class PropertyTile extends Tile {
@@ -25,9 +25,9 @@ public class PropertyTile extends Tile {
     protected int[] rentPrices = new int[6];
 
     public PropertyTile(
-            int id, String title, String subtext, Color color,
-            int price, int housePrice, int hotelPrice, int pawnValue,
-            int[] rentPrices) {
+            int id, String title, Color color,
+            int price, int housePrice,
+            int[] rentPrices ) {
         this.id = id;
         this.title = title;
         this.color = color;
@@ -129,5 +129,10 @@ public class PropertyTile extends Tile {
             }
         }
         return true;
+    }
+
+    // Update rent based on owners owned ShipTiles
+    public void PayRent(GUI gui, Player player, Player owner, RaffleCup raffleCup) {
+
     }
 }
