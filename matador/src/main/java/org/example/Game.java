@@ -35,39 +35,49 @@ import gui_main.GUI;
 public class Game {
     private static final Color LIGHT_BLUE = new Color(135, 206, 235);
     private static final Color BROWN = new Color(139, 69, 19);
+    private static final int PASSED_START = 4000;
 
     private Tile[] tiles;
     private GUI gui;
     private Player[] players;
     private ArrayList<Chance> chances;
-    private Dice die;
     private LanguageModel languageModel;
 
     public Game(Player[] players, LanguageModel languageModel) {
         this.players = players;
-        this.die = new Dice(6);
         this.languageModel = languageModel;
 
         // Create the tiles with chosen language
         this.tiles = new Tile[] {
                 new StartTile(),
-                new GoToJailTile(1),
-                new VisitJailTile(2),
-                new VisitJailTile(3),
-                new VisitJailTile(4),
-                new VisitJailTile(5),
-                new VisitJailTile(6),
-                new VisitJailTile(7),
-                new VisitJailTile(8),
-                new VisitJailTile(9),
+                new PropertyTile(1, "Rødovrevej", Color.BLUE, 1200, 1000,
+                        new int[] { 50, 250, 750, 2250, 4000, 6000 }),
+                new ChanceTile(2),
+                new PropertyTile(3, "Hvidovrevej", Color.BLUE, 1200, 1000,
+                        new int[] { 50, 250, 400, 750, 2250, 6000 }),
+                new PaymentTile(4, "Skat", "Betal indkomstskat: 10% eller kr. 4000", 4000, 10),
+                new ShipTile(5, "Helsingør - Helsingborg", Color.BLUE, 4000, new int[] { 500, 1000, 2000, 4000 }),
+                new PropertyTile(6, "Roskildevej", Color.ORANGE, 2000, 1000,
+                        new int[] { 100, 600, 1800, 5400, 8000, 11000 }),
+                new ChanceTile(7),
+                new PropertyTile(8, "Valby Langgade", Color.ORANGE, 2000, 1000,
+                        new int[] { 100, 600, 1800, 5400, 8000, 11000 }),
+                new PropertyTile(9, "Allégade", Color.ORANGE, 2400, 1000,
+                        new int[] { 150, 800, 2000, 6000, 9000, 12000 }),
+                new VisitJailTile(10),
+                new PropertyTile(11, "Frederiksberg Allé", Color.YELLOW, 2800, 2000,
+                        new int[] { 200, 1000, 3000, 9000, 12500, 15000 }),
+                new CompanyTile(12, "Helsingør - Helsingborg", Color.RED, 3000),
+                // new GoToJailTile(1),
+                // new VisitJailTile(2),
+                // new VisitJailTile(3),
+                // new VisitJailTile(4),
+                // new VisitJailTile(5),
+                // new VisitJailTile(6),
+                // new VisitJailTile(7),
+                // new VisitJailTile(8),
+                // new VisitJailTile(9),
 
-                // new ChanceTile(1),
-                // new ChanceTile(2),
-                // new ChanceTile(3),
-                // new ChanceTile(4),
-                // new ChanceTile(5),
-                // new ChanceTile(6),
-                // new ChanceTile(7),
                 // new PaymentTile(0, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
                 // 4000, 10),
                 // new PaymentTile(1, "Skat", "Skat", "Betal indkomstskat: 10% eller kr. 4000",
@@ -340,8 +350,9 @@ public class Game {
         // Remove last position and update player position
         player.getCar().setPosition(fields[player.getPosition()]);
 
-        // Update die
-        gui.setDie(die.getValue());
+        // Update dice
+        int[] diceValues = player.getRaffleCup().getValues();
+        gui.setDice(diceValues[0], diceValues[1]);
 
     }
 
@@ -349,21 +360,24 @@ public class Game {
         boolean passedStart = false;
         while (true) {
             for (Player player : players) {
+                RaffleCup raffleCup = player.getRaffleCup();
+
                 // Show the players turn (Wait for user input)
                 gui.showMessage(String.format(languageModel.game.gameLoop.playerTurn, player.getName()));
 
                 // Roll dice and move spaces (Wait for user input)
                 gui.getUserButtonPressed(languageModel.game.gameLoop.rollDie.message,
                         languageModel.game.gameLoop.rollDie.button);
-                die.rollDice();
+
+                raffleCup.rollCup();
 
                 // Move spaces.
-                passedStart = player.movePosition(die.getValue());
+                passedStart = player.movePosition(raffleCup.getValue());
                 updateGui(player);
 
                 // Add 2M$ if the player has landed or passed start
                 if (passedStart) {
-                    player.setBalance(player.getBalance() + 2);
+                    player.setBalance(player.getBalance() + PASSED_START);
                     gui.showMessage(String.format(languageModel.tile.start, player.getName()));
 
                 }
