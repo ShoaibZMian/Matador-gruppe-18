@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Scanner;
 
 import java.awt.Color;
@@ -22,7 +23,6 @@ import org.example.tiles.StartTile;
 import org.example.tiles.Tile;
 import org.example.tiles.VisitJailTile;
 
-import gui_fields.GUI_Car;
 import gui_fields.GUI_Field;
 
 import gui_main.GUI;
@@ -51,6 +51,12 @@ public class Game {
     }
 
     private void startGame() {
+
+        // Shuffle the player order
+        List<Player> playerList = Arrays.asList(this.players);
+        Collections.shuffle(playerList);
+        playerList.toArray(this.players);
+
         // Create the Tile array
         this.tiles = generateTiles();
 

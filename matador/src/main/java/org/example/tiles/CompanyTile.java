@@ -28,9 +28,6 @@ public class CompanyTile extends PropertyTile {
     // Update rent based on owners owned ShipTiles
     @Override
     public void PayRent(GUI gui, Player player, Player owner) {
-        // TODO Find rent
-        // TODO Check if the player has enough money or property value to pay rent
-
         int ownedCompanies = owner.getCompanyTiles().size();
         int rent = rentPrices[ownedCompanies - 1] * player.getRaffleCup().getValue();
 

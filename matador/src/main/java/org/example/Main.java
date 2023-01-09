@@ -1,12 +1,8 @@
 package org.example;
 
-import gui_fields.GUI_Car;
 import org.example.models.LanguageModel;
 
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class Main {
 
@@ -30,9 +26,6 @@ public class Main {
                                 new Player(4, "Shoaib"),
                                 new Player(5, "Josef3")
                 };
-                List<Player> playerList = Arrays.asList(players);
-                Collections.shuffle(playerList);
-                playerList.toArray(players);
 
                 new Game(players, languageModel);
         }
