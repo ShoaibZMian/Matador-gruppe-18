@@ -15,7 +15,6 @@ import org.example.chances.Chance;
 import org.example.chances.MovementChance;
 import org.example.chances.OutOfJailChance;
 import org.example.chances.PaymentChance;
-import org.example.chances.PlayerChance;
 import org.example.models.LanguageModel;
 import org.example.tiles.ChanceTile;
 import org.example.tiles.FreeParkingTile;
@@ -35,8 +34,9 @@ import gui_main.GUI;
 public class Game {
     private static final Color LIGHT_BLUE = new Color(135, 206, 235);
     private static final Color PURPLE = new Color(138, 43, 226);
-    private static final Color BROWN = new Color(139, 69, 19);
     private static final int PASSED_START = 4000;
+    private static final int MAX_PLAYERS = 6;
+    private static final int MIN_PLAYERS = 2;
 
     private Tile[] tiles;
     private GUI gui;
@@ -135,19 +135,11 @@ public class Game {
     private ArrayList<Chance> generateChances() {
         ArrayList<Chance> chances = new ArrayList<Chance>();
 
-        chances.add(new PlayerChance(GUI_Car.Type.CAR,
-                languageModel.chance[0].description));
         chances.add(new AbsoluteMovementChance(0, languageModel.chance[1].description));
         chances.add(new MovementChance(5, languageModel.chance[2].description));
-        chances.add(new PlayerChance(GUI_Car.Type.TRACTOR,
-                languageModel.chance[5].description));
         chances.add(new OutOfJailChance(languageModel.chance[9].description));
         chances.add(new AbsoluteMovementChance(23,
                 languageModel.chance[10].description));
-        chances.add(new PlayerChance(GUI_Car.Type.UFO,
-                languageModel.chance[11].description));
-        chances.add(new PlayerChance(GUI_Car.Type.RACECAR,
-                languageModel.chance[12].description));
         chances.add(new BirthdayChance(languageModel.chance[13].description));
 
         chances.add(new PaymentChance(2, languageModel.chance[15].description));
@@ -160,7 +152,7 @@ public class Game {
         Collections.shuffle(chances);
 
         // Create an array of the player names for the GUI message
-        String[] names = new String[4];
+        String[] names = new String[MAX_PLAYERS];
         // Fill the names array with the player names or nothing.
         for (int i = 0; i < names.length; i++) {
             try {
