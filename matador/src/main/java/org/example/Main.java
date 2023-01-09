@@ -1,17 +1,17 @@
 package org.example;
 
-import java.io.FileNotFoundException;
-
-import java.util.Scanner;
-
+import gui_fields.GUI_Car;
 import org.example.models.LanguageModel;
 
-import gui_fields.GUI_Car;
+import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class Main {
 
         public static void main(String[] args) throws FileNotFoundException {
-
+                // new Game();
                 // Scanner scanner = new Scanner(System.in);
 
                 // LanguageModel languageModel = Game.configGetLanguageModel(scanner);
@@ -23,13 +23,17 @@ public class Main {
                 LanguageModel languageModel = language.getLanguageData();
 
                 Player[] players = {
-                                new Player(20, 0, "Markus", GUI_Car.Type.CAR),
-                                new Player(20, 1, "Safi", GUI_Car.Type.RACECAR),
-                                new Player(20, 2, "Marc", GUI_Car.Type.TRACTOR),
-                                new Player(20, 3, "Josef", GUI_Car.Type.UFO)
+                                new Player(0, "Markus"),
+                                new Player(1, "Safi"),
+                                new Player(2, "Marc"),
+                                new Player(3, "Josef"),
+                                new Player(4, "Shoaib"),
+                                new Player(5, "Josef3")
                 };
+                List<Player> playerList = Arrays.asList(players);
+                Collections.shuffle(playerList);
+                playerList.toArray(players);
 
                 new Game(players, languageModel);
         }
-
 }

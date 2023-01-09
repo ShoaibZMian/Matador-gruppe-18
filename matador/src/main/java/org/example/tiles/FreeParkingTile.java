@@ -19,7 +19,7 @@ public class FreeParkingTile extends Tile {
         this.title = "Parkering";
         this.description = "AcceptCard. Gør noget ved dine drømme.";
 
-        this.guiField = new GUI_Refuge("", this.title, this.title, this.description, Color.WHITE, Color.BLACK);
+        this.guiField = new GUI_Refuge("default", this.title, this.title, this.description, Color.WHITE, Color.BLACK);
     }
 
     @Override

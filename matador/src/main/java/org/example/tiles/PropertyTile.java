@@ -19,28 +19,30 @@ public class PropertyTile extends Tile {
     protected String title;
     protected int price;
     protected int housePrice;
+    private int houses = 0;
+
     protected int hotelPrice;
+
     protected int pawnValue;
     protected int rent;
     protected int[] rentPrices = new int[6];
 
     public PropertyTile(
-            int id, String title, String subtext, Color color,
-            int price, int housePrice, int hotelPrice, int pawnValue,
-            int[] rentPrices) {
+            int id, String title, Color color, int price, int housePrice, int[] rentPrices) {
         this.id = id;
         this.title = title;
         this.color = color;
-
         this.price = price;
         this.housePrice = housePrice;
-        this.hotelPrice = hotelPrice;
-        this.pawnValue = pawnValue;
+        this.pawnValue = price / 2;
         this.rentPrices = rentPrices;
         this.rent = rentPrices[0];
 
         this.guiField = new GUI_Street(title, Integer.toString(price), title, Integer.toString(this.rent), color,
                 Color.BLACK);
+    }
+    public int getHouses(){
+        return houses;
     }
 
     public int getPrice() {
@@ -53,6 +55,7 @@ public class PropertyTile extends Tile {
 
     // Handle houses and hotels, where a hotel is simply 5 houses in the logic
     public void setHouses(int houses) {
+        this.houses = houses;
 
         GUI_Street street = (GUI_Street) guiField;
 
@@ -82,6 +85,16 @@ public class PropertyTile extends Tile {
                         + this.rent);
         player.setBalance(player.getBalance() - this.rent);
         owner.setBalance(owner.getBalance() + this.rent);
+    }
+
+    public void buyAction(GUI_Ownable street, Player player) {
+        baseBuyAction(street, player);
+    }
+
+    protected void baseBuyAction(GUI_Ownable street, Player player) {
+        player.setBalance(player.getBalance() - this.price);
+        street.setOwnerName(player.getName());
+        setOwner(player);
     }
 
     @Override
@@ -114,9 +127,7 @@ public class PropertyTile extends Tile {
                     break;
 
                 case BUY:
-                    player.setBalance(player.getBalance() - this.price);
-                    street.setOwnerName(player.getName());
-                    setOwner(player);
+                    buyAction(street, player);
                     break;
             }
         } else {
