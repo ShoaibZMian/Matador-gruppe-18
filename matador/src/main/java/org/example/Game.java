@@ -136,14 +136,28 @@ public class Game {
     private ArrayList<Chance> generateChances() {
         ArrayList<Chance> chances = new ArrayList<Chance>();
 
-        chances.add(new AbsoluteMovementChance(0, languageModel.chance[1].description));
-        chances.add(new MovementChance(5, languageModel.chance[2].description));
-        chances.add(new OutOfJailChance(languageModel.chance[9].description));
-        chances.add(new AbsoluteMovementChance(23,
-                languageModel.chance[10].description));
-        chances.add(new BirthdayChance(languageModel.chance[13].description));
-
-        chances.add(new PaymentChance(2, languageModel.chance[15].description));
+        chances.add(new AbsoluteMovementChance(40, "Tag til Rådhuspladsen"));
+        chances.add(new AbsoluteMovementChance(33, "Ryk frem til Vimmelskaftet, hvis de passerer start indkasser da kr 4000"));
+        chances.add(new AbsoluteMovementChance(20, "Tag til strandenvejen, hvis startet passeres indkasser 4.000kr."));
+        chances.add(new MovementChance(-3, "Ryk tre felter tilbage"));
+        chances.add(new MovementChance(-3, "Ryk tre felter tilbage"));
+        chances.add(new MovementChance(3, "Ryk tre felter frem"));
+        chances.add(new AbsoluteMovementChance(1, "Ryk frem til START"));
+        chances.add(new AbsoluteMovementChance(1, "Ryk frem til START"));
+        chances.add(new MonopolyScholarShipChance(40000,"De modtager “Matador-legatet” på kr 40.000, men kun hvis værdier ikke overstiger 15.000 kr"));
+        chances.add(new OutOfJailChance("I anledning af kongens fødselsdag benådes De herved for fængsel. Dette kort kan opbevares indtil De får brug for det, eller De kan sælge det"));
+        chances.add(new OutOfJailChance("I anledning af kongens fødselsdag benådes De herved for fængsel. Dette kort kan opbevares indtil De får brug for det, eller De kan sælge det"));
+        chances.add(new AbsoluteMovementChance(25,"Ryk frem til Grønningen, hvis De passerer start indkasser da kr 4000"));
+        chances.add(new AbsoluteMovementChance(13, "Tag med Mols-Linien, flyt brikken frem og hvis De passerer START indkassér da kr 4000."));
+        chances.add(new AbsoluteMovementChance(38, "Ryk frem til Frederiksberg Allé. Hvis De passere START, indkasser da 4000 kr."));
+        chances.add(new AbsoluteMovementChance(31, "Gå i fængsel, De indkasserer ikke 4000 kr for at passere start"));
+        chances.add(new AbsoluteMovementChance(31, "Gå i fængsel, De indkasserer ikke 4000 kr for at passere start"));
+        chances.add(new BirthdayChance(200,"Det er deres fødselsdag. Modtag af hver medspiller 200 kr"));
+        chances.add(new BirthdayChance(500,"De har lagt penge ud til et sammenskudsgilde. Mærkværdigvis betaler alle straks. Modtag fra hver medspiller 500 kr."));
+        chances.add(new BirthdayChance(500,"De skal holde familiefest og får et tilskud fra hver medspiller på 500 kr."));
+        chances.add(new PropertyPaymentChance(500,2000,"Oliepriserne er steget"));
+        chances.add(new PaymentChance(500, "De skal holde familiefest og får et tilskud fra hver medspiller på 500 kr"));
+        chances.add(new PaymentChance(500, "De har lagt penge ud til et sammenskudsgilde. Mærkværdigvis betaler alle straks. Modtag fra hver medspiller 500 kr."));
 
         return chances;
     }
