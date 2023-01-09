@@ -3,6 +3,7 @@ package org.example.tiles;
 import org.example.Player;
 
 import gui_fields.GUI_Brewery;
+import gui_fields.GUI_Ownable;
 import gui_main.GUI;
 
 import java.awt.Color;
@@ -18,6 +19,14 @@ public class CompanyTile extends PropertyTile {
                 color, Color.BLACK);
     }
 
+    @Override
+    public void buyAction(GUI_Ownable street, Player player) {
+        player.setBalance(player.getBalance() - this.price);
+        street.setOwnerName(player.getName());
+        player.addCompanyTile(this);
+        setOwner(player);
+    }
+
     // Update rent based on owners owned ShipTiles
     @Override
     public void PayRent(GUI gui, Player player, Player owner) {
@@ -31,8 +40,8 @@ public class CompanyTile extends PropertyTile {
                 player.getName() + " landede på " + owner.getName()
                         + "'s bryggeri / tapperi og skal betale en leje på "
                         + Integer.toString(rent));
-        // player.setBalance(player.getBalance() - this.rent);
-        // owner.setBalance(owner.getBalance() + this.rent);
+        player.setBalance(player.getBalance() - this.rent);
+        owner.setBalance(owner.getBalance() + this.rent);
     }
 
 }

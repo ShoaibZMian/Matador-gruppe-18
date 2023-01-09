@@ -30,8 +30,8 @@ public class Player extends GUI_Player {
 
     private RaffleCup raffleCup = new RaffleCup();
 
-    public Player(int balance, int id, String name, GUI_Car.Type guiCarType) {
-        super(name, balance, new GUI_Car(colors[id], Color.WHITE, guiCarType, GUI_Car.Pattern.FILL));
+    public Player(int id, String name, GUI_Car.Type guiCarType) {
+        super(name, Constants.STARTING_BALANCE, new GUI_Car(colors[id], Color.WHITE, guiCarType, GUI_Car.Pattern.FILL));
 
     }
 
