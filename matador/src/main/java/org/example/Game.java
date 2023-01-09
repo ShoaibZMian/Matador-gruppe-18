@@ -25,6 +25,7 @@ import org.example.tiles.ShipTile;
 import org.example.tiles.StartTile;
 import org.example.tiles.Tile;
 import org.example.tiles.VisitJailTile;
+import org.example.constants;
 
 import gui_fields.GUI_Car;
 import gui_fields.GUI_Field;
@@ -32,13 +33,8 @@ import gui_fields.GUI_Field;
 import gui_main.GUI;
 
 public class Game {
-    private static final Color LIGHT_BLUE = new Color(135, 206, 235);
-    private static final Color PURPLE = new Color(138, 43, 226);
-    private static final int PASSED_START = 4000;
-    private static final int MAX_PLAYERS = 6;
-    private static final int MIN_PLAYERS = 2;
 
-    private Tile[] tiles;
+    private Tile[] tiles = new Tile[constants.NUMBER_OF_FIELDS];
     private GUI gui;
     private Player[] players;
     private ArrayList<Chance> chances;
@@ -49,19 +45,27 @@ public class Game {
         this.languageModel = languageModel;
 
         // Create the tiles
-        this.tiles = generateTiles();
+        // this.tiles = generateTiles();
+
+        this.tiles = new Tile[40];
+
+        for (int index = 0; index < 40; index++) {
+            this.tiles[index] = new CompanyTile(index, "Tuborg Squash", Color.RED, 3000, new int[] { 100, 200 });
+
+        }
 
         // Create the chance arraylist
         this.chances = generateChances();
 
         // Start the GUI
-        gui = new GUI(getFields(), LIGHT_BLUE);
+        gui = new GUI(getFields(), constants.LIGHT_BLUE);
 
         prepareGame();
 
         gameLoop();
 
         checkWin();
+
     }
 
     private Tile[] generateTiles() {
@@ -84,7 +88,7 @@ public class Game {
                 new VisitJailTile(10),
                 new PropertyTile(11, "Frederiksberg Allé", Color.YELLOW, 2800, 2000,
                         new int[] { 200, 1000, 3000, 9000, 12500, 15000 }),
-                // TODO add CompanyTile 12
+                new CompanyTile(12, "Tuborg Squash", Color.RED, 3000, new int[] { 100, 200 }),
                 new PropertyTile(13, "Bülowsvej", Color.YELLOW, 2800, 2000,
                         new int[] { 200, 1000, 3000, 9000, 12500, 15000 }),
                 new PropertyTile(14, "Gl. Kongevej", Color.YELLOW, 3200, 2000,
@@ -110,7 +114,7 @@ public class Game {
                         new int[] { 450, 2200, 6600, 16000, 19500, 23000 }),
                 new PropertyTile(27, "Kgs. Nytorv", Color.WHITE, 5200, 3000,
                         new int[] { 450, 2200, 6600, 16000, 19500, 23000 }),
-                // TODO add CompanyTile 28
+                new CompanyTile(28, "Coca Cola", Color.RED, 3000, new int[] { 100, 200 }),
                 new PropertyTile(29, "Østergade", Color.WHITE, 5600, 3000,
                         new int[] { 500, 2400, 7200, 17000, 20500, 24000 }),
                 new ChanceTile(30),
@@ -122,12 +126,12 @@ public class Game {
                 new ChanceTile(34),
                 new PropertyTile(35, "Nygade", Color.YELLOW, 6400, 4000,
                         new int[] { 600, 3000, 9000, 20000, 24000, 28000 }),
-                new ShipTile(36, "Rødby - Puttgarden", Color.BLUE, 4000, new int[] { 500, 1000, 2000, 4000 }),
-                new ChanceTile(37),
-                new PropertyTile(38, "Frederiksberggade", PURPLE, 7000, 4000,
+                new ShipTile(35, "Rødby - Puttgarden", Color.BLUE, 4000, new int[] { 500, 1000, 2000, 4000 }),
+                new ChanceTile(36),
+                new PropertyTile(37, "Frederiksberggade", constants.PURPLE, 7000, 4000,
                         new int[] { 700, 3500, 10000, 22000, 26000, 30000 }),
-                new PaymentTile(39, "Skat", "Ekstraordinær statsskat: Betal kr. 2000", 2000),
-                new PropertyTile(40, "Rådhuspladsen", PURPLE, 8000, 4000,
+                new PaymentTile(38, "Skat", "Ekstraordinær statsskat: Betal kr. 2000", 2000),
+                new PropertyTile(39, "Rådhuspladsen", constants.PURPLE, 8000, 4000,
                         new int[] { 1000, 4000, 12000, 28000, 34000, 40000 }),
         };
     }
@@ -152,7 +156,7 @@ public class Game {
         Collections.shuffle(chances);
 
         // Create an array of the player names for the GUI message
-        String[] names = new String[MAX_PLAYERS];
+        String[] names = new String[constants.MAX_PLAYERS];
         // Fill the names array with the player names or nothing.
         for (int i = 0; i < names.length; i++) {
             try {
@@ -337,7 +341,7 @@ public class Game {
 
                 // Add 2M$ if the player has landed or passed start
                 if (passedStart) {
-                    player.setBalance(player.getBalance() + PASSED_START);
+                    player.setBalance(player.getBalance() + constants.PASSED_START);
                     gui.showMessage(String.format(languageModel.tile.start, player.getName()));
 
                 }
