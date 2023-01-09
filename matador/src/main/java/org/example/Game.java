@@ -9,12 +9,7 @@ import java.util.Scanner;
 import java.awt.Color;
 import java.io.File;
 
-import org.example.chances.AbsoluteMovementChance;
-import org.example.chances.BirthdayChance;
-import org.example.chances.Chance;
-import org.example.chances.MovementChance;
-import org.example.chances.OutOfJailChance;
-import org.example.chances.PaymentChance;
+import org.example.chances.*;
 import org.example.models.LanguageModel;
 import org.example.tiles.ChanceTile;
 import org.example.tiles.CompanyTile;
@@ -47,16 +42,18 @@ public class Game {
         // Create the tiles
         this.tiles = generateTiles();
 
-        // this.tiles = new Tile[40];
+        //this.tiles = new Tile[40];
 
-        // for (int index = 0; index < 40; index++) {
-        // this.tiles[index] = new CompanyTile(index, "Tuborg Squash", Color.RED, 3000,
-        // new int[] { 100, 200 });
-
-        // }
+        //for (int index = 0; index < 40; index++) {
+        //    this.tiles[index]=new ChanceTile(index);
+        //this.tiles[index] = new CompanyTile(index, "Tuborg Squash", Color.RED, 3000,
+        //new int[] { 100, 200 });
+        //}
 
         // Create the chance arraylist
         this.chances = generateChances();
+        //this.chances = new ArrayList<Chance>();
+        //this.chances.add(new PropertyPaymentChance(100,1000,"test"));
 
         // Start the GUI
         gui = new GUI(getFields(), Constants.LIGHT_BLUE);
