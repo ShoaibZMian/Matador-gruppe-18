@@ -14,4 +14,6 @@ class PlayerTest {
         player.setPosition(20);
         assertEquals(20, player.getPosition());
     }
+
+
 }
