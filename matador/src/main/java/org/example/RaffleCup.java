@@ -5,8 +5,6 @@ public class RaffleCup {
     private static final int NUMBER_OF_DICE = 2;
     private Die[] dice = new Die[NUMBER_OF_DICE];
     int[][] diceValues = new int[3][NUMBER_OF_DICE];
-    int[] previousDiceValues;
-    int[] previousPreviousDiceValues;
 
     public RaffleCup() {
 

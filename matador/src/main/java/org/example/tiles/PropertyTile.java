@@ -41,7 +41,8 @@ public class PropertyTile extends Tile {
         this.guiField = new GUI_Street(title, Integer.toString(price), title, Integer.toString(this.rent), color,
                 Color.BLACK);
     }
-    public int getHouses(){
+
+    public int getHouses() {
         return houses;
     }
 
