@@ -86,8 +86,9 @@ public class Game {
 
 		// Create the chance ArrayList
 		this.chances = generateChances();
-		//this.chances = new ArrayList<Chance>();
-		//chances.add(new ShipMovementChance(new int[]{5,15,25,35}, "Ryk til nærmeste rederi"));
+		// this.chances = new ArrayList<Chance>();
+		// chances.add(new ShipMovementChance(new int[]{5,15,25,35}, "Ryk til nærmeste
+		// rederi"));
 		// chances.add(new AbsoluteMovementChance(32,
 		// "Ryk frem til Vimmelskaftet, hvis de passerer start indkasser da kr 4000"));
 		// chances.add(new AbsoluteMovementChance(19,
@@ -243,7 +244,10 @@ public class Game {
 						"De skal holde familiefest og får et tilskud fra hver medspiller på 500 kr."));
 		chances.add(new PropertyPaymentChance(500, 2000,
 				"Oliepriserne er steget, og De skal betale kr 500 pr hus og kr 2000 pr hotel"));
-		chances.add(new ShipMovementChance(new int[]{5,15,25,35},"Ryk frem til det nærmeste rederi og betal ejeren to gange den leje han ellers er berettiget til, hvis selskabet ikke ejes af nogen kan De købe det af banken."));
+		chances.add(new ShipMovementChance(new int[] { 5, 15, 25, 35 },
+				"Ryk frem til det nærmeste rederi og betal ejeren to gange den leje han ellers er berettiget til, hvis selskabet ikke ejes af nogen kan De købe det af banken."));
+		chances.add(new ShipMovementChance(new int[] { 5, 15, 25, 35 },
+				"Ryk frem til det nærmeste rederi og betal ejeren to gange den leje han ellers er berettiget til, hvis selskabet ikke ejes af nogen kan De købe det af banken."));
 
 		return chances;
 	}
