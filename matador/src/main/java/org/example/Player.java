@@ -3,12 +3,14 @@ package org.example;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import org.codehaus.plexus.classworlds.strategy.OsgiBundleStrategy;
 import org.example.chances.OutOfJailChance;
 import org.example.tiles.CompanyTile;
 import org.example.tiles.PropertyTile;
 import org.example.tiles.ShipTile;
 
 import gui_fields.GUI_Car;
+import gui_fields.GUI_Field;
 import gui_fields.GUI_Player;
 
 public class Player extends GUI_Player {
@@ -16,6 +18,7 @@ public class Player extends GUI_Player {
 
     private int position = 0;
     private ArrayList<OutOfJailChance> outOfJailChances = new ArrayList<OutOfJailChance>();
+
     // For calculating CompanyTile rent
     private ArrayList<CompanyTile> companyTiles = new ArrayList<CompanyTile>();
 
@@ -95,10 +98,26 @@ public class Player extends GUI_Player {
         this.position = position;
     }
 
-    public boolean movePosition(int dieValue) {
+    public boolean movePosition(int dieValue, GUI_Field[] fields) {
         // Advance the position and loop correctly
-        int oldPosition = position;
-        position = (position + dieValue) % Constants.NUMBER_OF_FIELDS;
+        int oldPosition = this.position;
+        int currentPosition = this.position;
+        // int newPosition = (this.position + dieValue) % Constants.NUMBER_OF_FIELDS;
+
+        for (int index = 0; index <= dieValue; index++) {
+            currentPosition = (this.position + index) % Constants.NUMBER_OF_FIELDS;
+
+            getCar().setPosition(fields[currentPosition]);
+
+            try {
+                Thread.sleep(250);
+
+            } catch (Exception e) {
+                System.out.println("Error sleeping for animtion");
+            }
+
+        }
+        this.position = currentPosition;
 
         // Check if the start field has been passed
         if (position < oldPosition) {

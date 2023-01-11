@@ -262,13 +262,6 @@ public class Game {
 	}
 
 	private void updateGui(Player player) {
-		GUI_Field[] fields = gui.getFields();
-
-		// Ideally remove the chance card from the GUI here
-
-		// Remove last position and update player position
-		player.getCar().setPosition(fields[player.getPosition()]);
-
 		// Update dice
 		int[] diceValues = player.getRaffleCup().getValues();
 		gui.setDice(diceValues[0], diceValues[1]);
@@ -277,6 +270,8 @@ public class Game {
 
 	private void gameLoop() {
 		boolean passedStart = false;
+		GUI_Field[] fields = gui.getFields();
+
 		while (true) {
 			for (Player player : players) {
 				RaffleCup raffleCup = player.getRaffleCup();
@@ -288,10 +283,10 @@ public class Game {
 				gui.showMessage("Kast med terningerne");
 
 				raffleCup.rollCup();
+				updateGui(player);
 
 				// Move spaces.
-				passedStart = player.movePosition(raffleCup.getValue());
-				updateGui(player);
+				passedStart = player.movePosition(raffleCup.getValue(), fields);
 
 				// Add 4000 kr if the player has landed or passed start
 				if (passedStart) {
