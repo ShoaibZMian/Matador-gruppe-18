@@ -27,14 +27,16 @@ public class ChanceTile extends Tile {
         // Use the chance or save the get out of jail card
         boolean result = chance.chanceAction(player, players, gui);
 
+        // Remove the card from the pile
+        chances.remove(chances.size() - 1);
+
         // Don't add the get out of jail chance back to the pile immediately
         if (chance.getClass() == OutOfJailChance.class) {
             player.addGetOutOfJailChance((OutOfJailChance) chance);
         } else {
+            // Add the card to the pile again
             chances.add(0, chance);
         }
-        // Remove the card from the pile
-        chances.remove(chances.size() - 1);
 
         return result;
     }
