@@ -18,12 +18,12 @@ public class PropertyTile extends Tile {
     protected Player owner;
     protected String title;
     protected int price;
-    protected int housePrice;
+    private int housePrice;
     private int houses = 0;
 
     protected int hotelPrice;
 
-    protected int pawnValue;
+    private int pawnValue;
     protected int rent;
     protected int[] rentPrices = new int[6];
 
@@ -52,6 +52,14 @@ public class PropertyTile extends Tile {
 
     public Player getOwner() {
         return owner;
+    }
+
+    public int getPawnValue() {
+        return pawnValue;
+    }
+
+    public int getHousePrice() {
+        return housePrice;
     }
 
     // Handle houses and hotels, where a hotel is simply 5 houses in the logic
