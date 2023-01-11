@@ -7,7 +7,6 @@ import gui_main.GUI;
 
 public class MovementChance extends Chance {
 
-    // up to
     private int movement;
 
     public MovementChance(int movement, String description) {
