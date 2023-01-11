@@ -167,15 +167,16 @@ public class Game {
         chances.add(new PaymentChance(1000, "Deres præmieobligation er udtrykket. De modtager 1000 kr af banken."));
         chances.add(new PaymentChance(1000, "De har solg nogle gamle møbler på auktion. Modtag 1000 kr af banken."));
         chances.add(new PaymentChance(200, "Værdien af egen avl fra nyttehaven udgør 200 som de modtager af banken"));
-        chances.add(new AbsoluteMovementChance(40, "Tag til Rådhuspladsen"));
-        chances.add(new AbsoluteMovementChance(33,
+        chances.add(new AbsoluteMovementChance(39, "Tag til Rådhuspladsen"));
+        chances.add(new AbsoluteMovementChance(32,
                 "Ryk frem til Vimmelskaftet, hvis de passerer start indkasser da kr 4000"));
-        chances.add(new AbsoluteMovementChance(20, "Tag til strandenvejen, hvis startet passeres indkasser 4.000kr."));
+        chances.add(new AbsoluteMovementChance(19,
+                "Ryk frem til Strandvejen. Hvis De passere START, indkasser da 4000 kr."));
         chances.add(new MovementChance(-3, "Ryk tre felter tilbage"));
         chances.add(new MovementChance(-3, "Ryk tre felter tilbage"));
         chances.add(new MovementChance(3, "Ryk tre felter frem"));
-        chances.add(new AbsoluteMovementChance(1, "Ryk frem til START"));
-        chances.add(new AbsoluteMovementChance(1, "Ryk frem til START"));
+        chances.add(new AbsoluteMovementChance(0, "Ryk frem til START"));
+        chances.add(new AbsoluteMovementChance(0, "Ryk frem til START"));
         chances.add(new MonopolyScholarShipChance(40000,
                 "De modtager “Matador-legatet” på kr 40.000, men kun hvis værdier ikke overstiger 15.000 kr"));
         chances.add(new OutOfJailChance(
@@ -183,23 +184,20 @@ public class Game {
         chances.add(new OutOfJailChance(
                 "I anledning af kongens fødselsdag benådes De herved for fængsel. Dette kort kan opbevares indtil De får brug for det, eller De kan sælge det"));
         chances.add(
-                new AbsoluteMovementChance(25, "Ryk frem til Grønningen, hvis De passerer start indkasser da kr 4000"));
-        chances.add(new AbsoluteMovementChance(13,
+                new AbsoluteMovementChance(24, "Ryk frem til Grønningen, hvis De passerer start indkasser da kr 4000"));
+        chances.add(new AbsoluteMovementChance(15,
                 "Tag med Mols-Linien, flyt brikken frem og hvis De passerer START indkassér da kr 4000."));
-        chances.add(new AbsoluteMovementChance(38,
+        chances.add(new AbsoluteMovementChance(11,
                 "Ryk frem til Frederiksberg Allé. Hvis De passere START, indkasser da 4000 kr."));
-        chances.add(new AbsoluteMovementChance(31, "Gå i fængsel, De indkasserer ikke 4000 kr for at passere start"));
-        chances.add(new AbsoluteMovementChance(31, "Gå i fængsel, De indkasserer ikke 4000 kr for at passere start"));
+        chances.add(new AbsoluteMovementChance(30, "Gå i fængsel, De indkasserer ikke 4000 kr for at passere start"));
+        chances.add(new AbsoluteMovementChance(30, "Gå i fængsel, De indkasserer ikke 4000 kr for at passere start"));
         chances.add(new BirthdayChance(200, "Det er deres fødselsdag. Modtag af hver medspiller 200 kr"));
         chances.add(new BirthdayChance(500,
                 "De har lagt penge ud til et sammenskudsgilde. Mærkværdigvis betaler alle straks. Modtag fra hver medspiller 500 kr."));
         chances.add(
                 new BirthdayChance(500, "De skal holde familiefest og får et tilskud fra hver medspiller på 500 kr."));
-        chances.add(new PropertyPaymentChance(500, 2000, "Oliepriserne er steget"));
-        chances.add(
-                new PaymentChance(500, "De skal holde familiefest og får et tilskud fra hver medspiller på 500 kr"));
-        chances.add(new PaymentChance(500,
-                "De har lagt penge ud til et sammenskudsgilde. Mærkværdigvis betaler alle straks. Modtag fra hver medspiller 500 kr."));
+        chances.add(new PropertyPaymentChance(500, 2000,
+                "Oliepriserne er steget, og De skal betale kr 500 pr hus og kr 2000 pr hotel"));
 
         return chances;
     }
