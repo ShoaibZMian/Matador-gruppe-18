@@ -1,7 +1,5 @@
 package org.example;
 
-import java.util.Arrays;
-
 public class RaffleCup {
 
     private static final int NUMBER_OF_DICE = 2;
