@@ -27,8 +27,6 @@ public class ChanceTile extends Tile {
         // Use the chance or save the get out of jail card
         boolean result = chance.chanceAction(player, players, gui);
 
-        chances.remove(chances.size() - 1);
-
         // Remove the card from the pile
         chances.remove(chances.size() - 1);
 
