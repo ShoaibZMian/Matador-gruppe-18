@@ -98,6 +98,7 @@ public class PropertyTile extends Tile {
 
     public void buyAction(GUI_Ownable street, Player player) {
         baseBuyAction(street, player);
+        player.addPropertyTile(this);
     }
 
     protected void baseBuyAction(GUI_Ownable street, Player player) {
