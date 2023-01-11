@@ -1,5 +1,9 @@
 package org.example;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class RaffleCup {
 
     private static final int NUMBER_OF_DICE = 2;
@@ -27,6 +31,10 @@ public class RaffleCup {
         }
     }
 
+
+
+
+
     // Return if any of the die are equal
     public boolean getAnyEqual(int[] values) {
         boolean equal = false;
@@ -39,6 +47,7 @@ public class RaffleCup {
         for (int i = 1; i < NUMBER_OF_DICE; i++) {
             if (firstValue == values[i]) {
                 equal = true;
+
             } else {
                 equal = false;
                 break;
@@ -49,13 +58,15 @@ public class RaffleCup {
 
     // Check if three throws in a row are doubles
     public boolean getEqualThreeTimes() {
+    int count = 0;
 
         for (int i = 0; i < 3; i++) {
-            if (!getAnyEqual(diceValues[i])) {
-                return false;
+            if (getAnyEqual(diceValues[i])) {
+                count++;
+
             }
         }
-        return true;
+        return count == 3;
     }
 
     // Return the total value of the die
