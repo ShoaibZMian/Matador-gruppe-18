@@ -5,13 +5,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
 
 import java.awt.Color;
-import java.io.File;
 
 import org.example.chances.*;
-import org.example.models.LanguageModel;
 import org.example.tiles.ChanceTile;
 import org.example.tiles.CompanyTile;
 import org.example.tiles.FreeParkingTile;
@@ -33,20 +30,14 @@ public class Game {
     private GUI gui;
     private Player[] players;
     private ArrayList<Chance> chances;
-    private LanguageModel languageModel;
 
     public Game() {
-        Language language = new Language("en");
-        this.languageModel = language.getLanguageData();
-
         this.players = configGetPlayers();
         startGame();
     }
 
-    public Game(Player[] players, LanguageModel languageModel) {
+    public Game(Player[] players) {
         this.players = players;
-        this.languageModel = languageModel;
-
         startGame();
     }
 
@@ -152,51 +143,63 @@ public class Game {
 
     private ArrayList<Chance> generateChances() {
         ArrayList<Chance> chances = new ArrayList<Chance>();
-        chances.add(new PropertyPaymentChance(800,2300,"Ejendomsskatten er steget. Ekstraudgifterne er: 800 kr pr hus, 2300 kr pr hotel."));
-        chances.add(new PaymentChance(-1000,"De har kørt frem for “fuldt stop”, Betal 1000 kroner i bøde"));
-        chances.add(new PaymentChance(-300,"Betal for vognvask og smøring kr 300"));
-        chances.add(new PaymentChance(-200,"Betal kr 200 for levering af 2 kasser øl"));
-        chances.add(new PaymentChance(-3000,"Betal 3000 for reparation af deres vogn"));
-        chances.add(new PaymentChance(-3000,"Betal 3000 for reparation af deres vogn"));
-        chances.add(new PaymentChance(-1000,"De har købt 4 nye dæk til Deres vogn, betal kr 1000"));
-        chances.add(new PaymentChance(-200,"De har fået en parkeringsbøde, betal kr 200 i bøde"));
-        chances.add(new PaymentChance(-1000,"Betal deres bilforsikring, kr 1000"));
-        chances.add(new PaymentChance(-200,"De har været udenlands og købt for mange smøger, betal kr 200 i told."));
-        chances.add(new PaymentChance(-2000,"Tandlægeregning, betal kr 2000."));
-        chances.add(new PaymentChance(500,"De har vundet i klasselotteriet. Modtag 500 kr."));
-        chances.add(new PaymentChance(500,"De har vundet i klasselotteriet. Modtag 500 kr."));
-        chances.add(new PaymentChance(1000,"De modtager Deres aktieudbytte. Modtag kr 1000 af banken"));
-        chances.add(new PaymentChance(1000,"De modtager Deres aktieudbytte. Modtag kr 1000 af banken"));
-        chances.add(new PaymentChance(1000,"De modtager Deres aktieudbytte. Modtag kr 1000 af banken"));
-        chances.add(new PaymentChance(3000,"Kommunen har eftergivet et kvartals skat. Hæv i banken 3000 kr."));
-        chances.add(new PaymentChance(1000,"De have en række med elleve rigtige i tipning, modtag kl 1000"));
-        chances.add(new PaymentChance(1000,"Grundet dyrtiden har De fået gageforhøjelse, modtag kr 1000."));
-        chances.add(new PaymentChance(1000,"Deres præmieobligation er udtrykket. De modtager 1000 kr af banken."));
-        chances.add(new PaymentChance(1000,"Deres præmieobligation er udtrykket. De modtager 1000 kr af banken."));
-        chances.add(new PaymentChance(1000,"De har solg nogle gamle møbler på auktion. Modtag 1000 kr af banken."));
-        chances.add(new PaymentChance(200,"Værdien af egen avl fra nyttehaven udgør 200 som de modtager af banken"));
+        chances.add(new PropertyPaymentChance(800, 2300,
+                "Ejendomsskatten er steget. Ekstraudgifterne er: 800 kr pr hus, 2300 kr pr hotel."));
+        chances.add(new PaymentChance(-1000, "De har kørt frem for “fuldt stop”, Betal 1000 kroner i bøde"));
+        chances.add(new PaymentChance(-300, "Betal for vognvask og smøring kr 300"));
+        chances.add(new PaymentChance(-200, "Betal kr 200 for levering af 2 kasser øl"));
+        chances.add(new PaymentChance(-3000, "Betal 3000 for reparation af deres vogn"));
+        chances.add(new PaymentChance(-3000, "Betal 3000 for reparation af deres vogn"));
+        chances.add(new PaymentChance(-1000, "De har købt 4 nye dæk til Deres vogn, betal kr 1000"));
+        chances.add(new PaymentChance(-200, "De har fået en parkeringsbøde, betal kr 200 i bøde"));
+        chances.add(new PaymentChance(-1000, "Betal deres bilforsikring, kr 1000"));
+        chances.add(new PaymentChance(-200, "De har været udenlands og købt for mange smøger, betal kr 200 i told."));
+        chances.add(new PaymentChance(-2000, "Tandlægeregning, betal kr 2000."));
+        chances.add(new PaymentChance(500, "De har vundet i klasselotteriet. Modtag 500 kr."));
+        chances.add(new PaymentChance(500, "De har vundet i klasselotteriet. Modtag 500 kr."));
+        chances.add(new PaymentChance(1000, "De modtager Deres aktieudbytte. Modtag kr 1000 af banken"));
+        chances.add(new PaymentChance(1000, "De modtager Deres aktieudbytte. Modtag kr 1000 af banken"));
+        chances.add(new PaymentChance(1000, "De modtager Deres aktieudbytte. Modtag kr 1000 af banken"));
+        chances.add(new PaymentChance(3000, "Kommunen har eftergivet et kvartals skat. Hæv i banken 3000 kr."));
+        chances.add(new PaymentChance(1000, "De have en række med elleve rigtige i tipning, modtag kl 1000"));
+        chances.add(new PaymentChance(1000, "Grundet dyrtiden har De fået gageforhøjelse, modtag kr 1000."));
+        chances.add(new PaymentChance(1000, "Deres præmieobligation er udtrykket. De modtager 1000 kr af banken."));
+        chances.add(new PaymentChance(1000, "Deres præmieobligation er udtrykket. De modtager 1000 kr af banken."));
+        chances.add(new PaymentChance(1000, "De har solg nogle gamle møbler på auktion. Modtag 1000 kr af banken."));
+        chances.add(new PaymentChance(200, "Værdien af egen avl fra nyttehaven udgør 200 som de modtager af banken"));
         chances.add(new AbsoluteMovementChance(40, "Tag til Rådhuspladsen"));
-        chances.add(new AbsoluteMovementChance(33, "Ryk frem til Vimmelskaftet, hvis de passerer start indkasser da kr 4000"));
+        chances.add(new AbsoluteMovementChance(33,
+                "Ryk frem til Vimmelskaftet, hvis de passerer start indkasser da kr 4000"));
         chances.add(new AbsoluteMovementChance(20, "Tag til strandenvejen, hvis startet passeres indkasser 4.000kr."));
         chances.add(new MovementChance(-3, "Ryk tre felter tilbage"));
         chances.add(new MovementChance(-3, "Ryk tre felter tilbage"));
         chances.add(new MovementChance(3, "Ryk tre felter frem"));
         chances.add(new AbsoluteMovementChance(1, "Ryk frem til START"));
         chances.add(new AbsoluteMovementChance(1, "Ryk frem til START"));
-        chances.add(new MonopolyScholarShipChance(40000,"De modtager “Matador-legatet” på kr 40.000, men kun hvis værdier ikke overstiger 15.000 kr"));
-        chances.add(new OutOfJailChance("I anledning af kongens fødselsdag benådes De herved for fængsel. Dette kort kan opbevares indtil De får brug for det, eller De kan sælge det"));
-        chances.add(new OutOfJailChance("I anledning af kongens fødselsdag benådes De herved for fængsel. Dette kort kan opbevares indtil De får brug for det, eller De kan sælge det"));
-        chances.add(new AbsoluteMovementChance(25,"Ryk frem til Grønningen, hvis De passerer start indkasser da kr 4000"));
-        chances.add(new AbsoluteMovementChance(13, "Tag med Mols-Linien, flyt brikken frem og hvis De passerer START indkassér da kr 4000."));
-        chances.add(new AbsoluteMovementChance(38, "Ryk frem til Frederiksberg Allé. Hvis De passere START, indkasser da 4000 kr."));
+        chances.add(new MonopolyScholarShipChance(40000,
+                "De modtager “Matador-legatet” på kr 40.000, men kun hvis værdier ikke overstiger 15.000 kr"));
+        chances.add(new OutOfJailChance(
+                "I anledning af kongens fødselsdag benådes De herved for fængsel. Dette kort kan opbevares indtil De får brug for det, eller De kan sælge det"));
+        chances.add(new OutOfJailChance(
+                "I anledning af kongens fødselsdag benådes De herved for fængsel. Dette kort kan opbevares indtil De får brug for det, eller De kan sælge det"));
+        chances.add(
+                new AbsoluteMovementChance(25, "Ryk frem til Grønningen, hvis De passerer start indkasser da kr 4000"));
+        chances.add(new AbsoluteMovementChance(13,
+                "Tag med Mols-Linien, flyt brikken frem og hvis De passerer START indkassér da kr 4000."));
+        chances.add(new AbsoluteMovementChance(38,
+                "Ryk frem til Frederiksberg Allé. Hvis De passere START, indkasser da 4000 kr."));
         chances.add(new AbsoluteMovementChance(31, "Gå i fængsel, De indkasserer ikke 4000 kr for at passere start"));
         chances.add(new AbsoluteMovementChance(31, "Gå i fængsel, De indkasserer ikke 4000 kr for at passere start"));
-        chances.add(new BirthdayChance(200,"Det er deres fødselsdag. Modtag af hver medspiller 200 kr"));
-        chances.add(new BirthdayChance(500,"De har lagt penge ud til et sammenskudsgilde. Mærkværdigvis betaler alle straks. Modtag fra hver medspiller 500 kr."));
-        chances.add(new BirthdayChance(500,"De skal holde familiefest og får et tilskud fra hver medspiller på 500 kr."));
-        chances.add(new PropertyPaymentChance(500,2000,"Oliepriserne er steget"));
-        chances.add(new PaymentChance(500, "De skal holde familiefest og får et tilskud fra hver medspiller på 500 kr"));
-        chances.add(new PaymentChance(500, "De har lagt penge ud til et sammenskudsgilde. Mærkværdigvis betaler alle straks. Modtag fra hver medspiller 500 kr."));
+        chances.add(new BirthdayChance(200, "Det er deres fødselsdag. Modtag af hver medspiller 200 kr"));
+        chances.add(new BirthdayChance(500,
+                "De har lagt penge ud til et sammenskudsgilde. Mærkværdigvis betaler alle straks. Modtag fra hver medspiller 500 kr."));
+        chances.add(
+                new BirthdayChance(500, "De skal holde familiefest og får et tilskud fra hver medspiller på 500 kr."));
+        chances.add(new PropertyPaymentChance(500, 2000, "Oliepriserne er steget"));
+        chances.add(
+                new PaymentChance(500, "De skal holde familiefest og får et tilskud fra hver medspiller på 500 kr"));
+        chances.add(new PaymentChance(500,
+                "De har lagt penge ud til et sammenskudsgilde. Mærkværdigvis betaler alle straks. Modtag fra hver medspiller 500 kr."));
 
         return chances;
     }
@@ -215,54 +218,6 @@ public class Game {
         }
 
         gui.showMessage("Spillet går i gang! Rækkefølgen er: " + names);
-    }
-
-    public static LanguageModel configGetLanguageModel(Scanner scanner) {
-
-        String unixPath = "/matador/src/main/java/org/example/translations/";
-        String windowsPath = "\\matador\\src\\main\\java\\org\\example\\translations\\";
-
-        // Get the directory for the translation files.
-        String path = System.getProperty("user.dir");
-
-        String operatingSystem = System.getProperty("os.name").toLowerCase();
-
-        if (operatingSystem.equals("mac") || operatingSystem.equals("linux")) {
-            path += unixPath;
-
-        } else if (operatingSystem.contains("windows")) {
-            path += windowsPath;
-        }
-
-        System.out.println(path);
-        // List the available languages
-        File file;
-        try {
-            file = new File(path);
-
-            System.out.println("Choose one of the available languages:");
-
-            for (String fileName : file.list()) {
-                System.out.println(fileName.replace(".json", ""));
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException("Can't find translations/ folder.", e);
-        }
-
-        String chosenLanguage;
-        while (true) {
-            try {
-                chosenLanguage = scanner.next();
-                if (Arrays.asList(file.list()).contains(chosenLanguage + ".json")) {
-                    Language language = new Language(chosenLanguage);
-                    return language.getLanguageData();
-                }
-            } catch (Exception e) {
-                scanner.nextLine();
-            }
-            System.out.println("Invalid language, try again.");
-        }
     }
 
     private static Player[] configGetPlayers() {
@@ -314,11 +269,10 @@ public class Game {
                 RaffleCup raffleCup = player.getRaffleCup();
 
                 // Show the players turn (Wait for user input)
-                gui.showMessage(String.format(languageModel.game.gameLoop.playerTurn, player.getName()));
+                gui.showMessage("Det er " + player.getName() + "'s tur");
 
                 // Roll dice and move spaces (Wait for user input)
-                gui.getUserButtonPressed(languageModel.game.gameLoop.rollDie.message,
-                        languageModel.game.gameLoop.rollDie.button);
+                gui.showMessage("Kast med terningerne");
 
                 raffleCup.rollCup();
 
@@ -326,10 +280,11 @@ public class Game {
                 passedStart = player.movePosition(raffleCup.getValue());
                 updateGui(player);
 
-                // Add 2M$ if the player has landed or passed start
+                // Add 4000 kr if the player has landed or passed start
                 if (passedStart) {
                     player.setBalance(player.getBalance() + Constants.PASSED_START);
-                    gui.showMessage(String.format(languageModel.tile.start, player.getName()));
+                    gui.showMessage(player.getName() + " har passeret start og får "
+                            + Integer.toString(Constants.PASSED_START));
 
                 }
 
@@ -348,9 +303,7 @@ public class Game {
         // Find the first player with a negative balance
         for (Player player : players) {
             if (player.getBalance() < 0) {
-                gui.getUserButtonPressed(
-                        String.format(languageModel.game.cantAfford.message, player.getName()),
-                        languageModel.game.cantAfford.button);
+                gui.showMessage(player.getName() + " er gået fallit og er ude af spillet.");
                 return;
             }
         }
@@ -378,16 +331,14 @@ public class Game {
             Arrays.sort(players, Comparator.comparing(Player::getBalance));
             // Check if tied again
             if (players[players.length - 1].getBalance() == players[players.length - 2].getBalance()) {
-                gui.showMessage(
-                        String.format(languageModel.game.checkWin.tie, players[players.length - 1].getName(),
-                                players[players.length - 2].getName()));
+                gui.showMessage("*Will be replaced*");
             } else {
-                gui.showMessage(
-                        String.format(languageModel.game.checkWin.property, players[players.length - 1].getName()));
+                gui.showMessage("*Will be replaced*");
+
             }
 
         } else {
-            gui.showMessage(String.format(languageModel.game.checkWin.balance, players[players.length - 1].getName()));
+            gui.showMessage("*Will be replaced*");
         }
 
         gui.close();
