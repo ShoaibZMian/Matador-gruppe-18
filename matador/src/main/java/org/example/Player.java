@@ -3,7 +3,6 @@ package org.example;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import org.codehaus.plexus.classworlds.strategy.OsgiBundleStrategy;
 import org.example.chances.OutOfJailChance;
 import org.example.tiles.CompanyTile;
 import org.example.tiles.PropertyTile;
@@ -96,6 +95,31 @@ public class Player extends GUI_Player {
 
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    public int getValue() {
+        // Calculate value based on the pawned value as that is the only reliable way to
+        // sell streets, houses etc.
+        int value = 0;
+
+        // Add companies
+        for (CompanyTile companyTile : companyTiles) {
+            value += companyTile.getPawnValue();
+        }
+
+        // Add Ships
+        for (ShipTile shipTile : shipTiles) {
+            value += shipTile.getPawnValue();
+        }
+
+        // Add streets
+        for (PropertyTile propertyTile : propertyTiles) {
+            // Selling the houses / hotel back to the bank halves the value
+            // A hotel is worth 5 houses
+            value += (propertyTile.getHouses() * propertyTile.getHousePrice()) / 2;
+        }
+
+        return value;
     }
 
     public boolean movePosition(int dieValue, GUI_Field[] fields) {

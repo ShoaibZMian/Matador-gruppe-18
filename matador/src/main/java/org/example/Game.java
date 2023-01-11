@@ -265,6 +265,7 @@ public class Game {
 		// Update dice
 		int[] diceValues = player.getRaffleCup().getValues();
 		gui.setDice(diceValues[0], diceValues[1]);
+		System.out.println(player.getValue());
 
 	}
 
