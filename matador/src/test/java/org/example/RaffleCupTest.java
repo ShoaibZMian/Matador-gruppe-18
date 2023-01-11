@@ -11,7 +11,7 @@ class RaffleCupTest {
         RaffleCup raffleCup = new RaffleCup();
         raffleCup.rollCup();
         int val = raffleCup.getValue();
-        boolean valIsLargerThan0 = val > 0;
+        boolean valIsLargerThan0 = val > 1;
         boolean valIsLessThan13 = val < 13;
 
         assertTrue(valIsLargerThan0);
