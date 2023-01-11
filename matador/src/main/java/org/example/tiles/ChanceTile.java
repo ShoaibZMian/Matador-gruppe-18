@@ -24,6 +24,8 @@ public class ChanceTile extends Tile {
         // Get the "top" chance card and place it at the bottom of the "pile"
         Chance chance = chances.get(chances.size() - 1);
 
+        // Stop the chanceAction from being executed immediately
+        gui.showMessage(player.getName() + " landede på et prøv lykken felt");
         // Use the chance or save the get out of jail card
         boolean result = chance.chanceAction(player, players, gui);
 

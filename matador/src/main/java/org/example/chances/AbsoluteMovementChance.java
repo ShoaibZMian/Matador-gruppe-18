@@ -22,7 +22,7 @@ public class AbsoluteMovementChance extends Chance {
         if (tileId == 0) {
             player.setBalance(player.getBalance() + 2);
         }
-        player.setPosition(tileId);
+        player.setPosition(tileId, gui.getFields());
         return true;
     }
 }

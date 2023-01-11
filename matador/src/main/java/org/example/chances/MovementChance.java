@@ -7,7 +7,6 @@ import gui_main.GUI;
 
 public class MovementChance extends Chance {
 
-    // up to
     private int movement;
 
     public MovementChance(int movement, String description) {
@@ -25,7 +24,7 @@ public class MovementChance extends Chance {
             newPosition = newPosition + Constants.NUMBER_OF_FIELDS;
         }
 
-        player.setPosition(newPosition);
+        player.setPosition(newPosition, gui.getFields());
         return true;
     }
 

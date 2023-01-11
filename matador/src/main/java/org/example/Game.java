@@ -5,13 +5,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
 
 import java.awt.Color;
-import java.io.File;
 
 import org.example.chances.*;
-import org.example.models.LanguageModel;
 import org.example.tiles.ChanceTile;
 import org.example.tiles.CompanyTile;
 import org.example.tiles.FreeParkingTile;
@@ -38,9 +35,35 @@ public class Game {
 		startGame();
 	}
 
+	// For testing
 	public Game(Player[] players) {
 		this.players = players;
 		startGame();
+	}
+
+	private static Player[] configGetPlayers() {
+		// Display blank GUI for player init
+		GUI gui = new GUI(new GUI_Field[] {}, Constants.LIGHT_BLUE);
+
+		// Ensure that the number of players is valid
+		int numberOfPlayers = 0;
+		while (numberOfPlayers < 3 || numberOfPlayers > 6) {
+			numberOfPlayers = gui.getUserInteger("Indtast mængden af spillere (3-6).");
+
+		}
+
+		// Check if the number of players is valid
+		Player[] players = new Player[numberOfPlayers];
+		String name;
+		// Get names for each player
+		for (int i = 0; i < numberOfPlayers; i++) {
+			name = gui.getUserString("Indtast spillernavn nummer " + Integer.toString(i + 1) + ":");
+			players[i] = new Player(i, name);
+		}
+		// Close GUI and return generated players.
+		gui.close();
+
+		return players;
 	}
 
 	private void startGame() {
@@ -64,8 +87,12 @@ public class Game {
 		// Create the chance ArrayList
 		this.chances = generateChances();
 		// this.chances = new ArrayList<Chance>();
-		// this.chances.add(new MovementChance(-6, "Move 3 tiles"));
-		// this.chances.add(new MovementChance(-6, "Move 3 tiles"));
+		// chances.add(new ShipMovementChance(new int[]{5,15,25,35}, "Ryk til nærmeste
+		// rederi"));
+		// chances.add(new AbsoluteMovementChance(32,
+		// "Ryk frem til Vimmelskaftet, hvis de passerer start indkasser da kr 4000"));
+		// chances.add(new AbsoluteMovementChance(19,
+		// "Ryk frem til Strandvejen. Hvis De passere START, indkasser da 4000 kr."));
 
 		// Start the GUI
 		this.gui = new GUI(getFields(), Constants.LIGHT_BLUE);
@@ -147,6 +174,7 @@ public class Game {
 				new PaymentTile(38, "Skat", "Ekstraordinær statsskat: Betal kr. 2000", 2000),
 				new PropertyTile(39, "Rådhuspladsen", Constants.PURPLE, 8000, 4000,
 						new int[] { 1000, 4000, 12000, 28000, 34000, 40000 }),
+
 		};
 	}
 
@@ -216,6 +244,10 @@ public class Game {
 						"De skal holde familiefest og får et tilskud fra hver medspiller på 500 kr."));
 		chances.add(new PropertyPaymentChance(500, 2000,
 				"Oliepriserne er steget, og De skal betale kr 500 pr hus og kr 2000 pr hotel"));
+		chances.add(new ShipMovementChance(new int[] { 5, 15, 25, 35 },
+				"Ryk frem til det nærmeste rederi og betal ejeren to gange den leje han ellers er berettiget til, hvis selskabet ikke ejes af nogen kan De købe det af banken."));
+		chances.add(new ShipMovementChance(new int[] { 5, 15, 25, 35 },
+				"Ryk frem til det nærmeste rederi og betal ejeren to gange den leje han ellers er berettiget til, hvis selskabet ikke ejes af nogen kan De købe det af banken."));
 
 		return chances;
 	}
@@ -229,29 +261,10 @@ public class Game {
 		// Add the cars to the GUI and name for message
 		for (Player player : players) {
 			gui.addPlayer(player);
-			updateGui(player);
 			names.add(player.getName());
 		}
 
 		gui.showMessage("Spillet går i gang! Rækkefølgen er: " + names);
-	}
-
-	private static Player[] configGetPlayers() {
-		// Display blank GUI for player init
-		GUI gui = new GUI(new GUI_Field[] {}, Constants.LIGHT_BLUE);
-
-		int numberOfPlayers = gui.getUserInteger("Indtast mængden af spillere (2-6).");
-		Player[] players = new Player[numberOfPlayers];
-		String name;
-		// Get names for each player
-		for (int i = 0; i < numberOfPlayers; i++) {
-			name = gui.getUserString("Indtast spillernavn nummer " + Integer.toString(i + 1) + ":");
-			players[i] = new Player(i, name);
-		}
-		// Close GUI and return generated players.
-		gui.close();
-
-		return players;
 	}
 
 	private GUI_Field[] getFields() {
@@ -265,36 +278,27 @@ public class Game {
 	}
 
 	private void updateGui(Player player) {
-		GUI_Field[] fields = gui.getFields();
-
-		// Ideally remove the chance card from the GUI here
-
-		// Remove last position and update player position
-		player.getCar().setPosition(fields[player.getPosition()]);
-
 		// Update dice
 		int[] diceValues = player.getRaffleCup().getValues();
-		gui.setDice(diceValues[0], diceValues[1]);
-
+		gui.setDice(diceValues[0], 1, 2, diceValues[1], 2, 2);
 	}
 
 	private void gameLoop() {
 		boolean passedStart = false;
+		GUI_Field[] fields = gui.getFields();
+
 		while (true) {
 			for (Player player : players) {
 				RaffleCup raffleCup = player.getRaffleCup();
 
-				// Show the players turn (Wait for user input)
-				gui.showMessage("Det er " + player.getName() + "'s tur");
-
-				// Roll dice and move spaces (Wait for user input)
-				gui.showMessage("Kast med terningerne");
+				// Show the players turn and roll the dice (Wait for user input)
+				gui.showMessage("Det er " + player.getName() + "'s tur. Kast med terningerne");
 
 				raffleCup.rollCup();
+				updateGui(player);
 
 				// Move spaces.
-				passedStart = player.movePosition(raffleCup.getValue());
-				updateGui(player);
+				passedStart = player.movePosition(raffleCup.getValue(), fields);
 
 				// Add 4000 kr if the player has landed or passed start
 				if (passedStart) {
@@ -309,8 +313,6 @@ public class Game {
 					findLoser();
 					return;
 				}
-
-				updateGui(player);
 			}
 		}
 	}

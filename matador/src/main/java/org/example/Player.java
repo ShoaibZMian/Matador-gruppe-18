@@ -9,6 +9,7 @@ import org.example.tiles.PropertyTile;
 import org.example.tiles.ShipTile;
 
 import gui_fields.GUI_Car;
+import gui_fields.GUI_Field;
 import gui_fields.GUI_Player;
 
 public class Player extends GUI_Player {
@@ -16,6 +17,7 @@ public class Player extends GUI_Player {
 
     private int position = 0;
     private ArrayList<OutOfJailChance> outOfJailChances = new ArrayList<OutOfJailChance>();
+
     // For calculating CompanyTile rent
     private ArrayList<CompanyTile> companyTiles = new ArrayList<CompanyTile>();
 
@@ -91,14 +93,62 @@ public class Player extends GUI_Player {
         return position;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(int position, GUI_Field[] fields) {
         this.position = position;
+        getCar().setPosition(fields[position]);
+
     }
 
-    public boolean movePosition(int dieValue) {
+    public int getValue() {
+        // Calculate value based on the pawned value as that is the only reliable way to
+        // sell streets, houses etc.
+
+        int value = 0;
+
+        // Add companies
+        for (CompanyTile companyTile : companyTiles) {
+            value += companyTile.getPawnValue();
+        }
+
+        // Add Ships
+        for (ShipTile shipTile : shipTiles) {
+            value += shipTile.getPawnValue();
+        }
+
+        // Add streets
+        for (PropertyTile propertyTile : propertyTiles) {
+            value += propertyTile.getPawnValue();
+            // Selling the houses / hotel back to the bank halves the value
+            // A hotel is worth 5 houses
+            value += (propertyTile.getHouses() * propertyTile.getHousePrice()) / 2;
+        }
+
+        // Add the player's balance
+        value += getBalance();
+
+        return value;
+    }
+
+    public boolean movePosition(int dieValue, GUI_Field[] fields) {
         // Advance the position and loop correctly
-        int oldPosition = position;
-        position = (position + dieValue) % Constants.NUMBER_OF_FIELDS;
+        int oldPosition = this.position;
+        int currentPosition = this.position;
+        // int newPosition = (this.position + dieValue) % Constants.NUMBER_OF_FIELDS;
+
+        for (int index = 0; index <= dieValue; index++) {
+            currentPosition = (this.position + index) % Constants.NUMBER_OF_FIELDS;
+
+            getCar().setPosition(fields[currentPosition]);
+
+            try {
+                Thread.sleep(250);
+
+            } catch (Exception e) {
+                System.out.println("Error sleeping for animtion");
+            }
+
+        }
+        this.position = currentPosition;
 
         // Check if the start field has been passed
         if (position < oldPosition) {
