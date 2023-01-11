@@ -18,11 +18,9 @@ private int value;
         gui.displayChanceCard(description);
 
         for (Player player2 : players) {
-            player2.setBalance(player2.getBalance() - 1);
-            player.setBalance(player.getBalance() + 1);
-            if (player2.getBalance() < 0) {
-                return false;
-            }
+            player2.setBalance(player2.getBalance() - value);
+            player.setBalance(player.getBalance() + value);
+
         }
 
         return true;

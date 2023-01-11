@@ -194,7 +194,7 @@ public class Game {
         chances.add(new BirthdayChance(200,"Det er deres fødselsdag. Modtag af hver medspiller 200 kr"));
         chances.add(new BirthdayChance(500,"De har lagt penge ud til et sammenskudsgilde. Mærkværdigvis betaler alle straks. Modtag fra hver medspiller 500 kr."));
         chances.add(new BirthdayChance(500,"De skal holde familiefest og får et tilskud fra hver medspiller på 500 kr."));
-        chances.add(new PropertyPaymentChance(500,2000,"Oliepriserne er steget"));
+        chances.add(new PropertyPaymentChance(-500,-2000,"Oliepriserne er steget"));
         chances.add(new PaymentChance(500, "De skal holde familiefest og får et tilskud fra hver medspiller på 500 kr"));
         chances.add(new PaymentChance(500, "De har lagt penge ud til et sammenskudsgilde. Mærkværdigvis betaler alle straks. Modtag fra hver medspiller 500 kr."));
 
@@ -203,6 +203,7 @@ public class Game {
 
     private void prepareGame() {
         // Shuffle the chances
+
         Collections.shuffle(chances);
 
         ArrayList<String> names = new ArrayList<String>();
