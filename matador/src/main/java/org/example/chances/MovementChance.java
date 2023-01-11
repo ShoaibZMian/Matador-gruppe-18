@@ -24,7 +24,7 @@ public class MovementChance extends Chance {
             newPosition = newPosition + Constants.NUMBER_OF_FIELDS;
         }
 
-        player.setPosition(newPosition);
+        player.setPosition(newPosition, gui.getFields());
         return true;
     }
 

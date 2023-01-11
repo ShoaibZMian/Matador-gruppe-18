@@ -93,13 +93,16 @@ public class Player extends GUI_Player {
         return position;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(int position, GUI_Field[] fields) {
         this.position = position;
+        getCar().setPosition(fields[position]);
+
     }
 
     public int getValue() {
         // Calculate value based on the pawned value as that is the only reliable way to
         // sell streets, houses etc.
+
         int value = 0;
 
         // Add companies
@@ -114,10 +117,14 @@ public class Player extends GUI_Player {
 
         // Add streets
         for (PropertyTile propertyTile : propertyTiles) {
+            value += propertyTile.getPawnValue();
             // Selling the houses / hotel back to the bank halves the value
             // A hotel is worth 5 houses
             value += (propertyTile.getHouses() * propertyTile.getHousePrice()) / 2;
         }
+
+        // Add the player's balance
+        value += getBalance();
 
         return value;
     }
