@@ -45,16 +45,19 @@ public class PaymentTile extends Tile {
 
         // Pay the payment
         int value = 0;
+        int freeParkingAmount = 0;
         if (option == percentageString) {
             value = (player.getValue() * (100 - this.percentage)) / 100;
+            freeParkingAmount = player.getValue() - value;
 
         } else {
             value = player.getBalance() - this.amount;
+            freeParkingAmount = this.amount;
         }
 
         // Add the value to the free parking tile
         FreeParkingTile tile = (FreeParkingTile) game.getTile(Constants.FREE_PARKING_TILE);
-        tile.addBalance(Math.abs(value));
+        tile.addBalance(freeParkingAmount);
 
         player.setBalance(value);
 

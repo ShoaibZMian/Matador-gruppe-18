@@ -25,7 +25,6 @@ public class FreeParkingTile extends Tile {
         balance += value;
         // Update description
         this.guiField.setDescription(String.format(this.description, this.balance));
-        System.out.println("Adding balance " + Integer.toString(value));
     }
 
     @Override
