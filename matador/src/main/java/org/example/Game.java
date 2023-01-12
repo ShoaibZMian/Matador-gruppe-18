@@ -47,8 +47,9 @@ public class Game {
 
 		// Ensure that the number of players is valid
 		int numberOfPlayers = 0;
-		while (numberOfPlayers < 3 || numberOfPlayers > 6) {
-			numberOfPlayers = gui.getUserInteger("Indtast mængden af spillere (3-6).");
+		while (numberOfPlayers < Constants.MIN_PLAYERS || numberOfPlayers > Constants.MAX_PLAYERS) {
+			numberOfPlayers = gui.getUserInteger("Indtast mængden af spillere ("
+					+ Integer.toString(Constants.MIN_PLAYERS) + "-" + Integer.toString(Constants.MAX_PLAYERS) + ").");
 
 		}
 
@@ -64,6 +65,26 @@ public class Game {
 		gui.close();
 
 		return players;
+	}
+
+	public Player[] getPlayers() {
+		return this.players;
+	}
+
+	public GUI getGui() {
+		return this.gui;
+	}
+
+	public Tile[] getTiles() {
+		return this.tiles;
+	}
+
+	public ArrayList<Chance> getChances() {
+		return this.chances;
+	}
+
+	public Tile getTile(int id) {
+		return this.tiles[id];
 	}
 
 	private void startGame() {
@@ -232,9 +253,9 @@ public class Game {
 				"Tag med Mols-Linien, flyt brikken frem og hvis De passerer START indkassér da kr 4000."));
 		chances.add(new AbsoluteMovementChance(11,
 				"Ryk frem til Frederiksberg Allé. Hvis De passere START, indkasser da 4000 kr."));
-		chances.add(new AbsoluteMovementChance(30,
+		chances.add(new AbsoluteMovementChance(Constants.JAIL_TILE,
 				"Gå i fængsel, De indkasserer ikke 4000 kr for at passere start"));
-		chances.add(new AbsoluteMovementChance(30,
+		chances.add(new AbsoluteMovementChance(Constants.JAIL_TILE,
 				"Gå i fængsel, De indkasserer ikke 4000 kr for at passere start"));
 		chances.add(new BirthdayChance(200, "Det er deres fødselsdag. Modtag af hver medspiller 200 kr"));
 		chances.add(new BirthdayChance(500,
@@ -244,9 +265,9 @@ public class Game {
 						"De skal holde familiefest og får et tilskud fra hver medspiller på 500 kr."));
 		chances.add(new PropertyPaymentChance(500, 2000,
 				"Oliepriserne er steget, og De skal betale kr 500 pr hus og kr 2000 pr hotel"));
-		chances.add(new ShipMovementChance(new int[] { 5, 15, 25, 35 },
+		chances.add(new ShipMovementChance(Constants.SHIP_TILES,
 				"Ryk frem til det nærmeste rederi og betal ejeren to gange den leje han ellers er berettiget til, hvis selskabet ikke ejes af nogen kan De købe det af banken."));
-		chances.add(new ShipMovementChance(new int[] { 5, 15, 25, 35 },
+		chances.add(new ShipMovementChance(Constants.SHIP_TILES,
 				"Ryk frem til det nærmeste rederi og betal ejeren to gange den leje han ellers er berettiget til, hvis selskabet ikke ejes af nogen kan De købe det af banken."));
 
 		return chances;
@@ -309,23 +330,20 @@ public class Game {
 				}
 
 				// Execute tile action and check if the game is over.
-				if (!tiles[player.getPosition()].tileAction(player, players, chances, gui)) {
-					findLoser();
-					return;
-				}
+				tiles[player.getPosition()].tileAction(player, this);
 			}
 		}
 	}
 
-	private void findLoser() {
-		// Find the first player with a negative balance
-		for (Player player : players) {
-			if (player.getBalance() < 0) {
-				gui.showMessage(player.getName() + " er gået fallit og er ude af spillet.");
-				return;
-			}
-		}
-	}
+	// private void findLoser() {
+	// // Find the first player with a negative balance
+	// for (Player player : players) {
+	// if (player.getBalance() < 0) {
+	// gui.showMessage(player.getName() + " er gået fallit og er ude af spillet.");
+	// return;
+	// }
+	// }
+	// }
 
 	private boolean checkWin() {
 		// The player with most points wins

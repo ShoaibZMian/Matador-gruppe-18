@@ -13,7 +13,6 @@ import gui_fields.GUI_Field;
 import gui_fields.GUI_Player;
 
 public class Player extends GUI_Player {
-    private static Color[] COLORS = { Color.RED, Color.GREEN, Color.BLUE, Color.ORANGE, Color.PINK, Color.YELLOW };
 
     private int position = 0;
     private ArrayList<OutOfJailChance> outOfJailChances = new ArrayList<OutOfJailChance>();
@@ -31,7 +30,7 @@ public class Player extends GUI_Player {
 
     public Player(int id, String name) {
         super(name, Constants.STARTING_BALANCE,
-                new GUI_Car(COLORS[id], Color.WHITE, GUI_Car.Type.CAR, GUI_Car.Pattern.FILL));
+                new GUI_Car(Constants.PLAYER_COLORS[id], Color.WHITE, GUI_Car.Type.CAR, GUI_Car.Pattern.FILL));
 
     }
 

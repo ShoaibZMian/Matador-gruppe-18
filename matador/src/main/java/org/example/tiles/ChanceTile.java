@@ -3,6 +3,7 @@ package org.example.tiles;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import org.example.Game;
 import org.example.Player;
 import org.example.chances.Chance;
 import org.example.chances.OutOfJailChance;
@@ -20,14 +21,16 @@ public class ChanceTile extends Tile {
     }
 
     @Override
-    public boolean tileAction(Player player, Player[] players, ArrayList<Chance> chances, GUI gui) {
+    public void tileAction(Player player, Game game) {
         // Get the "top" chance card and place it at the bottom of the "pile"
+        ArrayList<Chance> chances = game.getChances();
+        GUI gui = game.getGui();
         Chance chance = chances.get(chances.size() - 1);
 
         // Stop the chanceAction from being executed immediately
         gui.showMessage(player.getName() + " landede på et prøv lykken felt");
         // Use the chance or save the get out of jail card
-        boolean result = chance.chanceAction(player, players, gui);
+        chance.chanceAction(player, game);
 
         // Remove the card from the pile
         chances.remove(chances.size() - 1);
@@ -40,7 +43,6 @@ public class ChanceTile extends Tile {
             chances.add(0, chance);
         }
 
-        return result;
     }
 
 }
