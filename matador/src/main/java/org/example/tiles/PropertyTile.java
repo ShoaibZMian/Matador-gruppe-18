@@ -1,7 +1,7 @@
 package org.example.tiles;
 
-import org.example.Constants;
-import org.example.Game;
+import gui_fields.GUI_Player;
+import org.apache.commons.lang3.tuple.Pair;
 import org.example.Player;
 
 import gui_fields.GUI_Ownable;
@@ -10,6 +10,10 @@ import gui_main.GUI;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class PropertyTile extends Tile {
     protected Player owner;
@@ -131,10 +135,62 @@ public class PropertyTile extends Tile {
             switch (option) {
                 case Constants.AUCTION:
                     // TODO Add auction
+
+// for loop igennem players
+                    int minBid = 0;
+                    int count = 0;
+
+                    ArrayList<Pair<Player,Integer>> bids = new ArrayList<Pair<Player,Integer>>();
+
+                    for (int i = 0; i < players.length ;i++) {
+                    //String option1 = gui.getUserButtonPressed("Vil du bud "+player.getName(),"BUD");
+
+                        if(!players[i].getName().equals(player.getName())){
+                            int bid = gui.getUserInteger("Indtast din bud " + players[i].getName());
+                            int finalI = i;
+                            bids.add(new Pair<Player, Integer>() {
+                                @Override
+                                public Player getLeft() {
+                                    return players[finalI];
+                                }
+
+                                @Override
+                                public Integer getRight() {
+                                    return bid;
+                                }
+
+                                @Override
+                                public Integer setValue(Integer value) {
+                                    return value;
+                                }
+                            });
+                        }
+
+                    }
+                    // list over the players who bid, sortet by highest bid
+                    List<Pair<Player,Integer>> bidsSorted = bids.stream()
+                            .sorted((f1, f2) -> Integer.compare(f2.getRight(), f1.getRight()))
+                            .collect(Collectors.toList());
+                    // Find the highest bidder
+                    int finalBid = bidsSorted.stream().findFirst().get().getRight();
+                    Player finalPlayer = bidsSorted.stream().findFirst().get().getLeft();
+                    // Show the name of player wich give the highest bid.
+                    finalPlayer.setBalance(finalPlayer.getBalance() - finalBid);
+                    street.setOwnerName(finalPlayer.getName());
+                    setOwner(finalPlayer);
+
+                    player.setBalance(player.getBalance() + finalBid);
+
+                    gui.showMessage(finalPlayer.getName() +" har købt grunden");
+
+
                     break;
 
                 case Constants.BUY:
                     buyAction(street, player);
+
+
+
                     break;
             }
         } else {
