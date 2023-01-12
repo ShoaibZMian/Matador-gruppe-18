@@ -1,5 +1,6 @@
 package org.example.chances;
 
+import org.example.Game;
 import org.example.Player;
 
 import gui_main.GUI;
@@ -19,7 +20,8 @@ public class PropertyPaymentChance extends Chance {
     }
 
     @Override
-    public boolean chanceAction(Player player, Player[] players, GUI gui) {
+    public void chanceAction(Player player, Game game) {
+        GUI gui = game.getGui();
         gui.displayChanceCard(description);
 
         int fine = 0;
@@ -41,6 +43,5 @@ public class PropertyPaymentChance extends Chance {
         gui.showMessage("Du skal betale " + Integer.toString(fine) + " kr da du ejer "
                 + Integer.toString(numberOfHouses) + " huse og " + Integer.toString(numberOfHotels) + " hoteller.");
         player.setBalance(player.getBalance() - fine);
-        return true;
     }
 }

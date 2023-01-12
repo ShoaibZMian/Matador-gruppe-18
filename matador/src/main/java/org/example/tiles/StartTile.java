@@ -1,13 +1,11 @@
 package org.example.tiles;
 
+import org.example.Game;
 import org.example.Player;
-import org.example.chances.Chance;
 
 import gui_fields.GUI_Start;
-import gui_main.GUI;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 public class StartTile extends Tile {
 
@@ -20,9 +18,8 @@ public class StartTile extends Tile {
     }
 
     @Override
-    public boolean tileAction(Player player, Player[] players, ArrayList<Chance> chances, GUI gui) {
-        gui.showMessage(player.getName() + " landede på " + this.title);
-        return true;
+    public void tileAction(Player player, Game game) {
+        game.getGui().showMessage(player.getName() + " landede på " + this.title);
     }
 
 }

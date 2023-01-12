@@ -2,6 +2,7 @@ package org.example.chances;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.example.Constants;
+import org.example.Game;
 import org.example.Player;
 
 import gui_main.GUI;
@@ -9,35 +10,30 @@ import gui_main.GUI;
 public class ShipMovementChance extends Chance {
     private int[] ships;
 
-
-    public ShipMovementChance( int[] ships, String description) {
+    public ShipMovementChance(int[] ships, String description) {
         this.description = description;
         this.ships = ships;
 
     }
 
     @Override
-    public boolean chanceAction(Player player, Player[] players, GUI gui) {
+    public void chanceAction(Player player, Game game) {
+        GUI gui = game.getGui();
         gui.displayChanceCard(description);
 
         int index = player.getPosition();
 
-        while (true){
-            if(ArrayUtils.contains(ships,index)){
+        while (true) {
+            if (ArrayUtils.contains(ships, index)) {
                 player.setPosition(index, gui.getFields());
-                return true;
+                return;
             }
             index++;
-            if (index == Constants.NUMBER_OF_FIELDS){
+            if (index == Constants.NUMBER_OF_FIELDS) {
                 index = 0;
             }
         }
 
-        }
-
-
-
-
     }
 
-
+}

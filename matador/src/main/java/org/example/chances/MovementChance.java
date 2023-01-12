@@ -1,6 +1,7 @@
 package org.example.chances;
 
 import org.example.Constants;
+import org.example.Game;
 import org.example.Player;
 
 import gui_main.GUI;
@@ -15,7 +16,8 @@ public class MovementChance extends Chance {
     }
 
     @Override
-    public boolean chanceAction(Player player, Player[] players, GUI gui) {
+    public void chanceAction(Player player, Game game) {
+        GUI gui = game.getGui();
         gui.displayChanceCard(description);
 
         // Find the correct new position
@@ -25,7 +27,6 @@ public class MovementChance extends Chance {
         }
 
         player.setPosition(newPosition, gui.getFields());
-        return true;
     }
 
 }
