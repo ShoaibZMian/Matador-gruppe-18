@@ -19,6 +19,7 @@ public class RaffleCup {
         for (int i = 0; i < Constants.NUMBER_OF_DICE; i++) {
 
             diceValues[0][i] = diceValues[1][i];
+            diceValues[1][i] = diceValues[2][i];
 
             dice[i].rollDice();
 
@@ -46,11 +47,24 @@ public class RaffleCup {
         return equal;
     }
 
+    // Check if two throws in a row are doubles
+    public boolean getEqualTwoTimes() {
+
+        for (int i = 2; i > 0; i--) {
+            // abort if the values checked still contain 0
+            if (diceValues[i][0] == 0 || !getAnyEqual(diceValues[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // Check if three throws in a row are doubles
     public boolean getEqualThreeTimes() {
 
         for (int i = 0; i < 3; i++) {
-            if (!getAnyEqual(diceValues[i])) {
+            // abort if the values checked still contain 0
+            if (diceValues[i][0] == 0 || !getAnyEqual(diceValues[i])) {
                 return false;
             }
         }
