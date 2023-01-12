@@ -85,7 +85,6 @@ public class PropertyTile extends Tile {
     // Calculate and pay rent
     public void PayRent(GUI gui, Player player, Player owner) {
         // Pay rent if not the owner
-        // TODO Check if the player has enough money or property value to pay rent
         gui.showMessage(
                 player.getName() + " landede på " + owner.getName() + "'s ejendom og skal betale en leje på "
                         + this.rent);
