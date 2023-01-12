@@ -3,6 +3,7 @@ package org.example.tiles;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import org.example.Constants;
 import org.example.Game;
 import org.example.Player;
 
@@ -43,12 +44,19 @@ public class PaymentTile extends Tile {
                 options.toArray(new String[options.size()]));
 
         // Pay the payment
+        int value = 0;
         if (option == percentageString) {
-            player.setBalance((player.getBalance() * (100 - this.percentage)) / 100);
-            ;
+            value = (player.getValue() * (100 - this.percentage)) / 100;
+
         } else {
-            player.setBalance(player.getBalance() - this.amount);
+            value = player.getBalance() - this.amount;
         }
+
+        // Add the value to the free parking tile
+        FreeParkingTile tile = (FreeParkingTile) game.getTile(Constants.FREE_PARKING_TILE);
+        tile.addBalance(Math.abs(value));
+
+        player.setBalance(value);
 
     }
 }

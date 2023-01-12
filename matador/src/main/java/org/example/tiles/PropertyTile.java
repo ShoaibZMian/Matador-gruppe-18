@@ -1,5 +1,6 @@
 package org.example.tiles;
 
+import org.example.Constants;
 import org.example.Game;
 import org.example.Player;
 
@@ -11,10 +12,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class PropertyTile extends Tile {
-
-    private static final String AUCTION = "Sæt grund på auktion";
-    private static final String BUY = "Køb grund";
-
     protected Player owner;
     protected String title;
     protected int price;
@@ -120,11 +117,11 @@ public class PropertyTile extends Tile {
             ArrayList<String> options = new ArrayList<String>();
 
             // Always add auction
-            options.add(AUCTION);
+            options.add(Constants.AUCTION);
 
             // Check if balance is high enough to buy the tile
             if (player.getBalance() >= this.price) {
-                options.add(BUY);
+                options.add(Constants.BUY);
             }
 
             // Display and get chosen option
@@ -133,11 +130,11 @@ public class PropertyTile extends Tile {
                     options.toArray(new String[options.size()]));
 
             switch (option) {
-                case AUCTION:
+                case Constants.AUCTION:
                     // TODO Add auction
                     break;
 
-                case BUY:
+                case Constants.BUY:
                     buyAction(street, player);
                     break;
             }

@@ -17,5 +17,8 @@ public class Constants {
     public static final int FREE_PARKING_TILE = 20;
     public static final int JAIL_TILE = 30;
     public static final int[] SHIP_TILES = new int[] { 5, 15, 25, 35 };
+    public static final String AUCTION = "Auktion";
+    public static final String BUY = "Køb";
+    public static final int SCHOLARSHIP_LIMIT = 15000;
 
 }

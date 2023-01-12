@@ -9,22 +9,23 @@ import gui_fields.GUI_Refuge;
 
 public class FreeParkingTile extends Tile {
 
-    private String title;
-    private String description;
+    private String title = "Parkering";
+    private String description = "AcceptCard. Gør noget ved dine drømme. Modtag %s kr ved at lande her.";
 
     private int balance = 0;
 
     public FreeParkingTile(int id) {
         this.id = id;
-        this.title = "Parkering";
-        this.description = "AcceptCard. Gør noget ved dine drømme.";
-
-        this.guiField = new GUI_Refuge("default", this.title, this.title, this.description, Color.WHITE, Color.BLACK);
+        this.guiField = new GUI_Refuge("default", this.title, this.title, String.format(this.description, this.balance),
+                Color.WHITE, Color.BLACK);
     }
 
     public void addBalance(int value) {
         // Add an amount to the free parking balance
         balance += value;
+        // Update description
+        this.guiField.setDescription(String.format(this.description, this.balance));
+        System.out.println("Adding balance " + Integer.toString(value));
     }
 
     @Override
