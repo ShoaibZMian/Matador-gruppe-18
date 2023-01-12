@@ -298,25 +298,46 @@ public class Game {
 		return fields;
 	}
 
-	private void updateGui(Player player) {
-		// Update dice
-		int[] diceValues = player.getRaffleCup().getValues();
-		gui.setDice(diceValues[0], 1, 2, diceValues[1], 2, 2);
-	}
-
 	private void gameLoop() {
 		boolean passedStart = false;
 		GUI_Field[] fields = gui.getFields();
 
+		RaffleCup raffleCup;
+		String option;
+
 		while (true) {
 			for (Player player : players) {
-				RaffleCup raffleCup = player.getRaffleCup();
+				raffleCup = player.getRaffleCup();
 
-				// Show the players turn and roll the dice (Wait for user input)
-				gui.showMessage("Det er " + player.getName() + "'s tur. Kast med terningerne");
+				while (true) {
+					option = gui.getUserButtonPressed("Det er " + player.getName() + "'s tur.",
+							generateOptions(player));
 
-				raffleCup.rollCup();
-				updateGui(player);
+					switch (option) {
+						// Pawn tiles
+						case Constants.PAWN_OPTIONS:
+							pawnTiles(player);
+							break;
+
+						// Roll Dice
+						case Constants.ROLL:
+							rollDice(raffleCup, player);
+							break;
+
+						// Sell tiles to other players
+						case Constants.SELL:
+
+							break;
+
+						// Build houses / hotels
+						case Constants.BUILD:
+							break;
+					}
+					// Remove any choices once roll has been chosen
+					if (option == Constants.ROLL) {
+						break;
+					}
+				}
 
 				// Move spaces.
 				passedStart = player.movePosition(raffleCup.getValue(), fields);
@@ -326,13 +347,97 @@ public class Game {
 					player.setBalance(player.getBalance() + Constants.PASSED_START);
 					gui.showMessage(player.getName() + " har passeret start og får "
 							+ Integer.toString(Constants.PASSED_START));
-
 				}
 
 				// Execute tile action and check if the game is over.
 				tiles[player.getPosition()].tileAction(player, this);
 			}
 		}
+	}
+
+	private void pawnTiles(Player player) {
+		ArrayList<PropertyTile> ownedTiles = player.getOwnedTiles();
+
+		ArrayList<String> options = new ArrayList<String>();
+		for (PropertyTile propertyTile : ownedTiles) {
+			options.add(propertyTile.getTitle());
+		}
+		options.add(Constants.CANCEL);
+
+		String option = gui.getUserButtonPressed("Håndter pantsætning. alle huse bliver solgt ved pantsætning.",
+				options.toArray(new String[options.size()]));
+
+		// Return to options
+		if (option == Constants.CANCEL) {
+			return;
+		}
+
+		// Pawn or unpawn
+		for (PropertyTile propertyTile : ownedTiles) {
+			if (propertyTile.getTitle() == option) {
+				option = gui.getUserButtonPressed(option, Constants.PAWN,
+						Constants.PAY_PAWN, Constants.CANCEL);
+				switch (option) {
+					case Constants.PAWN:
+						propertyTile.pawn();
+						break;
+
+					case Constants.PAY_PAWN:
+						propertyTile.unPawn();
+						break;
+
+					case Constants.CANCEL:
+						return;
+				}
+			}
+		}
+	}
+
+	private void rollDice(RaffleCup raffleCup, Player player) {
+		raffleCup.rollCup();
+		int[] diceValues = player.getRaffleCup().getValues();
+		gui.setDice(diceValues[0], 1, 2, diceValues[1], 2, 2);
+	}
+
+	private void sellTiles() {
+	}
+
+	private void buildHouses() {
+	}
+
+	private String[] generateOptions(Player player) {
+		// Add the available options
+		ArrayList<String> options = new ArrayList<String>();
+
+		// Roll Dice
+		options.add(Constants.ROLL);
+
+		// Pawn tiles and sell to other player
+		ArrayList<PropertyTile> ownedTiles = player.getOwnedTiles();
+		if (ownedTiles.size() > 0) {
+			options.add(Constants.PAWN_OPTIONS);
+			options.add(Constants.SELL);
+		}
+
+		// Build houses
+		for (Color color : Constants.TILE_COLORS) {
+			if (hasAllColors(ownedTiles, color)) {
+				// TODO Check buildability
+				options.add(Constants.BUILD);
+			}
+		}
+
+		return options.toArray(new String[options.size()]);
+	}
+
+	private boolean hasAllColors(ArrayList<PropertyTile> ownedTiles, Color color) {
+		for (Tile tile : this.tiles) {
+			if (tile.getColor() == color && ownedTiles.contains(tile)) {
+				continue;
+			}
+			return false;
+		}
+		return true;
 	}
 
 	// private void findLoser() {

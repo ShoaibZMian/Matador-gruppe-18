@@ -12,6 +12,8 @@ public class Constants {
     public static final int STARTING_BALANCE = 30000;
     public static Color[] PLAYER_COLORS = { Color.RED, Color.GREEN, Color.BLUE, Color.ORANGE, Color.PINK,
             Color.YELLOW };
+    public static Color[] TILE_COLORS = { Color.BLUE, Color.ORANGE, Color.YELLOW, Color.RED, Color.GRAY, Color.WHITE,
+            PURPLE };
     public static final int NUMBER_OF_DICE = 2;
     public static final int NUMBER_OF_SIDES = 6;
     public static final int FREE_PARKING_TILE = 20;
@@ -20,5 +22,14 @@ public class Constants {
     public static final String AUCTION = "Auktion";
     public static final String BUY = "Køb";
     public static final int SCHOLARSHIP_LIMIT = 15000;
+
+    public static final String PAWN_OPTIONS = "Håndter pantsætning";
+    public static final String CANCEL = "Annuller";
+    public static final String PAY_PAWN = "Ophæv pantsætning";
+    public static final String PAWN = "Pantsæt";
+
+    public static final String ROLL = "Kast med terninger";
+    public static final String SELL = "Sælg til anden spiller";
+    public static final String BUILD = "Køb huse / hoteller";
 
 }

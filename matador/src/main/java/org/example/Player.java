@@ -8,6 +8,7 @@ import org.example.chances.OutOfJailChance;
 import org.example.tiles.CompanyTile;
 import org.example.tiles.PropertyTile;
 import org.example.tiles.ShipTile;
+import org.example.tiles.Tile;
 
 import gui_fields.GUI_Car;
 import gui_fields.GUI_Field;
@@ -92,6 +93,14 @@ public class Player extends GUI_Player {
 
     public void removeCompanyTile(CompanyTile companyTile) {
         this.companyTiles.remove(companyTile);
+    }
+
+    public ArrayList<PropertyTile> getOwnedTiles() {
+        ArrayList<PropertyTile> ownedTiles = new ArrayList<PropertyTile>();
+        ownedTiles.addAll(this.companyTiles);
+        ownedTiles.addAll(this.shipTiles);
+        ownedTiles.addAll(this.propertyTiles);
+        return ownedTiles;
     }
 
     public RaffleCup getRaffleCup() {

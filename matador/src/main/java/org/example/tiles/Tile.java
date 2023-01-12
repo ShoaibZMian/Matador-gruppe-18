@@ -14,11 +14,15 @@ abstract public class Tile {
     protected int id;
 
     public GUI_Field getGuiField() {
-        return guiField;
+        return this.guiField;
     }
 
     public int getId() {
-        return id;
+        return this.id;
+    }
+
+    public Color getColor() {
+        return this.color;
     }
 
     abstract public void tileAction(Player player, Game game);
