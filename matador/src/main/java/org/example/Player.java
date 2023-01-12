@@ -167,4 +167,8 @@ public class Player extends GUI_Player {
         return false;
     }
 
+    public void movePositionToJail(GUI_Field[] fields) {
+        getCar().setPosition(fields[30]);
+    }
+
 }

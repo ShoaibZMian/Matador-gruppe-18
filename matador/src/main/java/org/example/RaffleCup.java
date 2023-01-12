@@ -50,26 +50,30 @@ public class RaffleCup {
     // Check if two throws in a row are doubles
     public boolean getEqualTwoTimes() {
 
-        for (int i = 2; i > 0; i--) {
-            // abort if the values checked still contain 0
-            if (diceValues[i][0] == 0 || !getAnyEqual(diceValues[i])) {
-                return false;
+        int count = 0;
+
+        for (int i = 0; i < 2; i++) {
+            if (getAnyEqual(diceValues[i])) {
+                count++;
+
             }
         }
-        return true;
+        return count == 2;
     }
 
     // Check if three throws in a row are doubles
     public boolean getEqualThreeTimes() {
+        int count = 0;
 
         for (int i = 0; i < 3; i++) {
-            // abort if the values checked still contain 0
-            if (diceValues[i][0] == 0 || !getAnyEqual(diceValues[i])) {
-                return false;
+            if (getAnyEqual(diceValues[i])) {
+                count++;
+
             }
         }
-        return true;
+        return count == 3;
     }
+
 
     // Return the total value of the die
     public int getValue() {
