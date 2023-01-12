@@ -310,29 +310,48 @@ public class Game {
 
 		while (true) {
 			for (Player player : players) {
-				RaffleCup raffleCup = player.getRaffleCup();
-
-				// Show the players turn and roll the dice (Wait for user input)
-				gui.showMessage("Det er " + player.getName() + "'s tur. Kast med terningerne");
-
-				raffleCup.rollCup();
-				updateGui(player);
-
-				// Move spaces.
-				passedStart = player.movePosition(raffleCup.getValue(), fields);
-
-				// Add 4000 kr if the player has landed or passed start
-				if (passedStart) {
-					player.setBalance(player.getBalance() + Constants.PASSED_START);
-					gui.showMessage(player.getName() + " har passeret start og får "
-							+ Integer.toString(Constants.PASSED_START));
-
+				boolean reRun = playerGameLoop(passedStart, fields, player);
+				if(reRun){
+				boolean reRunAgain = playerGameLoop(passedStart, fields, player);
+					if(reRunAgain){
+						RaffleCup raffleCup = player.getRaffleCup();
+						raffleCup.rollCup();
+						if(raffleCup.getAnyEqual(raffleCup.getValues())){
+							// Go to jail
+							player.movePositionToJail(fields);
+						}
+					}
 				}
-
-				// Execute tile action and check if the game is over.
-				tiles[player.getPosition()].tileAction(player, this);
 			}
 		}
+	}
+
+	private boolean playerGameLoop(boolean passedStart, GUI_Field[] fields, Player player) {
+		RaffleCup raffleCup = player.getRaffleCup();
+
+		// Show the players turn and roll the dice (Wait for user input)
+		gui.showMessage("Det er " + player.getName() + "'s tur. Kast med terningerne");
+
+		raffleCup.rollCup();
+		updateGui(player);
+
+		// Move spaces.
+		passedStart = player.movePosition(raffleCup.getValue(), fields);
+
+		// Add 4000 kr if the player has landed or passed start
+		if (passedStart) {
+			player.setBalance(player.getBalance() + Constants.PASSED_START);
+			gui.showMessage(player.getName() + " har passeret start og får "
+					+ Integer.toString(Constants.PASSED_START));
+
+		}
+
+		// Execute tile action and check if the game is over.
+		tiles[player.getPosition()].tileAction(player, this);
+
+		boolean reRun = false;
+		reRun = raffleCup.getAnyEqual(raffleCup.getValues());
+		return reRun;
 	}
 
 	// private void findLoser() {
