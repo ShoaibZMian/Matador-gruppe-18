@@ -12,6 +12,7 @@ public class OutOfJailChance extends Chance {
     @Override
     public void chanceAction(Player player, Game game) {
         game.getGui().displayChanceCard(description);
+        player.addGetOutOfJailChance(this);
     }
 
 }
