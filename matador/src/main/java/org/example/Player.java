@@ -3,6 +3,7 @@ package org.example;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import org.example.chances.Chance;
 import org.example.chances.OutOfJailChance;
 import org.example.tiles.CompanyTile;
 import org.example.tiles.PropertyTile;
@@ -35,10 +36,19 @@ public class Player extends GUI_Player {
     }
 
     public boolean getOfJailChance() {
-        // If available, then get out of jail and remove card
-        // TODO Add chance card to the bottom of the pile again when used
         if (this.outOfJailChances.size() >= 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean useOfJailChance(Game game) {
+        // If available, then get out of jail and remove card
+        if (getOfJailChance()) {
             this.outOfJailChances.remove(this.outOfJailChances.size() - 1);
+            Chance chance = new OutOfJailChance(
+                    "I anledning af kongens fødselsdag benådes De herved for fængsel. Dette kort kan opbevares indtil De får brug for det, eller De kan sælge det");
+            game.getChances().add(0, chance);
             return true;
         }
         return false;
