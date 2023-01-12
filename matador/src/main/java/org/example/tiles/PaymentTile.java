@@ -3,11 +3,10 @@ package org.example.tiles;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import org.example.Game;
 import org.example.Player;
-import org.example.chances.Chance;
 
 import gui_fields.GUI_Refuge;
-import gui_main.GUI;
 
 public class PaymentTile extends Tile {
 
@@ -29,7 +28,7 @@ public class PaymentTile extends Tile {
     }
 
     @Override
-    public boolean tileAction(Player player, Player[] players, ArrayList<Chance> chances, GUI gui) {
+    public void tileAction(Player player, Game game) {
         ArrayList<String> options = new ArrayList<String>();
         options.add(Integer.toString(amount));
 
@@ -40,7 +39,7 @@ public class PaymentTile extends Tile {
         }
 
         // Get selected option
-        String option = gui.getUserButtonPressed(player.getName() + " landede på " + this.description,
+        String option = game.getGui().getUserButtonPressed(player.getName() + " landede på " + this.description,
                 options.toArray(new String[options.size()]));
 
         // Pay the payment
@@ -51,6 +50,5 @@ public class PaymentTile extends Tile {
             player.setBalance(player.getBalance() - this.amount);
         }
 
-        return true;
     }
 }

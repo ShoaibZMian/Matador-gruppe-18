@@ -1,7 +1,7 @@
 package org.example.tiles;
 
+import org.example.Game;
 import org.example.Player;
-import org.example.chances.Chance;
 
 import gui_fields.GUI_Ownable;
 import gui_fields.GUI_Street;
@@ -108,9 +108,10 @@ public class PropertyTile extends Tile {
     }
 
     @Override
-    public boolean tileAction(Player player, Player[] players, ArrayList<Chance> chances, GUI gui) {
+    public void tileAction(Player player, Game game) {
 
         GUI_Ownable street = (GUI_Ownable) guiField;
+        GUI gui = game.getGui();
 
         // If the street is unowned
         if (this.owner == null) {
@@ -149,6 +150,5 @@ public class PropertyTile extends Tile {
                 PayRent(gui, player, owner);
             }
         }
-        return true;
     }
 }

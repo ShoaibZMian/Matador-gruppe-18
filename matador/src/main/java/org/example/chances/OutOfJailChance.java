@@ -1,8 +1,7 @@
 package org.example.chances;
 
+import org.example.Game;
 import org.example.Player;
-
-import gui_main.GUI;
 
 public class OutOfJailChance extends Chance {
 
@@ -11,9 +10,8 @@ public class OutOfJailChance extends Chance {
     }
 
     @Override
-    public boolean chanceAction(Player player, Player[] players, GUI gui) {
-        gui.displayChanceCard(description);
-        return true;
+    public void chanceAction(Player player, Game game) {
+        game.getGui().displayChanceCard(description);
     }
 
 }

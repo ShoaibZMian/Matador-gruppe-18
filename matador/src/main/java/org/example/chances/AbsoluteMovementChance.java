@@ -1,5 +1,6 @@
 package org.example.chances;
 
+import org.example.Game;
 import org.example.Player;
 
 import gui_main.GUI;
@@ -14,7 +15,8 @@ public class AbsoluteMovementChance extends Chance {
     }
 
     @Override
-    public boolean chanceAction(Player player, Player[] players, GUI gui) {
+    public void chanceAction(Player player, Game game) {
+        GUI gui = game.getGui();
         gui.displayChanceCard(description);
 
         // Check if the absolute position is the Start tile. If so,
@@ -23,6 +25,5 @@ public class AbsoluteMovementChance extends Chance {
             player.setBalance(player.getBalance() + 2);
         }
         player.setPosition(tileId, gui.getFields());
-        return true;
     }
 }

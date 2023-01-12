@@ -1,6 +1,6 @@
 package org.example.chances;
 
-import gui_main.GUI;
+import org.example.Game;
 import org.example.Player;
 
 public class MonopolyScholarShipChance extends Chance {
@@ -13,11 +13,10 @@ public class MonopolyScholarShipChance extends Chance {
     }
 
     @Override
-    public boolean chanceAction(Player player, Player[] players, GUI gui) {
+    public void chanceAction(Player player, Game game) {
         // TODO Check if value is not above 15000
-        gui.displayChanceCard(description);
+        game.getGui().displayChanceCard(description);
         player.setBalance(player.getBalance() + bonusValue);
-        return true;
     }
 
 }
