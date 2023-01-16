@@ -28,15 +28,24 @@ public class ShipTile extends PropertyTile {
     // Update rent based on owners owned ShipTiles
     @Override
     public void payRent(GUI gui, Player player, Player owner) {
-        int ownedShips = owner.getShipTiles().size();
-        int rent = rentPrices[ownedShips - 1];
+        if (owner.getInJail()) {
+            gui.showMessage(
+                    player.getName() + " landede på " + owner.getName()
+                            + "'s rederi og skal ikke betale leje da de er i fængsel");
 
-        gui.showMessage(
-                player.getName() + " landede på " + owner.getName()
-                        + "'s rederi og skal betale en leje på "
-                        + Integer.toString(rent));
-        player.setBalance(player.getBalance() - this.rent);
-        owner.setBalance(owner.getBalance() + this.rent);
+        } else {
+            int ownedShips = owner.getShipTiles().size();
+            int rent = rentPrices[ownedShips - 1];
+
+            gui.showMessage(
+                    player.getName() + " landede på " + owner.getName()
+                            + "'s rederi og skal betale en leje på "
+                            + Integer.toString(rent));
+            player.setBalance(player.getBalance() - this.rent);
+            owner.setBalance(owner.getBalance() + this.rent);
+
+        }
+
     }
 
 }

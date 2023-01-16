@@ -67,6 +67,10 @@ public class PropertyTile extends Tile {
         return housePrice;
     }
 
+    public boolean getPawned() {
+        return this.pawned;
+    }
+
     // Handle houses and hotels, where a hotel is simply 5 houses in the logic
     public void setHouses(int houses) {
         this.houses = houses;
@@ -92,12 +96,19 @@ public class PropertyTile extends Tile {
 
     // Calculate and pay rent
     public void payRent(GUI gui, Player player, Player owner) {
-        // Pay rent if not the owner
-        gui.showMessage(
-                player.getName() + " landede på " + owner.getName() + "'s ejendom og skal betale en leje på "
-                        + this.rent);
-        player.setBalance(player.getBalance() - this.rent);
-        owner.setBalance(owner.getBalance() + this.rent);
+        if (owner.getInJail()) {
+            gui.showMessage(
+                    player.getName() + " landede på " + owner.getName()
+                            + "'s ejendom og skal ikke betale leje da de er i fængsel");
+        } else {
+            // Pay rent if not the owner
+            gui.showMessage(
+                    player.getName() + " landede på " + owner.getName() + "'s ejendom og skal betale en leje på "
+                            + this.rent);
+            player.setBalance(player.getBalance() - this.rent);
+            owner.setBalance(owner.getBalance() + this.rent);
+        }
+
     }
 
     public void buyAction(GUI_Ownable street, Player player) {
@@ -118,18 +129,18 @@ public class PropertyTile extends Tile {
     }
 
     public void pawn() {
+        sellHouses();
         owner.setBalance(this.pawnValue + owner.getBalance());
         sellHouses();
         this.pawned = true;
     }
 
     public void unPawn() {
-        owner.setBalance(owner.getBalance() - (int) this.pawnValue);
+        owner.setBalance(owner.getBalance() - this.pawnValue - (int) (0.1 * this.pawnValue));
         this.pawned = false;
     }
 
     private void auctionAction(GUI_Ownable street, Game game) {
-        Player[] players = game.getPlayers();
         GUI gui = game.getGui();
         ArrayList<Pair<Player, Integer>> bids = new ArrayList<Pair<Player, Integer>>();
 
@@ -138,7 +149,7 @@ public class PropertyTile extends Tile {
             bids.add(new Pair<Player, Integer>() {
                 @Override
                 public Player getLeft() {
-                    return players[players.length - 1];
+                    return player;
                 }
 
                 @Override
