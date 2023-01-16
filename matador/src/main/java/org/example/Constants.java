@@ -21,4 +21,10 @@ public class Constants {
     public static final String BUY = "Køb";
     public static final int SCHOLARSHIP_LIMIT = 15000;
 
+    // Jail tile
+    public static final int JAIL_FINE = 1000;
+    public static final String FINE = "Betal 1000kr";
+    public static final String ROLL = "Rul med terninger";
+    public static final String OUT_OF_JAIL_CHANCE = "Brug chancekort";
+
 }
