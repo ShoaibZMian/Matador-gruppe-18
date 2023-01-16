@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+
 public class PropertyTile extends Tile {
 
     private static final String AUCTION = "Sæt grund på auktion";
