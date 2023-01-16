@@ -15,6 +15,7 @@ import gui_fields.GUI_Player;
 
 public class Player extends GUI_Player {
 
+    private int inJail = 0;
     private int position = 0;
     private ArrayList<OutOfJailChance> outOfJailChances = new ArrayList<OutOfJailChance>();
 
@@ -42,16 +43,13 @@ public class Player extends GUI_Player {
         return false;
     }
 
-    public boolean useOfJailChance(Game game) {
-        // If available, then get out of jail and remove card
-        if (getOfJailChance()) {
-            this.outOfJailChances.remove(this.outOfJailChances.size() - 1);
-            Chance chance = new OutOfJailChance(
-                    "I anledning af kongens fødselsdag benådes De herved for fængsel. Dette kort kan opbevares indtil De får brug for det, eller De kan sælge det");
-            game.getChances().add(0, chance);
-            return true;
-        }
-        return false;
+    public void useOfJailChance(Game game) {
+        // Get out of jail and remove card
+        this.outOfJailChances.remove(this.outOfJailChances.size() - 1);
+        Chance chance = new OutOfJailChance(
+                "I anledning af kongens fødselsdag benådes De herved for fængsel. Dette kort kan opbevares indtil De får brug for det, eller De kan sælge det");
+        game.getChances().add(0, chance);
+        this.inJail = 0;
     }
 
     public void addGetOutOfJailChance(OutOfJailChance ofJailChance) {
@@ -106,6 +104,14 @@ public class Player extends GUI_Player {
         this.position = position;
         getCar().setPosition(fields[position]);
 
+    }
+
+    public int getInJail() {
+        return this.inJail;
+    }
+
+    public void setInJail(int inJail) {
+        this.inJail = inJail;
     }
 
     public int getValue() {

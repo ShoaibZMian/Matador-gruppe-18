@@ -96,24 +96,14 @@ public class Game {
 
 		// Create the Tile array
 		this.tiles = generateTiles();
-
-		// this.tiles = new Tile[40];
-
-		// for (int index = 0; index < 40; index++) {
-		// this.tiles[index]=new ChanceTile(index);
-		// this.tiles[index] = new CompanyTile(index, "Tuborg Squash", Color.RED, 3000,
-		// new int[] { 100, 200 });
+		// for (int index = 10; index < 40; index++) {
+		// this.tiles[index] = new GoToJailTile(index);
 		// }
 
 		// Create the chance ArrayList
 		this.chances = generateChances();
 		// this.chances = new ArrayList<Chance>();
-		// chances.add(new ShipMovementChance(new int[]{5,15,25,35}, "Ryk til nærmeste
-		// rederi"));
-		// chances.add(new AbsoluteMovementChance(32,
-		// "Ryk frem til Vimmelskaftet, hvis de passerer start indkasser da kr 4000"));
-		// chances.add(new AbsoluteMovementChance(19,
-		// "Ryk frem til Strandvejen. Hvis De passere START, indkasser da 4000 kr."));
+		// chances.add(new OutOfJailChance("null"));
 
 		// Start the GUI
 		this.gui = new GUI(getFields(), Constants.LIGHT_BLUE);
@@ -311,12 +301,12 @@ public class Game {
 		while (true) {
 			for (Player player : players) {
 				boolean reRun = playerGameLoop(passedStart, fields, player);
-				if(reRun){
-				boolean reRunAgain = playerGameLoop(passedStart, fields, player);
-					if(reRunAgain){
+				if (reRun) {
+					boolean reRunAgain = playerGameLoop(passedStart, fields, player);
+					if (reRunAgain) {
 						RaffleCup raffleCup = player.getRaffleCup();
 						raffleCup.rollCup();
-						if(raffleCup.getAnyEqual(raffleCup.getValues())){
+						if (raffleCup.getAnyEqual(raffleCup.getValues())) {
 							// Go to jail
 							player.movePositionToJail(fields);
 						}
@@ -332,18 +322,20 @@ public class Game {
 		// Show the players turn and roll the dice (Wait for user input)
 		gui.showMessage("Det er " + player.getName() + "'s tur. Kast med terningerne");
 
-		raffleCup.rollCup();
-		updateGui(player);
+		// Skip movement if the player is in jail
+		if (player.getInJail() == 0) {
+			raffleCup.rollCup();
+			updateGui(player);
 
-		// Move spaces.
-		passedStart = player.movePosition(raffleCup.getValue(), fields);
+			// Move spaces.
+			passedStart = player.movePosition(raffleCup.getValue(), fields);
 
-		// Add 4000 kr if the player has landed or passed start
-		if (passedStart) {
-			player.setBalance(player.getBalance() + Constants.PASSED_START);
-			gui.showMessage(player.getName() + " har passeret start og får "
-					+ Integer.toString(Constants.PASSED_START));
-
+			// Add 4000 kr if the player has landed or passed start
+			if (passedStart) {
+				player.setBalance(player.getBalance() + Constants.PASSED_START);
+				gui.showMessage(player.getName() + " har passeret start og får "
+						+ Integer.toString(Constants.PASSED_START));
+			}
 		}
 
 		// Execute tile action and check if the game is over.
