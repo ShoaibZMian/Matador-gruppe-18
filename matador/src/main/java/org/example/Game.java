@@ -96,24 +96,14 @@ public class Game {
 
 		// Create the Tile array
 		this.tiles = generateTiles();
-
-		// this.tiles = new Tile[40];
-
-		// for (int index = 0; index < 40; index++) {
-		// this.tiles[index]=new ChanceTile(index);
-		// this.tiles[index] = new CompanyTile(index, "Tuborg Squash", Color.RED, 3000,
-		// new int[] { 100, 200 });
+		// for (int index = 10; index < 40; index++) {
+		// this.tiles[index] = new GoToJailTile(index);
 		// }
 
 		// Create the chance ArrayList
 		this.chances = generateChances();
 		// this.chances = new ArrayList<Chance>();
-		// chances.add(new ShipMovementChance(new int[]{5,15,25,35}, "Ryk til nærmeste
-		// rederi"));
-		// chances.add(new AbsoluteMovementChance(32,
-		// "Ryk frem til Vimmelskaftet, hvis de passerer start indkasser da kr 4000"));
-		// chances.add(new AbsoluteMovementChance(19,
-		// "Ryk frem til Strandvejen. Hvis De passere START, indkasser da 4000 kr."));
+		// chances.add(new OutOfJailChance("null"));
 
 		// Start the GUI
 		this.gui = new GUI(getFields(), Constants.LIGHT_BLUE);
@@ -122,7 +112,7 @@ public class Game {
 
 		gameLoop();
 
-		checkWin();
+		// checkWin();
 	}
 
 	private Tile[] generateTiles() {
@@ -299,61 +289,165 @@ public class Game {
 	}
 
 	private void gameLoop() {
-		boolean passedStart = false;
 		GUI_Field[] fields = gui.getFields();
-
 		RaffleCup raffleCup;
-		String option;
 
 		while (true) {
 			for (Player player : players) {
 				raffleCup = player.getRaffleCup();
 
-				while (true) {
-					option = gui.getUserButtonPressed("Det er " + player.getName() + "'s tur.",
-							generateOptions(player));
-
-					switch (option) {
-						// Pawn tiles
-						case Constants.PAWN_OPTIONS:
-							pawnTiles(player);
-							break;
-
-						// Roll Dice
-						case Constants.ROLL:
-							rollDice(raffleCup, player);
-							break;
-
-						// Sell tiles to other players
-						case Constants.SELL:
-
-							break;
-
-						// Build houses / hotels
-						case Constants.BUILD:
-							break;
-					}
-					// Remove any choices once roll has been chosen
-					if (option == Constants.ROLL) {
+				while (playerGameTurn(fields, player)) {
+					if (raffleCup.getEqualThreeTimes()) {
+						player.setPosition(Constants.JAIL_TILE, fields);
 						break;
 					}
 				}
-
-				// Move spaces.
-				passedStart = player.movePosition(raffleCup.getValue(), fields);
-
-				// Add 4000 kr if the player has landed or passed start
-				if (passedStart) {
-					player.setBalance(player.getBalance() + Constants.PASSED_START);
-					gui.showMessage(player.getName() + " har passeret start og får "
-							+ Integer.toString(Constants.PASSED_START));
-				}
-
-				// Execute tile action and check if the game is over.
-				tiles[player.getPosition()].tileAction(player, this);
 			}
 		}
 	}
+
+	private boolean playerGameTurn(GUI_Field[] fields, Player player) {
+
+		RaffleCup raffleCup = player.getRaffleCup();
+		String option;
+		boolean passedStart = false;
+
+		option = gui.getUserButtonPressed("Det er " + player.getName() + "'s tur.",
+				generateOptions(player));
+
+		// Skip movement if the player is in jail
+
+		if (player.getInJail() == 0) {
+
+			do {
+				switch (option) {
+					// Pawn tiles
+					case Constants.PAWN_OPTIONS:
+						pawnTiles(player);
+						break;
+
+					// Roll Dice
+					case Constants.ROLL:
+						rollDice(raffleCup, player);
+						break;
+
+					// Sell tiles to other players
+					case Constants.SELL:
+						break;
+
+					// Build houses / hotels
+					case Constants.BUILD:
+						break;
+				}
+			} while (option != Constants.ROLL);
+
+			// Remove any choices once roll has been chosen
+			// if (option == Constants.ROLL) {
+			// break;
+			// }
+
+			// Move spaces.
+			passedStart = player.movePosition(raffleCup.getValue(), fields);
+
+			// Add 4000 kr if the player has landed or passed start
+			if (passedStart) {
+				player.setBalance(player.getBalance() + Constants.PASSED_START);
+				gui.showMessage(player.getName() + " har passeret start og får "
+						+ Integer.toString(Constants.PASSED_START));
+			}
+		}
+		// Execute tile action
+		tiles[player.getPosition()].tileAction(player, this);
+
+		return raffleCup.getAnyEqual(raffleCup.getValues());
+	}
+
+	// private void pawnTiles(Player player) {
+	// ArrayList<PropertyTile> ownedTiles = player.getOwnedTiles();
+
+	// ArrayList<String> options = new ArrayList<String>();
+	// for (PropertyTile propertyTile : ownedTiles) {
+	// options.add(propertyTile.getTitle());
+	// }
+	// options.add(Constants.CANCEL);
+
+	// String option = gui.getUserButtonPressed("Håndter pantsætning. alle huse
+	// bliver solgt ved pantsætning.",
+	// options.toArray(new String[options.size()]));
+
+	// // Return to options
+	// if (option == Constants.CANCEL) {
+	// return;
+	// }
+
+	// // Pawn or unpawn
+	// for (PropertyTile propertyTile : ownedTiles) {
+	// if (propertyTile.getTitle() == option) {
+	// option = gui.getUserButtonPressed(option, Constants.PAWN,
+	// Constants.PAY_PAWN, Constants.CANCEL);
+	// switch (option) {
+	// case Constants.PAWN:
+	// propertyTile.pawn();
+	// break;
+
+	// case Constants.PAY_PAWN:
+	// propertyTile.unPawn();
+	// break;
+
+	// case Constants.CANCEL:
+	// return;
+	// }
+	// }
+	// }
+	// }
+
+	// private void rollDice(RaffleCup raffleCup, Player player) {
+	// raffleCup.rollCup();
+	// int[] diceValues = player.getRaffleCup().getValues();
+	// gui.setDice(diceValues[0], 1, 2, diceValues[1], 2, 2);
+	// }
+
+	// private void sellTiles() {
+	// }
+
+	// private void buildHouses() {
+	// }
+
+	// private String[] generateOptions(Player player) {
+	// // Add the available options
+	// ArrayList<String> options = new ArrayList<String>();
+
+	// // Roll Dice
+	// options.add(Constants.ROLL);
+
+	// // Pawn tiles and sell to other player
+	// ArrayList<PropertyTile> ownedTiles = player.getOwnedTiles();
+	// if (ownedTiles.size() > 0) {
+	// options.add(Constants.PAWN_OPTIONS);
+	// options.add(Constants.SELL);
+	// }
+
+	// // Build houses
+	// for (Color color : Constants.TILE_COLORS) {
+	// if (hasAllColors(ownedTiles, color)) {
+	// // TODO Check buildability
+	// options.add(Constants.BUILD);
+	// }
+	// }
+
+	// return options.toArray(new String[options.size()]);
+	// }
+
+	// private boolean hasAllColors(ArrayList<PropertyTile> ownedTiles, Color color)
+	// {
+	// for (Tile tile : this.tiles) {
+	// if (tile.getColor() == color && ownedTiles.contains(tile)) {
+	// continue;
+	// }
+	// return false;
+	// }
+	// return true;
+	// }
 
 	private void pawnTiles(Player player) {
 		ArrayList<PropertyTile> ownedTiles = player.getOwnedTiles();

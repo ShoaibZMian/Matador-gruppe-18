@@ -1,11 +1,15 @@
 package org.example.tiles;
 
+import org.example.Constants;
 import org.example.Game;
 import org.example.Player;
+import org.example.RaffleCup;
 
 import gui_fields.GUI_Jail;
+import gui_main.GUI;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 public class GoToJailTile extends Tile {
     private String title = "I fængsel";
@@ -19,8 +23,48 @@ public class GoToJailTile extends Tile {
 
     @Override
     public void tileAction(Player player, Game game) {
-        // TODO Implement
-        // gui.showMessage(player.getName() + " landede på " + this.title);
-    }
+        GUI gui = game.getGui();
 
+        ArrayList<String> options = new ArrayList<String>();
+
+        // Add valid options
+        options.add(Constants.FINE);
+
+        // Ensure that roll is only an option the first three times
+        if (player.getInJail() < 3) {
+            options.add(Constants.ROLL);
+        }
+
+        if (player.getOfJailChance()) {
+            options.add(Constants.OUT_OF_JAIL_CHANCE);
+        }
+
+        String option = gui.getUserButtonPressed(player.getName() + " landede i fængslet og har følgende muligheder",
+                options.toArray(new String[options.size()]));
+
+        switch (option) {
+            case Constants.FINE:
+                player.setBalance(player.getBalance() - Constants.JAIL_FINE);
+                player.setInJail(0);
+                return;
+
+            case Constants.ROLL:
+                // Roll dice and update GUI
+                RaffleCup raffleCup = player.getRaffleCup();
+                raffleCup.rollCup();
+                int[] diceValues = raffleCup.getValues();
+                gui.setDice(diceValues[0], 1, 2, diceValues[1], 2, 2);
+                // Check if two die are equal
+                if (raffleCup.getAnyEqual(diceValues)) {
+                    player.setInJail(0);
+                    return;
+                }
+                break;
+
+            case Constants.OUT_OF_JAIL_CHANCE:
+                player.useOfJailChance(game);
+                return;
+        }
+        player.setInJail(player.getInJail() + 1);
+    }
 }

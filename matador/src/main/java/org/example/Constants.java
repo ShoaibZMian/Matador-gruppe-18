@@ -31,5 +31,9 @@ public class Constants {
     public static final String ROLL = "Kast med terninger";
     public static final String SELL = "Sælg til anden spiller";
     public static final String BUILD = "Køb huse / hoteller";
+    // Jail tile
+    public static final int JAIL_FINE = 1000;
+    public static final String FINE = "Betal 1000kr";
+    public static final String OUT_OF_JAIL_CHANCE = "Brug chancekort";
 
 }
