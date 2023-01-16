@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+
 public class PropertyTile extends Tile {
     protected Player owner;
     protected String title;
