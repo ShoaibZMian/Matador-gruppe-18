@@ -285,23 +285,25 @@ public class Game {
 			player.getCar().setPosition(gui.getFields()[0]);
 		}
 
-		for (Tile tile : this.tiles) {
-			if (tile.getClass() == PropertyTile.class) {
-				players[0].addPropertyTile((PropertyTile) tile);
-				PropertyTile tile2 = (PropertyTile) tile;
-				tile2.setOwner(players[0]);
-			}
-			if (tile.getClass() == ShipTile.class) {
-				players[0].addShipTile((ShipTile) tile);
-				ShipTile tile2 = (ShipTile) tile;
-				tile2.setOwner(players[0]);
-			}
-			if (tile.getClass() == CompanyTile.class) {
-				players[0].addCompanyTile((CompanyTile) tile);
-				CompanyTile tile2 = (CompanyTile) tile;
-				tile2.setOwner(players[0]);
-			}
-		}
+		// TODO REMOVE! FOR TESTING ONLY
+
+		// for (Tile tile : this.tiles) {
+		// if (tile.getClass() == PropertyTile.class && tile.getColor() == Color.BLUE) {
+		// players[0].addPropertyTile((PropertyTile) tile);
+		// PropertyTile tile2 = (PropertyTile) tile;
+		// tile2.setOwner(players[0]);
+		// }
+		// if (tile.getClass() == ShipTile.class && tile.getColor() == Color.BLUE) {
+		// players[0].addShipTile((ShipTile) tile);
+		// ShipTile tile2 = (ShipTile) tile;
+		// tile2.setOwner(players[0]);
+		// }
+		// if (tile.getClass() == CompanyTile.class && tile.getColor() == Color.BLUE) {
+		// players[0].addCompanyTile((CompanyTile) tile);
+		// CompanyTile tile2 = (CompanyTile) tile;
+		// tile2.setOwner(players[0]);
+		// }
+		// }
 
 		gui.showMessage("Spillet går i gang! Rækkefølgen er: " + names);
 	}
@@ -460,14 +462,15 @@ public class Game {
 
 		ArrayList<String> options = new ArrayList<String>();
 		for (PropertyTile validTile : validTiles) {
-
-			options.add(validTile.getTitle());
+			if (validTile.getCanBuildHouse()) {
+				options.add(validTile.getTitle());
+			}
 		}
 
 		options.add(Constants.CANCEL);
 
 		String option = gui.getUserButtonPressed(
-				"Håndter huse",
+				Constants.BUILD,
 				options.toArray(new String[options.size()]));
 
 		// Return to options
@@ -480,25 +483,50 @@ public class Game {
 			ArrayList<String> houseOptions = new ArrayList<String>();
 
 			if (validTile.getTitle() == option) {
-				// TODO CHECK BUILDABILITY
 				// Add the ability to buy houses / hotels
 				if (validTile.getHouses() < 5) {
 					houseOptions.add(Constants.BUY_HOUSE);
+					houseOptions.add(Constants.BUY_ALL_HOUSES);
 				}
 				// Add the ability to sell houses / hotels
 				if (validTile.getHouses() > 0) {
 					houseOptions.add(Constants.SELL_HOUSE);
+					houseOptions.add(Constants.SELL_ALL_HOUSES);
+
 				}
 				houseOptions.add(Constants.CANCEL);
 
 				option = gui.getUserButtonPressed(option, houseOptions.toArray(new String[houseOptions.size()]));
 				switch (option) {
 					case Constants.BUY_HOUSE:
-						validTile.setHouses(0);
+						validTile.setHouses(validTile.getHouses() + 1);
+						player.setBalance(player.getBalance() - validTile.getHousePrice());
+						break;
+
+					case Constants.BUY_ALL_HOUSES:
+						for (PropertyTile tile : validTiles) {
+							if (tile.getCanBuildHouse() && tile.getColor() == validTile.getColor()) {
+								if (tile.getHouses() < 5) {
+									// Buy the remaining amount of houses for each tile of same color
+									tile.buyHouses();
+								}
+							}
+						}
 						break;
 
 					case Constants.SELL_HOUSE:
-						validTile.setHouses(0);
+						validTile.setHouses(validTile.getHouses() - 1);
+						player.setBalance(player.getBalance() + (validTile.getHousePrice() / 2));
+						break;
+
+					case Constants.SELL_ALL_HOUSES:
+						for (PropertyTile tile : validTiles) {
+							if (tile.getColor() == validTile.getColor() && tile.getCanBuildHouse()) {
+								if (tile.getHouses() > 0) {
+									tile.sellHouses();
+								}
+							}
+						}
 						break;
 
 					case Constants.CANCEL:
@@ -521,7 +549,6 @@ public class Game {
 			options.add(Constants.PAWN_OPTIONS);
 			options.add(Constants.SELL);
 		}
-		options.add(Constants.BUILD);
 
 		// Build houses
 		if (getBuildableTiles(ownedTiles).size() > 0) {
@@ -533,10 +560,13 @@ public class Game {
 
 	private boolean hasAllColors(ArrayList<PropertyTile> ownedTiles, Color color) {
 		for (Tile tile : this.tiles) {
-			if (tile.getColor() == color && ownedTiles.contains(tile)) {
-				continue;
+			if (tile.getColor() == color) {
+				if (ownedTiles.contains(tile)) {
+					continue;
+				} else {
+					return false;
+				}
 			}
-			return false;
 		}
 		return true;
 	}

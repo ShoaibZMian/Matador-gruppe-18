@@ -12,8 +12,7 @@ public class Die {
 
     public void rollDice() {
         // Random number from 1-NUMBER_OF_SIDES
-        value = 1;
-        // value = random.nextInt(Constants.NUMBER_OF_SIDES) + 1;
+        value = random.nextInt(Constants.NUMBER_OF_SIDES) + 1;
     }
 
     public int getValue() {

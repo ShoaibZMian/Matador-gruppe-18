@@ -21,6 +21,7 @@ public class PropertyTile extends Tile {
     private int housePrice;
     private int houses = 0;
     private boolean pawned = false;
+    protected boolean canBuildHouse = true;
 
     protected int hotelPrice;
 
@@ -69,6 +70,10 @@ public class PropertyTile extends Tile {
 
     public boolean getPawned() {
         return this.pawned;
+    }
+
+    public boolean getCanBuildHouse() {
+        return this.canBuildHouse;
     }
 
     // Handle houses and hotels, where a hotel is simply 5 houses in the logic
@@ -125,7 +130,14 @@ public class PropertyTile extends Tile {
     public void sellHouses() {
         // Get owner and add half of the value of the houses to the owner's balance
         this.owner.setBalance((this.housePrice * this.houses) / 2 + owner.getBalance());
-        this.houses = 0;
+        this.setHouses(0);
+    }
+
+    public void buyHouses() {
+        // Get owner and add half of the value of the houses to the owner's balance
+        this.owner.setBalance(
+                this.owner.getBalance() - ((5 - this.getHouses()) * this.getHousePrice()));
+        this.setHouses(5);
     }
 
     public void pawn() {

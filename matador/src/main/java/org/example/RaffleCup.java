@@ -75,8 +75,7 @@ public class RaffleCup {
 
     // Return the total value of the die
     public int getValue() {
-        return 1;
-        // return diceValues[2][0] + diceValues[2][1];
+        return diceValues[2][0] + diceValues[2][1];
     }
 
     // Return dice values

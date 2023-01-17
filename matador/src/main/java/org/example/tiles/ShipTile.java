@@ -15,6 +15,7 @@ public class ShipTile extends PropertyTile {
             int price, int[] rentPrices) {
         super(id, title, color, price, 0, rentPrices);
 
+        this.canBuildHouse = false;
         this.guiField = new GUI_Shipping("default", title, Integer.toString(price), title, Integer.toString(this.rent),
                 color, Color.BLACK);
     }
