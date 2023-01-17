@@ -176,7 +176,7 @@ public class Player extends GUI_Player {
                 Thread.sleep(250);
 
             } catch (Exception e) {
-                System.out.println("Error sleeping for animtion");
+                System.out.println("Error sleeping for animation");
             }
 
         }
