@@ -4,7 +4,6 @@ import org.example.Constants;
 import org.example.Game;
 import org.example.Player;
 
-import gui_fields.GUI_Field;
 import gui_main.GUI;
 
 public class MovementChance extends Chance {
@@ -30,8 +29,7 @@ public class MovementChance extends Chance {
         player.setPosition(newPosition, gui.getFields());
 
         // Execute the tile action
-        player.setBalance(-10000);
-        // game.getTiles()[newPosition].tileAction(player, game);
+        game.getTiles()[newPosition].tileAction(player, game);
 
     }
 

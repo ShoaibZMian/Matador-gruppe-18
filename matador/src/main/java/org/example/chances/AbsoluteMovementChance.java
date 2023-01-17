@@ -28,6 +28,11 @@ public class AbsoluteMovementChance extends Chance {
 
         player.setPosition(tileId, gui.getFields());
 
-        game.getTiles()[tileId].tileAction(player, game);
+        // Don't execute the tileAction if the player was moved into jail
+        if (tileId != Constants.JAIL_TILE) {
+            game.getTiles()[tileId].tileAction(player, game);
+        } else {
+            player.getRaffleCup().resetValues();
+        }
     }
 }
