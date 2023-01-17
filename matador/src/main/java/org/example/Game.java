@@ -106,7 +106,9 @@ public class Game {
 		// Create the chance ArrayList
 		this.chances = generateChances();
 		// this.chances = new ArrayList<Chance>();
-		// chances.add(new OutOfJailChance("null"));
+		// chances.add(new MovementChance(3, "MovementChance"));
+		// chances.add(new AbsoluteMovementChance(10, "AbsoluteMovementChance"));
+		// chances.add(new ShipMovementChance("ShipMovementChance"));
 
 		// Start the GUI
 		GUI_Field[] fields = new GUI_Field[tiles.length];
@@ -264,9 +266,9 @@ public class Game {
 						"De skal holde familiefest og får et tilskud fra hver medspiller på 500 kr."));
 		chances.add(new PropertyPaymentChance(500, 2000,
 				"Oliepriserne er steget, og De skal betale kr 500 pr hus og kr 2000 pr hotel"));
-		chances.add(new ShipMovementChance(Constants.SHIP_TILES,
+		chances.add(new ShipMovementChance(
 				"Ryk frem til det nærmeste rederi og betal ejeren to gange den leje han ellers er berettiget til, hvis selskabet ikke ejes af nogen kan De købe det af banken."));
-		chances.add(new ShipMovementChance(Constants.SHIP_TILES,
+		chances.add(new ShipMovementChance(
 				"Ryk frem til det nærmeste rederi og betal ejeren to gange den leje han ellers er berettiget til, hvis selskabet ikke ejes af nogen kan De købe det af banken."));
 
 		return chances;
@@ -313,6 +315,13 @@ public class Game {
 						break;
 					}
 				}
+
+				// True if a winner has been found
+				if (checkBankruptcy()) {
+					gui.showMessage(players[0].getName() + " har vundet spillet!!!");
+					gui.close();
+					return;
+				}
 			}
 		}
 	}
@@ -329,12 +338,12 @@ public class Game {
 			tiles[player.getPosition()].tileAction(player, this);
 		}
 
-		option = gui.getUserButtonPressed("Det er " + player.getName() + "'s tur.");
+		// option = gui.getUserButtonPressed("Det er " + player.getName() + "'s tur.");
 
 		// Skip movement if the player is in jail
 		if (!player.getInJail()) {
 			do {
-				option = gui.getUserButtonPressed("Vælg en mulighed: ",
+				option = gui.getUserButtonPressed(player.getName() + "'s tur. Vælg en mulighed: ",
 						generateOptions(player));
 				switch (option) {
 					// Pawn tiles
@@ -373,6 +382,33 @@ public class Game {
 		tiles[player.getPosition()].tileAction(player, this);
 
 		return raffleCup.getAnyEqual(raffleCup.getValues());
+	}
+
+	private boolean checkBankruptcy() {
+		// Remove any bankrupt players
+		for (Player player : players.clone()) {
+			if (player.getValue() < 0) {
+				gui.showMessage(player.getName() + " er gået bankerot og er ikke i spillet længere.");
+
+				// Remove car from board
+				player.getCar().setPosition(null);
+
+				// "Give" the tiles back to the bank
+				for (PropertyTile propertyTile : player.getOwnedTiles()) {
+					propertyTile.bankruptAction();
+				}
+
+				ArrayList<Player> newPlayers = new ArrayList<Player>(Arrays.asList(players));
+				newPlayers.remove(player);
+				players = newPlayers.toArray(new Player[newPlayers.size()]);
+			}
+		}
+		// Check for any winners
+		if (players.length == 1) {
+			// If there is only one player left, then a winner has been found.
+			return true;
+		}
+		return false;
 	}
 
 	private void pawnTiles(Player player) {

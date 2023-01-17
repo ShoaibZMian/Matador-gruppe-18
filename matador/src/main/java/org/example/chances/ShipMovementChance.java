@@ -8,11 +8,9 @@ import org.example.Player;
 import gui_main.GUI;
 
 public class ShipMovementChance extends Chance {
-    private int[] ships;
 
-    public ShipMovementChance(int[] ships, String description) {
+    public ShipMovementChance(String description) {
         this.description = description;
-        this.ships = ships;
 
     }
 
@@ -24,8 +22,11 @@ public class ShipMovementChance extends Chance {
         int index = player.getPosition();
 
         while (true) {
-            if (ArrayUtils.contains(ships, index)) {
+            if (ArrayUtils.contains(Constants.SHIP_TILES, index)) {
                 player.setPosition(index, gui.getFields());
+
+                // Execute the tile action
+                game.getTiles()[index].tileAction(player, game);
                 return;
             }
             index++;

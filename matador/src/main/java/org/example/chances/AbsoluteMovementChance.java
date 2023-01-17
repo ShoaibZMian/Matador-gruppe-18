@@ -27,5 +27,7 @@ public class AbsoluteMovementChance extends Chance {
         }
 
         player.setPosition(tileId, gui.getFields());
+
+        game.getTiles()[tileId].tileAction(player, game);
     }
 }

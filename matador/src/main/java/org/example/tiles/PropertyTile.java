@@ -113,6 +113,14 @@ public class PropertyTile extends Tile {
             player.setBalance(player.getBalance() - this.rent);
             owner.setBalance(owner.getBalance() + this.rent);
         }
+    }
+
+    public void bankruptAction() {
+        GUI_Ownable street = (GUI_Ownable) guiField;
+        this.owner = null;
+        street.setOwnerName(null);
+        setHouses(0);
+        this.pawned = false;
 
     }
 
