@@ -45,4 +45,9 @@ public class Constants {
         // Pawn action
         public static final String PAY_PAWN = "Ophæv pantsætning";
         public static final String PAWN = "Pantsæt";
+
+        // Sell tiles
+        public static final String SELL_TILE = "Sælg til anden spiller";
+        public static final String SELL_TILE_FINAL = "Sælg";
+
 }

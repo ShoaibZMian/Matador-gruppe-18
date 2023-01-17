@@ -118,13 +118,32 @@ public class PropertyTile extends Tile {
 
     public void buyAction(GUI_Ownable street, Player player) {
         baseBuyAction(street, player);
-        player.addPropertyTile(this);
+        if (this.getClass() == PropertyTile.class) {
+            player.addPropertyTile(this);
+        } else if (this.getClass() == ShipTile.class) {
+            player.addShipTile((ShipTile) this);
+        } else if (this.getClass() == CompanyTile.class) {
+            player.addCompanyTile((CompanyTile) this);
+        }
     }
 
     protected void baseBuyAction(GUI_Ownable street, Player player) {
         player.setBalance(player.getBalance() - this.price);
         street.setOwnerName(player.getName());
         setOwner(player);
+    }
+
+    public void buyAction(GUI_Ownable street, Player player, int amount) {
+        player.setBalance(player.getBalance() - amount);
+        street.setOwnerName(player.getName());
+        setOwner(player);
+        if (this.getClass() == PropertyTile.class) {
+            player.addPropertyTile(this);
+        } else if (this.getClass() == ShipTile.class) {
+            player.addShipTile((ShipTile) this);
+        } else if (this.getClass() == CompanyTile.class) {
+            player.addCompanyTile((CompanyTile) this);
+        }
     }
 
     public void sellHouses() {

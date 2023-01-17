@@ -20,7 +20,7 @@ import org.example.tiles.Tile;
 import org.example.tiles.VisitJailTile;
 
 import gui_fields.GUI_Field;
-
+import gui_fields.GUI_Ownable;
 import gui_main.GUI;
 
 public class Game {
@@ -285,32 +285,12 @@ public class Game {
 			player.getCar().setPosition(gui.getFields()[0]);
 		}
 
-		// TODO REMOVE! FOR TESTING ONLY
-
-		// for (Tile tile : this.tiles) {
-		// if (tile.getClass() == PropertyTile.class && tile.getColor() == Color.BLUE) {
-		// players[0].addPropertyTile((PropertyTile) tile);
-		// PropertyTile tile2 = (PropertyTile) tile;
-		// tile2.setOwner(players[0]);
-		// }
-		// if (tile.getClass() == ShipTile.class && tile.getColor() == Color.BLUE) {
-		// players[0].addShipTile((ShipTile) tile);
-		// ShipTile tile2 = (ShipTile) tile;
-		// tile2.setOwner(players[0]);
-		// }
-		// if (tile.getClass() == CompanyTile.class && tile.getColor() == Color.BLUE) {
-		// players[0].addCompanyTile((CompanyTile) tile);
-		// CompanyTile tile2 = (CompanyTile) tile;
-		// tile2.setOwner(players[0]);
-		// }
-		// }
-
 		gui.showMessage("Spillet går i gang! Rækkefølgen er: " + names);
 	}
 
 	private void rollDice(RaffleCup raffleCup, Player player) {
 		raffleCup.rollCup();
-		int[] diceValues = player.getRaffleCup().getValues();
+		int[] diceValues = raffleCup.getValues();
 		gui.setDice(diceValues[0], 1, 2, diceValues[1], 2, 2);
 	}
 
@@ -323,7 +303,7 @@ public class Game {
 				raffleCup = player.getRaffleCup();
 				// Give the player an extra turn if they roll to of the same value and send them
 				// to jail if it happens three times in a row
-				while (playerGameTurn(fields, player)) {
+				while (playerGameTurn(fields, player, raffleCup)) {
 					if (raffleCup.getEqualThreeTimes()) {
 						gui.showMessage(
 								player.getName() + " har slået to ens tre gange i træk og kommer derfor i fængsel");
@@ -337,9 +317,8 @@ public class Game {
 		}
 	}
 
-	private boolean playerGameTurn(GUI_Field[] fields, Player player) {
+	private boolean playerGameTurn(GUI_Field[] fields, Player player, RaffleCup raffleCup) {
 
-		RaffleCup raffleCup = player.getRaffleCup();
 		String option;
 		boolean passedStart = false;
 
@@ -370,7 +349,7 @@ public class Game {
 
 					// Sell tiles to other players
 					case Constants.SELL:
-						sellTiles();
+						sellTiles(player);
 						break;
 
 					// Build houses / hotels
@@ -452,7 +431,39 @@ public class Game {
 		}
 	}
 
-	private void sellTiles() {
+	private void sellTiles(Player player) {
+		ArrayList<PropertyTile> ownedTiles = player.getOwnedTiles();
+		ArrayList<String> options = new ArrayList<String>();
+		for (PropertyTile ownedTile : ownedTiles) {
+			options.add(ownedTile.getTitle());
+		}
+		options.add(Constants.CANCEL);
+
+		String option = gui.getUserButtonPressed(
+				Constants.SELL,
+				options.toArray(new String[options.size()]));
+
+		for (PropertyTile ownedTile : ownedTiles) {
+			ArrayList<String> playerOptions = new ArrayList<String>();
+			for (Player buyer : players) {
+				if (buyer.getName() != player.getName()) {
+					playerOptions.add(buyer.getName());
+				}
+			}
+			playerOptions.add(Constants.CANCEL);
+
+			option = gui.getUserButtonPressed(
+					option,
+					playerOptions.toArray(new String[playerOptions.size()]));
+
+			int amount = gui.getUserInteger("Indtast aftalte pris");
+			for (Player buyer : players) {
+				if (buyer.getName() == option) {
+					player.removePropertyTile(ownedTile);
+					ownedTile.buyAction((GUI_Ownable) ownedTile.getGuiField(), buyer, amount);
+				}
+			}
+		}
 	}
 
 	private void buildHouses(Player player) {

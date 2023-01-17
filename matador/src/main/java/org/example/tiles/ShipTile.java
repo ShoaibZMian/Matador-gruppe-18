@@ -20,11 +20,11 @@ public class ShipTile extends PropertyTile {
                 color, Color.BLACK);
     }
 
-    @Override
-    public void buyAction(GUI_Ownable street, Player player) {
-        baseBuyAction(street, player);
-        player.addShipTile(this);
-    }
+    // @Override
+    // public void buyAction(GUI_Ownable street, Player player) {
+    // baseBuyAction(street, player);
+    // player.addShipTile(this);
+    // }
 
     // Update rent based on owners owned ShipTiles
     @Override
