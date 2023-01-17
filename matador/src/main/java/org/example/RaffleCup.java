@@ -37,7 +37,7 @@ public class RaffleCup {
 
         // Should only be "true" if all of the Die in the cup are equal
         for (int i = 1; i < Constants.NUMBER_OF_DICE; i++) {
-            if (firstValue == values[i]) {
+            if (firstValue == values[i] && firstValue != 0) {
                 equal = true;
             } else {
                 equal = false;
@@ -68,12 +68,10 @@ public class RaffleCup {
         for (int i = 0; i < 3; i++) {
             if (getAnyEqual(diceValues[i])) {
                 count++;
-
             }
         }
         return count == 3;
     }
-
 
     // Return the total value of the die
     public int getValue() {
@@ -83,5 +81,10 @@ public class RaffleCup {
     // Return dice values
     public int[] getValues() {
         return diceValues[2];
+    }
+
+    // Remove previous diceValues
+    public void resetValues() {
+        diceValues = new int[][] { { 0, 0 }, { 0, 0 }, { 0, 0 } };
     }
 }

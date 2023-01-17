@@ -15,7 +15,8 @@ import gui_fields.GUI_Player;
 
 public class Player extends GUI_Player {
 
-    private int inJail = 0;
+    private boolean inJail = false;
+    private int jailRollTries = 0;
     private int position = 0;
     private ArrayList<OutOfJailChance> outOfJailChances = new ArrayList<OutOfJailChance>();
 
@@ -49,7 +50,8 @@ public class Player extends GUI_Player {
         Chance chance = new OutOfJailChance(
                 "I anledning af kongens fødselsdag benådes De herved for fængsel. Dette kort kan opbevares indtil De får brug for det, eller De kan sælge det");
         game.getChances().add(0, chance);
-        this.inJail = 0;
+        this.inJail = false;
+        this.jailRollTries = 0;
     }
 
     public void addGetOutOfJailChance(OutOfJailChance ofJailChance) {
@@ -92,6 +94,14 @@ public class Player extends GUI_Player {
         this.companyTiles.remove(companyTile);
     }
 
+    public ArrayList<PropertyTile> getOwnedTiles() {
+        ArrayList<PropertyTile> ownedTiles = new ArrayList<PropertyTile>();
+        ownedTiles.addAll(this.companyTiles);
+        ownedTiles.addAll(this.shipTiles);
+        ownedTiles.addAll(this.propertyTiles);
+        return ownedTiles;
+    }
+
     public RaffleCup getRaffleCup() {
         return raffleCup;
     }
@@ -106,12 +116,20 @@ public class Player extends GUI_Player {
 
     }
 
-    public int getInJail() {
+    public boolean getInJail() {
         return this.inJail;
     }
 
-    public void setInJail(int inJail) {
+    public void setInJail(boolean inJail) {
         this.inJail = inJail;
+    }
+
+    public int getJailRollTries() {
+        return jailRollTries;
+    }
+
+    public void setJailRollTries(int jailRollTries) {
+        this.jailRollTries = jailRollTries;
     }
 
     public int getValue() {

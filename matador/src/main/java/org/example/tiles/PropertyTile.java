@@ -20,6 +20,8 @@ public class PropertyTile extends Tile {
     protected int price;
     private int housePrice;
     private int houses = 0;
+    private boolean pawned = false;
+    protected boolean canBuildHouse = true;
 
     protected int hotelPrice;
 
@@ -58,8 +60,20 @@ public class PropertyTile extends Tile {
         return pawnValue;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public int getHousePrice() {
         return housePrice;
+    }
+
+    public boolean getPawned() {
+        return this.pawned;
+    }
+
+    public boolean getCanBuildHouse() {
+        return this.canBuildHouse;
     }
 
     // Handle houses and hotels, where a hotel is simply 5 houses in the logic
@@ -86,13 +100,20 @@ public class PropertyTile extends Tile {
     }
 
     // Calculate and pay rent
-    public void PayRent(GUI gui, Player player, Player owner) {
-        // Pay rent if not the owner
-        gui.showMessage(
-                player.getName() + " landede på " + owner.getName() + "'s ejendom og skal betale en leje på "
-                        + this.rent);
-        player.setBalance(player.getBalance() - this.rent);
-        owner.setBalance(owner.getBalance() + this.rent);
+    public void payRent(GUI gui, Player player, Player owner) {
+        if (owner.getInJail()) {
+            gui.showMessage(
+                    player.getName() + " landede på " + owner.getName()
+                            + "'s ejendom og skal ikke betale leje da de er i fængsel");
+        } else {
+            // Pay rent if not the owner
+            gui.showMessage(
+                    player.getName() + " landede på " + owner.getName() + "'s ejendom og skal betale en leje på "
+                            + this.rent);
+            player.setBalance(player.getBalance() - this.rent);
+            owner.setBalance(owner.getBalance() + this.rent);
+        }
+
     }
 
     public void buyAction(GUI_Ownable street, Player player) {
@@ -106,8 +127,30 @@ public class PropertyTile extends Tile {
         setOwner(player);
     }
 
+    public void sellHouses() {
+        // Get owner and add half of the value of the houses to the owner's balance
+        this.owner.setBalance((this.housePrice * this.houses) / 2 + owner.getBalance());
+        this.setHouses(0);
+    }
+
+    public void buyHouses() {
+        // Get owner and add half of the value of the houses to the owner's balance
+        this.owner.setBalance(
+                this.owner.getBalance() - ((5 - this.getHouses()) * this.getHousePrice()));
+        this.setHouses(5);
+    }
+
+    public void pawn() {
+        owner.setBalance(this.pawnValue + owner.getBalance());
+        this.pawned = true;
+    }
+
+    public void unPawn() {
+        owner.setBalance(owner.getBalance() - this.pawnValue - (int) (0.1 * this.pawnValue));
+        this.pawned = false;
+    }
+
     private void auctionAction(GUI_Ownable street, Game game) {
-        Player[] players = game.getPlayers();
         GUI gui = game.getGui();
         ArrayList<Pair<Player, Integer>> bids = new ArrayList<Pair<Player, Integer>>();
 
@@ -116,7 +159,7 @@ public class PropertyTile extends Tile {
             bids.add(new Pair<Player, Integer>() {
                 @Override
                 public Player getLeft() {
-                    return players[players.length - 1];
+                    return player;
                 }
 
                 @Override
@@ -187,10 +230,16 @@ public class PropertyTile extends Tile {
         } else {
             // Do nothing if the player is the owner of the tile
             if (player == this.owner) {
-                gui.showMessage(player.getName() + " landede på sin egen ejendom");
+                gui.showMessage(player.getName() + " landede på sin egen ejendom.");
             } else {
-                // Pay rent if not the owner
-                PayRent(gui, player, owner);
+                if (this.pawned == true) {
+                    gui.showMessage(player.getName() + " landede på " + owner.getName()
+                            + "'s ejendom, men den er pantsat så leje kan ikke kræves.");
+                } else {
+                    // Pay rent if not the owner
+                    payRent(gui, player, owner);
+                }
+
             }
         }
     }

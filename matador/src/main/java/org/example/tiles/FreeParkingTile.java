@@ -10,7 +10,7 @@ import gui_fields.GUI_Refuge;
 public class FreeParkingTile extends Tile {
 
     private String title = "Parkering";
-    private String description = "AcceptCard. Gør noget ved dine drømme. Modtag %s kr ved at lande her.";
+    private String description = "AcceptCard. Gør noget ved dine drømme.";
 
     private int balance = 0;
 

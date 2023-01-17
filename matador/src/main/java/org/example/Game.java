@@ -3,7 +3,6 @@ package org.example;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import java.awt.Color;
@@ -96,8 +95,12 @@ public class Game {
 
 		// Create the Tile array
 		this.tiles = generateTiles();
-		// for (int index = 10; index < 40; index++) {
-		// this.tiles[index] = new GoToJailTile(index);
+		// this.tiles[0] = new StartTile();
+
+		// for (int index = 1; index < 40; index++) {
+		// this.tiles[index] = new ShipTile(5, "Helsingør - Helsingborg", Color.BLUE,
+		// 4000,
+		// new int[] { 500, 1000, 2000, 4000 });
 		// }
 
 		// Create the chance ArrayList
@@ -106,13 +109,19 @@ public class Game {
 		// chances.add(new OutOfJailChance("null"));
 
 		// Start the GUI
-		this.gui = new GUI(getFields(), Constants.LIGHT_BLUE);
+		GUI_Field[] fields = new GUI_Field[tiles.length];
+
+		for (int i = 0; i < tiles.length; i++) {
+			fields[i] = tiles[i].getGuiField();
+		}
+
+		this.gui = new GUI(fields, Constants.LIGHT_BLUE);
 
 		prepareGame();
 
 		gameLoop();
 
-		checkWin();
+		// checkWin();
 	}
 
 	private Tile[] generateTiles() {
@@ -273,59 +282,103 @@ public class Game {
 		for (Player player : players) {
 			gui.addPlayer(player);
 			names.add(player.getName());
+			player.getCar().setPosition(gui.getFields()[0]);
 		}
+
+		// TODO REMOVE! FOR TESTING ONLY
+
+		// for (Tile tile : this.tiles) {
+		// if (tile.getClass() == PropertyTile.class && tile.getColor() == Color.BLUE) {
+		// players[0].addPropertyTile((PropertyTile) tile);
+		// PropertyTile tile2 = (PropertyTile) tile;
+		// tile2.setOwner(players[0]);
+		// }
+		// if (tile.getClass() == ShipTile.class && tile.getColor() == Color.BLUE) {
+		// players[0].addShipTile((ShipTile) tile);
+		// ShipTile tile2 = (ShipTile) tile;
+		// tile2.setOwner(players[0]);
+		// }
+		// if (tile.getClass() == CompanyTile.class && tile.getColor() == Color.BLUE) {
+		// players[0].addCompanyTile((CompanyTile) tile);
+		// CompanyTile tile2 = (CompanyTile) tile;
+		// tile2.setOwner(players[0]);
+		// }
+		// }
 
 		gui.showMessage("Spillet går i gang! Rækkefølgen er: " + names);
 	}
 
-	private GUI_Field[] getFields() {
-		// Create the GUI_Field array for the GUI
-		GUI_Field[] fields = new GUI_Field[tiles.length];
-
-		for (int i = 0; i < tiles.length; i++) {
-			fields[i] = tiles[i].getGuiField();
-		}
-		return fields;
-	}
-
-	private void updateGui(Player player) {
-		// Update dice
+	private void rollDice(RaffleCup raffleCup, Player player) {
+		raffleCup.rollCup();
 		int[] diceValues = player.getRaffleCup().getValues();
 		gui.setDice(diceValues[0], 1, 2, diceValues[1], 2, 2);
 	}
 
 	private void gameLoop() {
-		boolean passedStart = false;
 		GUI_Field[] fields = gui.getFields();
+		RaffleCup raffleCup;
 
 		while (true) {
 			for (Player player : players) {
-				boolean reRun = playerGameLoop(passedStart, fields, player);
-				if (reRun) {
-					boolean reRunAgain = playerGameLoop(passedStart, fields, player);
-					if (reRunAgain) {
-						RaffleCup raffleCup = player.getRaffleCup();
-						raffleCup.rollCup();
-						if (raffleCup.getAnyEqual(raffleCup.getValues())) {
-							// Go to jail
-							player.movePositionToJail(fields);
-						}
+				raffleCup = player.getRaffleCup();
+				// Give the player an extra turn if they roll to of the same value and send them
+				// to jail if it happens three times in a row
+				while (playerGameTurn(fields, player)) {
+					if (raffleCup.getEqualThreeTimes()) {
+						gui.showMessage(
+								player.getName() + " har slået to ens tre gange i træk og kommer derfor i fængsel");
+						player.setPosition(Constants.JAIL_TILE, fields);
+						player.setInJail(true);
+						raffleCup.resetValues();
+						break;
 					}
 				}
 			}
 		}
 	}
 
-	private boolean playerGameLoop(boolean passedStart, GUI_Field[] fields, Player player) {
-		RaffleCup raffleCup = player.getRaffleCup();
+	private boolean playerGameTurn(GUI_Field[] fields, Player player) {
 
-		// Show the players turn and roll the dice (Wait for user input)
-		gui.showMessage("Det er " + player.getName() + "'s tur. Kast med terningerne");
+		RaffleCup raffleCup = player.getRaffleCup();
+		String option;
+		boolean passedStart = false;
+
+		// Move if the player just got out of jail with two equal values
+		if (player.getPosition() == Constants.JAIL_TILE && raffleCup.getAnyEqual(raffleCup.getValues())) {
+			player.movePosition(raffleCup.getValue(), fields);
+			// Execute tile action
+			tiles[player.getPosition()].tileAction(player, this);
+		}
+
+		option = gui.getUserButtonPressed("Det er " + player.getName() + "'s tur.");
 
 		// Skip movement if the player is in jail
-		if (player.getInJail() == 0) {
-			raffleCup.rollCup();
-			updateGui(player);
+		if (!player.getInJail()) {
+			do {
+				option = gui.getUserButtonPressed("Vælg en mulighed: ",
+						generateOptions(player));
+				switch (option) {
+					// Pawn tiles
+					case Constants.PAWN_OPTIONS:
+						pawnTiles(player);
+						break;
+
+					// Roll Dice
+					case Constants.ROLL:
+						rollDice(raffleCup, player);
+						break;
+
+					// Sell tiles to other players
+					case Constants.SELL:
+						sellTiles();
+						break;
+
+					// Build houses / hotels
+					case Constants.BUILD:
+						buildHouses(player);
+						break;
+				}
+			} while (option != Constants.ROLL);
 
 			// Move spaces.
 			passedStart = player.movePosition(raffleCup.getValue(), fields);
@@ -337,59 +390,199 @@ public class Game {
 						+ Integer.toString(Constants.PASSED_START));
 			}
 		}
-
-		// Execute tile action and check if the game is over.
+		// Execute tile action
 		tiles[player.getPosition()].tileAction(player, this);
 
-		boolean reRun = false;
-		reRun = raffleCup.getAnyEqual(raffleCup.getValues());
-		return reRun;
+		return raffleCup.getAnyEqual(raffleCup.getValues());
 	}
 
-	// private void findLoser() {
-	// // Find the first player with a negative balance
-	// for (Player player : players) {
-	// if (player.getBalance() < 0) {
-	// gui.showMessage(player.getName() + " er gået fallit og er ude af spillet.");
-	// return;
-	// }
-	// }
-	// }
+	private void pawnTiles(Player player) {
+		ArrayList<PropertyTile> ownedTiles = player.getOwnedTiles();
 
-	private boolean checkWin() {
-		// The player with most points wins
-		Arrays.sort(players, Comparator.comparing(Player::getBalance));
+		ArrayList<String> options = new ArrayList<String>();
+		for (PropertyTile propertyTile : ownedTiles) {
+			options.add(propertyTile.getTitle());
+		}
+		options.add(Constants.CANCEL);
 
-		// Check if the top two players are tied, then calculate balance from properties
-		if (players[players.length - 1].getBalance() == players[players.length - 2].getBalance()) {
+		String option = gui.getUserButtonPressed(
+				"Håndter pantsætning. Alle huse af samme farve bliver solgt ved pantsætning",
+				options.toArray(new String[options.size()]));
 
-			for (Tile tile : tiles) {
-				if (tile.getClass() == PropertyTile.class) {
-					PropertyTile propertyTile = (PropertyTile) tile;
-					Player propertyOwner = propertyTile.getOwner();
+		// Return to options
+		if (option == Constants.CANCEL) {
+			return;
+		}
 
-					for (Player player : players) {
-						if (player == propertyOwner) {
-							player.setBalance(
-									player.getBalance() + propertyTile.getPrice());
+		// Pawn or unpawn
+		for (PropertyTile propertyTile : ownedTiles) {
+			ArrayList<String> pawnOptions = new ArrayList<String>();
+
+			if (propertyTile.getTitle() == option) {
+				// Remove the option to lift the pawn if it has not been pawned
+				if (propertyTile.getPawned()) {
+					pawnOptions.add(Constants.PAY_PAWN);
+				}
+				// Remove the option to pawn if the tile already has been pawned
+				else if (!propertyTile.getPawned()) {
+					pawnOptions.add(Constants.PAWN);
+				}
+				pawnOptions.add(Constants.CANCEL);
+
+				option = gui.getUserButtonPressed(option, pawnOptions.toArray(new String[pawnOptions.size()]));
+				switch (option) {
+					case Constants.PAWN:
+						propertyTile.pawn();
+						// Sell houses on all tiles of same color
+						for (PropertyTile propertyTile2 : ownedTiles) {
+							if (propertyTile.getColor() == propertyTile2.getColor()) {
+								propertyTile2.sellHouses();
+							}
 						}
+						break;
+
+					case Constants.PAY_PAWN:
+						propertyTile.unPawn();
+						break;
+
+					case Constants.CANCEL:
+						return;
+				}
+			}
+		}
+	}
+
+	private void sellTiles() {
+	}
+
+	private void buildHouses(Player player) {
+		ArrayList<PropertyTile> ownedTiles = player.getOwnedTiles();
+
+		ArrayList<PropertyTile> validTiles = getBuildableTiles(ownedTiles);
+
+		ArrayList<String> options = new ArrayList<String>();
+		for (PropertyTile validTile : validTiles) {
+			if (validTile.getCanBuildHouse()) {
+				options.add(validTile.getTitle());
+			}
+		}
+
+		options.add(Constants.CANCEL);
+
+		String option = gui.getUserButtonPressed(
+				Constants.BUILD,
+				options.toArray(new String[options.size()]));
+
+		// Return to options
+		if (option == Constants.CANCEL) {
+			return;
+		}
+
+		// Buy or sell houses
+		for (PropertyTile validTile : validTiles) {
+			ArrayList<String> houseOptions = new ArrayList<String>();
+
+			if (validTile.getTitle() == option) {
+				// Add the ability to buy houses / hotels
+				if (validTile.getHouses() < 5) {
+					houseOptions.add(Constants.BUY_HOUSE);
+					houseOptions.add(Constants.BUY_ALL_HOUSES);
+				}
+				// Add the ability to sell houses / hotels
+				if (validTile.getHouses() > 0) {
+					houseOptions.add(Constants.SELL_HOUSE);
+					houseOptions.add(Constants.SELL_ALL_HOUSES);
+
+				}
+				houseOptions.add(Constants.CANCEL);
+
+				option = gui.getUserButtonPressed(option, houseOptions.toArray(new String[houseOptions.size()]));
+				switch (option) {
+					case Constants.BUY_HOUSE:
+						validTile.setHouses(validTile.getHouses() + 1);
+						player.setBalance(player.getBalance() - validTile.getHousePrice());
+						break;
+
+					case Constants.BUY_ALL_HOUSES:
+						for (PropertyTile tile : validTiles) {
+							if (tile.getCanBuildHouse() && tile.getColor() == validTile.getColor()) {
+								if (tile.getHouses() < 5) {
+									// Buy the remaining amount of houses for each tile of same color
+									tile.buyHouses();
+								}
+							}
+						}
+						break;
+
+					case Constants.SELL_HOUSE:
+						validTile.setHouses(validTile.getHouses() - 1);
+						player.setBalance(player.getBalance() + (validTile.getHousePrice() / 2));
+						break;
+
+					case Constants.SELL_ALL_HOUSES:
+						for (PropertyTile tile : validTiles) {
+							if (tile.getColor() == validTile.getColor() && tile.getCanBuildHouse()) {
+								if (tile.getHouses() > 0) {
+									tile.sellHouses();
+								}
+							}
+						}
+						break;
+
+					case Constants.CANCEL:
+						return;
+				}
+			}
+		}
+	}
+
+	private String[] generateOptions(Player player) {
+		// Add the available options
+		ArrayList<String> options = new ArrayList<String>();
+
+		// Roll Dice
+		options.add(Constants.ROLL);
+
+		// Pawn tiles and sell to other player
+		ArrayList<PropertyTile> ownedTiles = player.getOwnedTiles();
+		if (ownedTiles.size() > 0) {
+			options.add(Constants.PAWN_OPTIONS);
+			options.add(Constants.SELL);
+		}
+
+		// Build houses
+		if (getBuildableTiles(ownedTiles).size() > 0) {
+			options.add(Constants.BUILD);
+		}
+
+		return options.toArray(new String[options.size()]);
+	}
+
+	private boolean hasAllColors(ArrayList<PropertyTile> ownedTiles, Color color) {
+		for (Tile tile : this.tiles) {
+			if (tile.getColor() == color) {
+				if (ownedTiles.contains(tile)) {
+					continue;
+				} else {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	private ArrayList<PropertyTile> getBuildableTiles(ArrayList<PropertyTile> tiles) {
+		ArrayList<PropertyTile> buildableTiles = new ArrayList<PropertyTile>();
+
+		for (Color color : Constants.TILE_COLORS) {
+			if (hasAllColors(tiles, color)) {
+				for (PropertyTile tile : tiles) {
+					if (color == tile.getColor()) {
+						buildableTiles.add(tile);
 					}
 				}
 			}
-			Arrays.sort(players, Comparator.comparing(Player::getBalance));
-			// Check if tied again
-			if (players[players.length - 1].getBalance() == players[players.length - 2].getBalance()) {
-				gui.showMessage("*Will be replaced*");
-			} else {
-				gui.showMessage("*Will be replaced*");
-
-			}
-
-		} else {
-			gui.showMessage("*Will be replaced*");
 		}
-
-		gui.close();
-		return false;
+		return buildableTiles;
 	}
 }

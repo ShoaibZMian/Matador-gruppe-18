@@ -31,7 +31,7 @@ public class GoToJailTile extends Tile {
         options.add(Constants.FINE);
 
         // Ensure that roll is only an option the first three times
-        if (player.getInJail() < 3) {
+        if (player.getJailRollTries() < 3) {
             options.add(Constants.ROLL);
         }
 
@@ -45,7 +45,8 @@ public class GoToJailTile extends Tile {
         switch (option) {
             case Constants.FINE:
                 player.setBalance(player.getBalance() - Constants.JAIL_FINE);
-                player.setInJail(0);
+                player.setInJail(false);
+                player.setJailRollTries(0);
                 return;
 
             case Constants.ROLL:
@@ -56,15 +57,18 @@ public class GoToJailTile extends Tile {
                 gui.setDice(diceValues[0], 1, 2, diceValues[1], 2, 2);
                 // Check if two die are equal
                 if (raffleCup.getAnyEqual(diceValues)) {
-                    player.setInJail(0);
+                    gui.showMessage(player.getName() + " har slået to ens og kommer ud af fængsel");
+                    player.setInJail(false);
+                    player.setJailRollTries(0);
                     return;
                 }
+                player.setJailRollTries(player.getJailRollTries() + 1);
+
                 break;
 
             case Constants.OUT_OF_JAIL_CHANCE:
                 player.useOfJailChance(game);
                 return;
         }
-        player.setInJail(player.getInJail() + 1);
     }
 }
