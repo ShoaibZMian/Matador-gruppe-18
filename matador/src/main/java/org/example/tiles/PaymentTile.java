@@ -3,11 +3,11 @@ package org.example.tiles;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import org.example.Constants;
+import org.example.Game;
 import org.example.Player;
-import org.example.chances.Chance;
 
 import gui_fields.GUI_Refuge;
-import gui_main.GUI;
 
 public class PaymentTile extends Tile {
 
@@ -29,7 +29,7 @@ public class PaymentTile extends Tile {
     }
 
     @Override
-    public boolean tileAction(Player player, Player[] players, ArrayList<Chance> chances, GUI gui) {
+    public void tileAction(Player player, Game game) {
         ArrayList<String> options = new ArrayList<String>();
         options.add(Integer.toString(amount));
 
@@ -40,17 +40,26 @@ public class PaymentTile extends Tile {
         }
 
         // Get selected option
-        String option = gui.getUserButtonPressed(player.getName() + " landede på " + this.description,
+        String option = game.getGui().getUserButtonPressed(player.getName() + " landede på " + this.description,
                 options.toArray(new String[options.size()]));
 
         // Pay the payment
+        int value = 0;
+        int freeParkingAmount = 0;
         if (option == percentageString) {
-            player.setBalance((player.getBalance() * (100 - this.percentage)) / 100);
-            ;
+            value = (player.getValue() * (100 - this.percentage)) / 100;
+            freeParkingAmount = player.getValue() - value;
+
         } else {
-            player.setBalance(player.getBalance() - this.amount);
+            value = player.getBalance() - this.amount;
+            freeParkingAmount = this.amount;
         }
 
-        return true;
+        // Add the value to the free parking tile
+        FreeParkingTile tile = (FreeParkingTile) game.getTile(Constants.FREE_PARKING_TILE);
+        tile.addBalance(freeParkingAmount);
+
+        player.setBalance(value);
+
     }
 }

@@ -1,5 +1,7 @@
 package org.example.chances;
 
+import org.example.Constants;
+import org.example.Game;
 import org.example.Player;
 
 import gui_main.GUI;
@@ -14,15 +16,23 @@ public class AbsoluteMovementChance extends Chance {
     }
 
     @Override
-    public boolean chanceAction(Player player, Player[] players, GUI gui) {
+    public void chanceAction(Player player, Game game) {
+        GUI gui = game.getGui();
         gui.displayChanceCard(description);
 
-        // Check if the absolute position is the Start tile. If so,
-        // then give the player 2M$
-        if (tileId == 0) {
-            player.setBalance(player.getBalance() + 2);
+        // Check if the absolute position is the jail tile, if so, set the player to be
+        // in jail
+        if (tileId == Constants.JAIL_TILE) {
+            player.setInJail(true);
         }
+
         player.setPosition(tileId, gui.getFields());
-        return true;
+
+        // Don't execute the tileAction if the player was moved into jail
+        if (tileId != Constants.JAIL_TILE) {
+            game.getTiles()[tileId].tileAction(player, game);
+        } else {
+            player.getRaffleCup().resetValues();
+        }
     }
 }

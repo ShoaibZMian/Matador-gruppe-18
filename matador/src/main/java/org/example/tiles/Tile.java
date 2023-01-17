@@ -1,13 +1,11 @@
 package org.example.tiles;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
+import org.example.Game;
 import org.example.Player;
-import org.example.chances.Chance;
 
 import gui_fields.GUI_Field;
-import gui_main.GUI;
 
 abstract public class Tile {
 
@@ -16,13 +14,17 @@ abstract public class Tile {
     protected int id;
 
     public GUI_Field getGuiField() {
-        return guiField;
+        return this.guiField;
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
-    abstract public boolean tileAction(Player player, Player[] players, ArrayList<Chance> chances, GUI gui);
+    public Color getColor() {
+        return this.color;
+    }
+
+    abstract public void tileAction(Player player, Game game);
 
 }

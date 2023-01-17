@@ -3,6 +3,7 @@ package org.example;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import org.example.chances.Chance;
 import org.example.chances.OutOfJailChance;
 import org.example.tiles.CompanyTile;
 import org.example.tiles.PropertyTile;
@@ -13,8 +14,9 @@ import gui_fields.GUI_Field;
 import gui_fields.GUI_Player;
 
 public class Player extends GUI_Player {
-    private static Color[] COLORS = { Color.RED, Color.GREEN, Color.BLUE, Color.ORANGE, Color.PINK, Color.YELLOW };
 
+    private boolean inJail = false;
+    private int jailRollTries = 0;
     private int position = 0;
     private ArrayList<OutOfJailChance> outOfJailChances = new ArrayList<OutOfJailChance>();
 
@@ -31,18 +33,25 @@ public class Player extends GUI_Player {
 
     public Player(int id, String name) {
         super(name, Constants.STARTING_BALANCE,
-                new GUI_Car(COLORS[id], Color.WHITE, GUI_Car.Type.CAR, GUI_Car.Pattern.FILL));
+                new GUI_Car(Constants.PLAYER_COLORS[id], Color.WHITE, GUI_Car.Type.CAR, GUI_Car.Pattern.FILL));
 
     }
 
     public boolean getOfJailChance() {
-        // If available, then get out of jail and remove card
-        // TODO Add chance card to the bottom of the pile again when used
         if (this.outOfJailChances.size() >= 1) {
-            this.outOfJailChances.remove(this.outOfJailChances.size() - 1);
             return true;
         }
         return false;
+    }
+
+    public void useOfJailChance(Game game) {
+        // Get out of jail and remove card
+        this.outOfJailChances.remove(this.outOfJailChances.size() - 1);
+        Chance chance = new OutOfJailChance(
+                "I anledning af kongens fødselsdag benådes De herved for fængsel. Dette kort kan opbevares indtil De får brug for det, eller De kan sælge det");
+        game.getChances().add(0, chance);
+        this.inJail = false;
+        this.jailRollTries = 0;
     }
 
     public void addGetOutOfJailChance(OutOfJailChance ofJailChance) {
@@ -85,6 +94,14 @@ public class Player extends GUI_Player {
         this.companyTiles.remove(companyTile);
     }
 
+    public ArrayList<PropertyTile> getOwnedTiles() {
+        ArrayList<PropertyTile> ownedTiles = new ArrayList<PropertyTile>();
+        ownedTiles.addAll(this.companyTiles);
+        ownedTiles.addAll(this.shipTiles);
+        ownedTiles.addAll(this.propertyTiles);
+        return ownedTiles;
+    }
+
     public RaffleCup getRaffleCup() {
         return raffleCup;
     }
@@ -97,6 +114,22 @@ public class Player extends GUI_Player {
         this.position = position;
         getCar().setPosition(fields[position]);
 
+    }
+
+    public boolean getInJail() {
+        return this.inJail;
+    }
+
+    public void setInJail(boolean inJail) {
+        this.inJail = inJail;
+    }
+
+    public int getJailRollTries() {
+        return jailRollTries;
+    }
+
+    public void setJailRollTries(int jailRollTries) {
+        this.jailRollTries = jailRollTries;
     }
 
     public int getValue() {
@@ -133,18 +166,17 @@ public class Player extends GUI_Player {
         // Advance the position and loop correctly
         int oldPosition = this.position;
         int currentPosition = this.position;
-        // int newPosition = (this.position + dieValue) % Constants.NUMBER_OF_FIELDS;
 
+        // Animate the movement of cars on the GUI
         for (int index = 0; index <= dieValue; index++) {
             currentPosition = (this.position + index) % Constants.NUMBER_OF_FIELDS;
 
             getCar().setPosition(fields[currentPosition]);
-
             try {
                 Thread.sleep(250);
 
             } catch (Exception e) {
-                System.out.println("Error sleeping for animtion");
+                System.out.println("Error sleeping for animation");
             }
 
         }
@@ -156,6 +188,10 @@ public class Player extends GUI_Player {
         }
 
         return false;
+    }
+
+    public void movePositionToJail(GUI_Field[] fields) {
+        getCar().setPosition(fields[30]);
     }
 
 }

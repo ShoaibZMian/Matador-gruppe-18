@@ -2,24 +2,24 @@ package org.example;
 
 public class RaffleCup {
 
-    private static final int NUMBER_OF_DICE = 2;
-    private Die[] dice = new Die[NUMBER_OF_DICE];
-    int[][] diceValues = new int[3][NUMBER_OF_DICE];
+    private Die[] dice = new Die[Constants.NUMBER_OF_DICE];
+    int[][] diceValues = new int[3][Constants.NUMBER_OF_DICE];
 
     public RaffleCup() {
 
         Die die = new Die();
 
-        for (int i = 0; i < NUMBER_OF_DICE; i++) {
+        for (int i = 0; i < Constants.NUMBER_OF_DICE; i++) {
             dice[i] = die;
         }
     }
 
     // Roll all the die and save the value prior to rolling and afterwards
     public void rollCup() {
-        for (int i = 0; i < NUMBER_OF_DICE; i++) {
+        for (int i = 0; i < Constants.NUMBER_OF_DICE; i++) {
 
             diceValues[0][i] = diceValues[1][i];
+            diceValues[1][i] = diceValues[2][i];
 
             dice[i].rollDice();
 
@@ -36,8 +36,8 @@ public class RaffleCup {
         firstValue = values[0];
 
         // Should only be "true" if all of the Die in the cup are equal
-        for (int i = 1; i < NUMBER_OF_DICE; i++) {
-            if (firstValue == values[i]) {
+        for (int i = 1; i < Constants.NUMBER_OF_DICE; i++) {
+            if (firstValue == values[i] && firstValue != 0) {
                 equal = true;
             } else {
                 equal = false;
@@ -47,15 +47,30 @@ public class RaffleCup {
         return equal;
     }
 
-    // Check if three throws in a row are doubles
-    public boolean getEqualThreeTimes() {
+    // Check if two throws in a row are doubles
+    public boolean getEqualTwoTimes() {
 
-        for (int i = 0; i < 3; i++) {
-            if (!getAnyEqual(diceValues[i])) {
-                return false;
+        int count = 0;
+
+        for (int i = 0; i < 2; i++) {
+            if (getAnyEqual(diceValues[i])) {
+                count++;
+
             }
         }
-        return true;
+        return count == 2;
+    }
+
+    // Check if three throws in a row are doubles
+    public boolean getEqualThreeTimes() {
+        int count = 0;
+
+        for (int i = 0; i < 3; i++) {
+            if (getAnyEqual(diceValues[i])) {
+                count++;
+            }
+        }
+        return count == 3;
     }
 
     // Return the total value of the die
@@ -66,5 +81,10 @@ public class RaffleCup {
     // Return dice values
     public int[] getValues() {
         return diceValues[2];
+    }
+
+    // Remove previous diceValues
+    public void resetValues() {
+        diceValues = new int[][] { { 0, 0 }, { 0, 0 }, { 0, 0 } };
     }
 }

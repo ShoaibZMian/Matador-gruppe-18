@@ -1,13 +1,11 @@
 package org.example.tiles;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
+import org.example.Game;
 import org.example.Player;
-import org.example.chances.Chance;
 
 import gui_fields.GUI_Jail;
-import gui_main.GUI;
 
 public class VisitJailTile extends Tile {
 
@@ -21,8 +19,7 @@ public class VisitJailTile extends Tile {
     }
 
     @Override
-    public boolean tileAction(Player player, Player[] players, ArrayList<Chance> chances, GUI gui) {
-        gui.showMessage(player.getName() + " landede i fængslet, dog kun på besøg.");
-        return true;
+    public void tileAction(Player player, Game game) {
+        game.getGui().showMessage(player.getName() + " landede i fængslet, dog kun på besøg.");
     }
 }
