@@ -6,6 +6,13 @@ A Danish Monopoly game made for the DTU course 02312.
 
 These instructions are for an Arch based Linux operation system.
 
+Java 11 and Maven needs to be installed in order to build this project. This can be installed using:
+
+```sh
+sudo pacman -S jdk11-openjdk
+sudo pacman -S maven
+```
+
 To build the package in Linux simply run the command:
 
 ```sh
