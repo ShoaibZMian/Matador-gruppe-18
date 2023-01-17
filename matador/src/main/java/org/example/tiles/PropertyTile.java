@@ -113,18 +113,45 @@ public class PropertyTile extends Tile {
             player.setBalance(player.getBalance() - this.rent);
             owner.setBalance(owner.getBalance() + this.rent);
         }
+    }
+
+    public void bankruptAction() {
+        GUI_Ownable street = (GUI_Ownable) guiField;
+        this.owner = null;
+        street.setOwnerName(null);
+        setHouses(0);
+        this.pawned = false;
 
     }
 
     public void buyAction(GUI_Ownable street, Player player) {
         baseBuyAction(street, player);
-        player.addPropertyTile(this);
+        if (this.getClass() == PropertyTile.class) {
+            player.addPropertyTile(this);
+        } else if (this.getClass() == ShipTile.class) {
+            player.addShipTile((ShipTile) this);
+        } else if (this.getClass() == CompanyTile.class) {
+            player.addCompanyTile((CompanyTile) this);
+        }
     }
 
     protected void baseBuyAction(GUI_Ownable street, Player player) {
         player.setBalance(player.getBalance() - this.price);
         street.setOwnerName(player.getName());
         setOwner(player);
+    }
+
+    public void buyAction(GUI_Ownable street, Player player, int amount) {
+        player.setBalance(player.getBalance() - amount);
+        street.setOwnerName(player.getName());
+        setOwner(player);
+        if (this.getClass() == PropertyTile.class) {
+            player.addPropertyTile(this);
+        } else if (this.getClass() == ShipTile.class) {
+            player.addShipTile((ShipTile) this);
+        } else if (this.getClass() == CompanyTile.class) {
+            player.addCompanyTile((CompanyTile) this);
+        }
     }
 
     public void sellHouses() {

@@ -27,6 +27,10 @@ public class MovementChance extends Chance {
         }
 
         player.setPosition(newPosition, gui.getFields());
+
+        // Execute the tile action
+        game.getTiles()[newPosition].tileAction(player, game);
+
     }
 
 }

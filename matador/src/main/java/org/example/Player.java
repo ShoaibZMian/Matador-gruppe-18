@@ -166,13 +166,12 @@ public class Player extends GUI_Player {
         // Advance the position and loop correctly
         int oldPosition = this.position;
         int currentPosition = this.position;
-        // int newPosition = (this.position + dieValue) % Constants.NUMBER_OF_FIELDS;
 
+        // Animate the movement of cars on the GUI
         for (int index = 0; index <= dieValue; index++) {
             currentPosition = (this.position + index) % Constants.NUMBER_OF_FIELDS;
 
             getCar().setPosition(fields[currentPosition]);
-
             try {
                 Thread.sleep(250);
 
