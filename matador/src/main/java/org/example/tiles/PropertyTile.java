@@ -122,16 +122,14 @@ public class PropertyTile extends Tile {
         setOwner(player);
     }
 
-    private void sellHouses() {
+    public void sellHouses() {
         // Get owner and add half of the value of the houses to the owner's balance
         this.owner.setBalance((this.housePrice * this.houses) / 2 + owner.getBalance());
         this.houses = 0;
     }
 
     public void pawn() {
-        sellHouses();
         owner.setBalance(this.pawnValue + owner.getBalance());
-        sellHouses();
         this.pawned = true;
     }
 

@@ -1,5 +1,6 @@
 package org.example.chances;
 
+import org.example.Constants;
 import org.example.Game;
 import org.example.Player;
 
@@ -19,11 +20,12 @@ public class AbsoluteMovementChance extends Chance {
         GUI gui = game.getGui();
         gui.displayChanceCard(description);
 
-        // Check if the absolute position is the Start tile. If so,
-        // then give the player 2M$
-        if (tileId == 0) {
-            player.setBalance(player.getBalance() + 2);
+        // Check if the absolute position is the jail tile, if so, set the player to be
+        // in jail
+        if (tileId == Constants.JAIL_TILE) {
+            player.setInJail(true);
         }
+
         player.setPosition(tileId, gui.getFields());
     }
 }

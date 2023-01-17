@@ -8,7 +8,6 @@ import org.example.chances.OutOfJailChance;
 import org.example.tiles.CompanyTile;
 import org.example.tiles.PropertyTile;
 import org.example.tiles.ShipTile;
-import org.example.tiles.Tile;
 
 import gui_fields.GUI_Car;
 import gui_fields.GUI_Field;

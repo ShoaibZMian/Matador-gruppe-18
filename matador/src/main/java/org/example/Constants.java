@@ -23,17 +23,23 @@ public class Constants {
     public static final String BUY = "Køb";
     public static final int SCHOLARSHIP_LIMIT = 15000;
 
-    public static final String PAWN_OPTIONS = "Håndter pantsætning";
-    public static final String CANCEL = "Annuller";
-    public static final String PAY_PAWN = "Ophæv pantsætning";
-    public static final String PAWN = "Pantsæt";
-
-    public static final String ROLL = "Kast med terninger";
-    public static final String SELL = "Sælg til anden spiller";
-    public static final String BUILD = "Køb huse / hoteller";
     // Jail tile
     public static final int JAIL_FINE = 1000;
     public static final String FINE = "Betal 1000kr";
     public static final String OUT_OF_JAIL_CHANCE = "Brug chancekort";
 
+    // Game turn actions
+    public static final String CANCEL = "Tilbage";
+    public static final String ROLL = "Kast med terninger";
+    public static final String SELL = "Sælg til anden spiller";
+    public static final String BUILD = "Håndter huse / hoteller";
+    public static final String PAWN_OPTIONS = "Håndter pantsætning";
+
+    // Buy houses
+    public static final String BUY_HOUSE = "Sælg huse / hoteller";
+    public static final String SELL_HOUSE = "Køb huse / hoteller";
+
+    // Pawn action
+    public static final String PAY_PAWN = "Ophæv pantsætning";
+    public static final String PAWN = "Pantsæt";
 }

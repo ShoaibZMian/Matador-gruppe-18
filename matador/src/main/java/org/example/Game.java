@@ -3,7 +3,6 @@ package org.example;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import java.awt.Color;
@@ -110,7 +109,13 @@ public class Game {
 		// chances.add(new OutOfJailChance("null"));
 
 		// Start the GUI
-		this.gui = new GUI(getFields(), Constants.LIGHT_BLUE);
+		GUI_Field[] fields = new GUI_Field[tiles.length];
+
+		for (int i = 0; i < tiles.length; i++) {
+			fields[i] = tiles[i].getGuiField();
+		}
+
+		this.gui = new GUI(fields, Constants.LIGHT_BLUE);
 
 		prepareGame();
 
@@ -277,19 +282,34 @@ public class Game {
 		for (Player player : players) {
 			gui.addPlayer(player);
 			names.add(player.getName());
+			player.getCar().setPosition(gui.getFields()[0]);
+		}
+
+		for (Tile tile : this.tiles) {
+			if (tile.getClass() == PropertyTile.class) {
+				players[0].addPropertyTile((PropertyTile) tile);
+				PropertyTile tile2 = (PropertyTile) tile;
+				tile2.setOwner(players[0]);
+			}
+			if (tile.getClass() == ShipTile.class) {
+				players[0].addShipTile((ShipTile) tile);
+				ShipTile tile2 = (ShipTile) tile;
+				tile2.setOwner(players[0]);
+			}
+			if (tile.getClass() == CompanyTile.class) {
+				players[0].addCompanyTile((CompanyTile) tile);
+				CompanyTile tile2 = (CompanyTile) tile;
+				tile2.setOwner(players[0]);
+			}
 		}
 
 		gui.showMessage("Spillet går i gang! Rækkefølgen er: " + names);
 	}
 
-	private GUI_Field[] getFields() {
-		// Create the GUI_Field array for the GUI
-		GUI_Field[] fields = new GUI_Field[tiles.length];
-
-		for (int i = 0; i < tiles.length; i++) {
-			fields[i] = tiles[i].getGuiField();
-		}
-		return fields;
+	private void rollDice(RaffleCup raffleCup, Player player) {
+		raffleCup.rollCup();
+		int[] diceValues = player.getRaffleCup().getValues();
+		gui.setDice(diceValues[0], 1, 2, diceValues[1], 2, 2);
 	}
 
 	private void gameLoop() {
@@ -348,10 +368,12 @@ public class Game {
 
 					// Sell tiles to other players
 					case Constants.SELL:
+						sellTiles();
 						break;
 
 					// Build houses / hotels
 					case Constants.BUILD:
+						buildHouses(player);
 						break;
 				}
 			} while (option != Constants.ROLL);
@@ -409,6 +431,12 @@ public class Game {
 				switch (option) {
 					case Constants.PAWN:
 						propertyTile.pawn();
+						// Sell houses on all tiles of same color
+						for (PropertyTile propertyTile2 : ownedTiles) {
+							if (propertyTile.getColor() == propertyTile2.getColor()) {
+								propertyTile2.sellHouses();
+							}
+						}
 						break;
 
 					case Constants.PAY_PAWN:
@@ -422,16 +450,62 @@ public class Game {
 		}
 	}
 
-	private void rollDice(RaffleCup raffleCup, Player player) {
-		raffleCup.rollCup();
-		int[] diceValues = player.getRaffleCup().getValues();
-		gui.setDice(diceValues[0], 1, 2, diceValues[1], 2, 2);
-	}
-
 	private void sellTiles() {
 	}
 
-	private void buildHouses() {
+	private void buildHouses(Player player) {
+		ArrayList<PropertyTile> ownedTiles = player.getOwnedTiles();
+
+		ArrayList<PropertyTile> validTiles = getBuildableTiles(ownedTiles);
+
+		ArrayList<String> options = new ArrayList<String>();
+		for (PropertyTile validTile : validTiles) {
+
+			options.add(validTile.getTitle());
+		}
+
+		options.add(Constants.CANCEL);
+
+		String option = gui.getUserButtonPressed(
+				"Håndter huse",
+				options.toArray(new String[options.size()]));
+
+		// Return to options
+		if (option == Constants.CANCEL) {
+			return;
+		}
+
+		// Buy or sell houses
+		for (PropertyTile validTile : validTiles) {
+			ArrayList<String> houseOptions = new ArrayList<String>();
+
+			if (validTile.getTitle() == option) {
+				// TODO CHECK BUILDABILITY
+				// Add the ability to buy houses / hotels
+				if (validTile.getHouses() < 5) {
+					houseOptions.add(Constants.BUY_HOUSE);
+				}
+				// Add the ability to sell houses / hotels
+				if (validTile.getHouses() > 0) {
+					houseOptions.add(Constants.SELL_HOUSE);
+				}
+				houseOptions.add(Constants.CANCEL);
+
+				option = gui.getUserButtonPressed(option, houseOptions.toArray(new String[houseOptions.size()]));
+				switch (option) {
+					case Constants.BUY_HOUSE:
+						validTile.setHouses(0);
+						break;
+
+					case Constants.SELL_HOUSE:
+						validTile.setHouses(0);
+						break;
+
+					case Constants.CANCEL:
+						return;
+				}
+			}
+		}
 	}
 
 	private String[] generateOptions(Player player) {
@@ -447,13 +521,11 @@ public class Game {
 			options.add(Constants.PAWN_OPTIONS);
 			options.add(Constants.SELL);
 		}
+		options.add(Constants.BUILD);
 
 		// Build houses
-		for (Color color : Constants.TILE_COLORS) {
-			if (hasAllColors(ownedTiles, color)) {
-				// TODO Check buildability
-				options.add(Constants.BUILD);
-			}
+		if (getBuildableTiles(ownedTiles).size() > 0) {
+			options.add(Constants.BUILD);
 		}
 
 		return options.toArray(new String[options.size()]);
@@ -469,4 +541,18 @@ public class Game {
 		return true;
 	}
 
+	private ArrayList<PropertyTile> getBuildableTiles(ArrayList<PropertyTile> tiles) {
+		ArrayList<PropertyTile> buildableTiles = new ArrayList<PropertyTile>();
+
+		for (Color color : Constants.TILE_COLORS) {
+			if (hasAllColors(tiles, color)) {
+				for (PropertyTile tile : tiles) {
+					if (color == tile.getColor()) {
+						buildableTiles.add(tile);
+					}
+				}
+			}
+		}
+		return buildableTiles;
+	}
 }
